@@ -70,7 +70,7 @@ module.exports = {
     link: [{
         rel: "icon",
         type: "image/x-icon",
-        href: "/logoDezigntool.ico"
+        href: "/logo.ico"
       },
       {
         rel: "stylesheet",

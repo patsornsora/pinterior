@@ -4,11 +4,7 @@
     <nav class="navbar is-transparent navbar is-fixed-top">
       <div class="navbar-brand">
         <a class="navbar-item">
-          <img
-            style="max-height: 45px; max-width: 45px;"
-            src="LogoDezigntool.png"
-            @click="$router.push('/')"
-          >
+          <img style="max-height: 45px; max-width: 45px;" src="logo.png" @click="$router.push('/')">
         </a>
         <a
           role="button"
