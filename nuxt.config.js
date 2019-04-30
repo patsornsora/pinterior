@@ -29,6 +29,7 @@ module.exports = {
     "/api": {
       target: "http://dezignserves.com:80",
       changeOrigin: true
+      // changeOrigin: false
     },
     // "/": {
     //   target: "https://dezignserves.com:80",
@@ -48,12 +49,11 @@ module.exports = {
   //   csp: true
   // },
 
-
   /*
    ** Headers of the page
    */
   head: {
-    title: "Dezigntool",
+    title: "DEXCORO",
     meta: [{
         charset: "utf-8"
       },

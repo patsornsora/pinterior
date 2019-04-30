@@ -1,6 +1,7 @@
 import Vuex from "vuex";
-import { resolve } from "url";
-import firebase from "../services/fireinit";
+import {
+  resolve
+} from "url";
 
 const store = () => {
   return new Vuex.Store({
@@ -85,7 +86,9 @@ const store = () => {
       }
     },
     actions: {
-      signInWithFacebook({ commit }) {
+      signInWithFacebook({
+        commit
+      }) {
         console.log("actions signInWithFacebook");
         return new Promise((resolve, reject) => {
           // auth.signInWithPopup(new firebase.auth.FacebookAuthprovider());
@@ -97,10 +100,10 @@ const store = () => {
           firebase
             .auth()
             .signInWithPopup(provider)
-            .then(function(authData) {
+            .then(function (authData) {
               console.log("authData >> ", authData);
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log("error >> ", error);
             });
 
