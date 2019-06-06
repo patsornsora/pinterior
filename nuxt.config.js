@@ -23,23 +23,26 @@ module.exports = {
     }
   ],
 
+  axios: {
+    proxy: true,
+    baseURL: "https://dezignserves.com:5432",
+    proxyHeaders: false,
+    credentials: false
+  },
+
   proxy: {
-    // "/api": "http://192.168.1.115:7000",
-    // "/api": "http://dezignserves.com:80",
-    "/api": {
-      target: "http://dezignserves.com:80",
-      changeOrigin: true
-      // changeOrigin: false
-    },
+    // "/api": "http://127.0.0.1:5432",
+    "/api": "http://dezignserves.com:5432",
+    // "/api": {
+    // target: "http://127.0.0.1:5432",
+    // changeOrigin: true
+    // changeOrigin: false
+    // },
     // "/": {
     //   target: "https://dezignserves.com:80",
     //   changeOrigin: false
     // },
     ws: true
-  },
-
-  axios: {
-    proxy: true
   },
 
   modules: ["nuxt-buefy", "@nuxtjs/proxy", "@nuxtjs/axios"],
@@ -54,7 +57,8 @@ module.exports = {
    */
   head: {
     title: "DEXCORO",
-    meta: [{
+    meta: [
+      {
         charset: "utf-8"
       },
       {
@@ -65,16 +69,25 @@ module.exports = {
         hid: "description",
         name: "description",
         content: pkg.description
+      },
+      {
+        "http-equiv": "origin-trial",
+        "data-feature": "WebVR (For Chrome M62+)",
+        "data-expires": "2018-09-10",
+        content:
+          "AhQcOrbjvS0+50wwuqtAidzraKNfZj8Bj159g2+2LsT5QRHe9IeebCl5ApORwd3oGxfKzl5H8s5K3aTMNzC+5gsAAABPeyJvcmlnaW4iOiJodHRwczovL3dlYnZyLmluZm86NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xTTYyIiwiZXhwaXJ5IjoxNTM2NjAxNDEzfQ=="
       }
     ],
-    link: [{
+    link: [
+      {
         rel: "icon",
         type: "image/x-icon",
-        href: "/logo.ico"
+        href: "/iconDexcoromini.ico"
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css?family=Lato|Montserrat|Kanit|Pattaya"
+        href:
+          "https://fonts.googleapis.com/css?family=Lato|Montserrat|Kanit|Pattaya"
       }
     ]
   },
@@ -100,10 +113,7 @@ module.exports = {
     /*
      ** Run ESLint on save
      */
-    extend(config, {
-      isDev,
-      isClient
-    }) {
+    extend(config, { isDev, isClient }) {
       if (isDev && isClient) {
         config.module.rules.push({
           enforce: "pre",

@@ -4,7 +4,11 @@
     <nav class="navbar is-transparent navbar is-fixed-top">
       <div class="navbar-brand">
         <a class="navbar-item">
-          <img style="max-height: 45px; max-width: 45px;" src="logo.png" @click="$router.push('/')">
+          <img
+            style="max-height: 145px; max-width: 145px;"
+            src="logo-dexcoro-COFFEE.png"
+            @click="$router.push('/')"
+          >
         </a>
         <a
           role="button"
@@ -56,11 +60,53 @@
     </div>
 
     <b-modal :active.sync="isComponentLogin" has-modal-card>
-      <modal-login v-model="formProps"></modal-login>
+      <modal-login v-on:childToParent="onLoginClick"></modal-login>
+
+      <!-- <v-dialog
+      v-model="isComponentLogin"
+      :width="windowWidth-180"
+      :height="windowHeight-180"
+    >
+      <div class="modal-card" style="width: auto; margin: 20px;">
+        <header class="modal-card-head" style="border-radius: 0px;">
+          <p class="modal-card-title c-brown-black" style="text-align: center;">Login</p>
+        </header>
+        <section class="modal-card-body">
+          <b-field label="EMAIL">
+            <b-input class="btn3" v-model="value.username" placeholder="Your email" required></b-input>
+          </b-field>
+
+          <b-field label="PASSWORD">
+            <b-input
+              class="btn3"
+              type="password"
+              v-model="value.password"
+              password-reveal
+              placeholder="Your password"
+              required
+            ></b-input>
+          </b-field>
+
+          <div>
+            <b-checkbox>Remember me</b-checkbox>
+            <a class="a-brown">Forget password?</a>
+          </div>
+          <button
+            class="button btn3 color-brown"
+            style="margin: 16px 0px 16px 0px; width: 100%;"
+            @click="clickLogin"
+          >LOGIN</button>
+          <div style="text-align: center;">
+            No account?
+            <a class="a-brown">Sign up</a>
+          </div>
+        </section>
+      </div>
+      </v-dialog>-->
     </b-modal>
 
     <b-modal :active.sync="isComponentRegister" has-modal-card>
-      <modal-register v-model="formProps" style="min-width: 300px;"></modal-register>
+      <modal-register v-on:childToParent="onRegisterClick" style="min-width: 300px;"></modal-register>
     </b-modal>
   </div>
 </template>
@@ -83,12 +129,24 @@ export default {
       formProps: {
         email: "admin",
         password: "qwer1234"
+      },
+      value: {
+        username: "testuser1",
+        password: "Thisisp@ssw0rd"
       }
     };
   },
   created() {},
 
   methods: {
+    onRegisterClick(data){
+      console.log("onRegisterClick", data);
+      this.isComponentLogin = false;
+    },
+    onLoginClick(data) {
+      console.log("onLoginClick", data);
+      this.isComponentLogin = false;
+    },
     clickToolbar() {
       this.active = this.active === "" ? "is-active" : "";
     },
@@ -114,6 +172,12 @@ export default {
     },
     clickProfile() {
       this.$router.push("/profile");
+    },
+    clickLogin() {
+      console.log("clickLogin");
+    },
+    clickRegister() {
+      console.log("clickRegister");
     }
   },
   watch: {
@@ -126,6 +190,12 @@ export default {
 
 
 <style>
+/* .modal-close {
+  right: 560px;
+  top: 110px;
+  width: 10px;
+  height: 10px;
+} */
 </style>
 
 

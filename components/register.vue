@@ -1,13 +1,13 @@
 <template>
   <div class="modal-card" style="width: auto; margin: 20px;">
     <header class="modal-card-head" style="border-radius: 0px;">
-      <p class="modal-card-title" style="text-align: center;">register</p>
+      <p class="modal-card-title c-brown-black" style="text-align: center;">register</p>
     </header>
     <section class="modal-card-body">
       <div class="columns">
         <div class="column">
           <b-field label="Username">
-            <b-input class="btn3" :value="formProps.email" placeholder="Your username" required></b-input>
+            <b-input class="btn3" v-model="formRegister.username" placeholder="Your username" required></b-input>
           </b-field>
         </div>
         <div class="column">
@@ -15,7 +15,7 @@
             <b-input
               class="btn3"
               type="email"
-              :value="formProps.email"
+              v-model="formRegister.email"
               placeholder="Your email"
               required
             ></b-input>
@@ -28,7 +28,7 @@
             <b-input
               class="btn3"
               type="password"
-              :value="formProps.password"
+              v-model="formRegister.password"
               password-reveal
               placeholder="Your password"
               required
@@ -40,7 +40,7 @@
             <b-input
               class="btn3"
               type="password"
-              :value="formProps.password"
+              v-model="formRegister.password2"
               password-reveal
               placeholder="Your password"
               required
@@ -51,19 +51,19 @@
       <div class="columns">
         <div class="column">
           <b-field label="First name">
-            <b-input class="btn3" placeholder="Your first name" required></b-input>
+            <b-input class="btn3" v-model="formRegister.first_name" placeholder="Your first name" required></b-input>
           </b-field>
         </div>
         <div class="column">
           <b-field label="Last name">
-            <b-input class="btn3" placeholder="Your last name" required></b-input>
+            <b-input class="btn3" v-model="formRegister.last_name" placeholder="Your last name" required></b-input>
           </b-field>
         </div>
       </div>
       <div class="columns">
         <div class="column">
           <b-field label="Phone number">
-            <b-input class="btn3" placeholder="Your phone number" required></b-input>
+            <b-input class="btn3" v-model="formRegister.mobile_phone" placeholder="Your phone number" required></b-input>
           </b-field>
         </div>
         <div class="column"></div>
@@ -72,39 +72,39 @@
       <div class="columns">
         <div class="column">
           <b-field label="Address">
-            <b-input class="btn3" placeholder="Your address" required></b-input>
+            <b-input class="btn3" v-model="formRegister.address" placeholder="Your address" required></b-input>
           </b-field>
         </div>
         <div class="column">
           <b-field label="District">
-            <b-input class="btn3" placeholder="Your district" required></b-input>
+            <b-input class="btn3" v-model="formRegister.district" placeholder="Your district" required></b-input>
           </b-field>
         </div>
       </div>
       <div class="columns">
         <div class="column">
           <b-field label="Sub district">
-            <b-input class="btn3" placeholder="Your sub district" required></b-input>
+            <b-input class="btn3" v-model="formRegister.subdistrict" placeholder="Your sub district" required></b-input>
           </b-field>
         </div>
         <div class="column">
           <b-field label="Province">
-            <b-input class="btn3" placeholder="Your province" required></b-input>
+            <b-input class="btn3" v-model="formRegister.province" placeholder="Your province" required></b-input>
           </b-field>
         </div>
       </div>
       <div class="columns">
         <div class="column">
           <b-field label="Post code">
-            <b-input class="btn3" placeholder="Your post code" required></b-input>
+            <b-input class="btn3" v-model="formRegister.postcode" placeholder="Your post code" required></b-input>
           </b-field>
         </div>
         <div class="column"></div>
       </div>
 
       <button
-        class="button btn3"
-        style="margin: 16px 0px 16px 0px; width: 100%; background-color: #1c4b7c;"
+        class="button btn3 color-brown"
+        style="margin: 16px 0px 16px 0px; width: 100%;" @click="clickRegister"
       >Register</button>
     </section>
   </div>
@@ -122,19 +122,65 @@ province
 export default {
   data() {
     return {
-      formProps: {
+      formRegister: {
+        username: "",
+        password: "",
+        first_name: "",
+        last_name: "",
         email: "",
-        password: ""
+        mobile_phone: "",
+        address: "",
+        district: "",
+        subdistrict: "",
+        postcode: "",
+        province: ""
       }
     };
   },
 
   created() {
     console.log("created");
-    console.log("value", this.value);
+    console.log("value", this.formRegister);
   },
 
-  methods: {},
+  methods: {
+    async clickRegister() {
+      if (this.formRegister.username && this.formRegister.password && this.formRegister.password2 && this.formRegister.first_name && this.formRegister.last_name && this.formRegister.email && this.formRegister.mobile_phone && this.formRegister.address && this.formRegister.district && this.formRegister.subdistrict && this.formRegister.postcode && this.formRegister.province) {
+        console.log("formRegister >> ", this.formRegister);
+
+        if(this.formRegister.password === this.formRegister.password2){
+          await this.$http
+            .post(
+              "https://dezignserves.com/registers/",
+              JSON.stringify(this.formRegister),
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+                }
+              }
+            )
+            .then(res => {
+              window.sessionStorage.setItem(
+                "user",
+                JSON.stringify({
+                  user: this.formRegister.username
+                })
+              );
+              this.$forceUpdate();
+              this.$emit("childToParent", res.data);
+              console.log("success >> ", res);
+            })
+            .catch(error => {
+              console.error("clickLogin error >> ", error);
+              this.isInvalid = true
+            });
+        }
+
+      }else{
+
+      }
+    }},
 
   computed: {}
 };

@@ -2,7 +2,7 @@
   <!-- <div>11</div> -->
   <div class="modal-card" style="width: auto; margin: 20px;">
     <header class="modal-card-head" style="border-radius: 0px;">
-      <p class="modal-card-title" style="text-align: center;">Login</p>
+      <p class="modal-card-title c-brown-black" style="text-align: center;">Login</p>
     </header>
     <section class="modal-card-body">
       <!-- <a
@@ -38,18 +38,20 @@
         ></b-input>
       </b-field>
 
-      <div>
+      <div style="color: red;" v-show="isInvalid">INVALID EMAIL OR PASSWORD</div>
+
+      <!-- <div>
         <b-checkbox>Remember me</b-checkbox>
-        <a>Forget password?</a>
-      </div>
+        <a class="a-brown">Forget password?</a>
+      </div>-->
       <button
-        class="button btn3"
-        style="margin: 16px 0px 16px 0px; width: 100%; background-color: #1c4b7c;"
+        class="button btn3 color-brown"
+        style="margin: 16px 0px 16px 0px; width: 100%;"
         @click="clickLogin"
       >LOGIN</button>
       <div style="text-align: center;">
         No account?
-        <a>Sign up</a>
+        <a class="a-brown">Sign up</a>
       </div>
     </section>
   </div>
@@ -61,9 +63,10 @@ export default {
   data() {
     return {
       value: {
-        username: "testuser1",
-        password: "Thisisp@ssw0rd"
-      }
+        username: "",
+        password: ""
+      },
+      isInvalid: false,
     };
   },
   created() {
@@ -81,22 +84,22 @@ export default {
           console.log("clickLoginFacebook error >> ", error.message);
         });
     },
+
     async clickLogin() {
       if (this.value.username && this.value.password) {
-        // this.snackbar = true;
         console.log("value >> ", this.value);
+
         await this.$http
-          .post("/api-token-auth/", JSON.stringify(this.value), {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
-              // "Access-Control-Allow-Origin": "*"
-            },
-            auth: {
-              Username: "admin",
-              Password: "qwer1234"
+          .post(
+            "https://dezignserves.com/api-token-auth/",
+            JSON.stringify(this.value),
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+              }
             }
-          })
+          )
           .then(res => {
             window.sessionStorage.setItem(
               "user",
@@ -105,50 +108,12 @@ export default {
               })
             );
             this.$forceUpdate();
-            this.$router.push("/");
-            console.log("success", res);
+            this.$emit("childToParent", res.data);
           })
           .catch(error => {
             console.error("clickLogin error >> ", error);
-            // this.alert.value = true;
-            setTimeout(() => {
-              // this.alert.value = false;
-            }, 3000);
+            this.isInvalid = true
           });
-
-        // await this.$http
-        //   .post(
-        //     "https://dezignserves.com/api-token-auth/",
-        //     JSON.stringify(this.value),
-        //     {
-        //       headers: {
-        //         "Content-Type": "application/json"
-        //         // "Access-Control-Allow-Origin": "*"
-        //       },
-        //       auth: {
-        //         Username: "admin",
-        //         Password: "qwer1234"
-        //       }
-        //     }
-        //   )
-        //   .then(res => {
-        //     window.sessionStorage.setItem(
-        //       "user",
-        //       JSON.stringify({
-        //         user: this.value.username
-        //       })
-        //     );
-        //     this.$forceUpdate();
-        //     this.$router.push("/");
-        //     console.log("success", res);
-        //   })
-        //   .catch(error => {
-        //     console.log("clickLogin error >> ", error);
-        //     // this.alert.value = true;
-        //     setTimeout(() => {
-        //       // this.alert.value = false;
-        //     }, 3000);
-        //   });
       }
     }
   }
@@ -157,6 +122,12 @@ export default {
 <style>
 .btn3 {
   height: 2.8em;
+}
+a.a-brown {
+  color: black;
+}
+a.a-brown:hover {
+  color: black;
 }
 </style>
 

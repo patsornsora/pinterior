@@ -4,7 +4,7 @@
     <nav class="navbar is-transparent navbar is-fixed-top">
       <div class="navbar-brand">
         <a class="navbar-item">
-          <img style="max-height: 45px; max-width: 45px;" src="logo.png">
+          <img style="max-height: 45px; max-width: 45px;" src="logo-dexcoro-COFFEE.png">
         </a>
         <a
           role="button"
@@ -51,14 +51,15 @@
         </div>
       </div>
     </div>
-
+<!-- 
     <b-modal :active.sync="isComponentLogin" has-modal-card>
       <modal-login v-bind="formProps"></modal-login>
-    </b-modal>
+    </b-modal> -->
 
     <b-modal :active.sync="isComponentRegister" has-modal-card>
       <modal-register v-bind="formProps"></modal-register>
     </b-modal>
+
   </div>
 </template>
 

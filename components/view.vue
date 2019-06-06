@@ -7,14 +7,23 @@
       <iframe
         width="840"
         height="540"
-        src="https://roundme.com/embed/380358/1306618"
+        :src="src"
         frameborder="0"
         webkitallowfullscreen
         mozallowfullscreen
         allowfullscreen
       ></iframe>
-
-      <!-- src="https://roundme.com/embed/380353/1306592" -->
     </section>
   </div>
 </template>
+
+<script>
+export default {
+  props: ["valueIframe"],
+  data() {
+    return {
+      src: 'https://vizor.io/embed/miniemeenie/dezigntool-showroom-demo1'
+    };
+  }
+};
+</script>
