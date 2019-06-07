@@ -5,11 +5,16 @@
     </header>
     <section class="modal-card-body">
       <div class="columns">
-        <div class="column">
+        <!-- <div class="column">
           <b-field label="Username">
-            <b-input class="btn3" v-model="formRegister.username" placeholder="Your username" required></b-input>
+            <b-input
+              class="btn3"
+              v-model="formRegister.username"
+              placeholder="Your username"
+              required
+            ></b-input>
           </b-field>
-        </div>
+        </div>-->
         <div class="column">
           <b-field label="Email">
             <b-input
@@ -51,19 +56,35 @@
       <div class="columns">
         <div class="column">
           <b-field label="First name">
-            <b-input class="btn3" v-model="formRegister.first_name" placeholder="Your first name" required></b-input>
+            <b-input
+              class="btn3"
+              v-model="formRegister.first_name"
+              placeholder="Your first name"
+              required
+            ></b-input>
           </b-field>
         </div>
         <div class="column">
           <b-field label="Last name">
-            <b-input class="btn3" v-model="formRegister.last_name" placeholder="Your last name" required></b-input>
+            <b-input
+              class="btn3"
+              v-model="formRegister.last_name"
+              placeholder="Your last name"
+              required
+            ></b-input>
           </b-field>
         </div>
       </div>
       <div class="columns">
         <div class="column">
           <b-field label="Phone number">
-            <b-input class="btn3" v-model="formRegister.mobile_phone" placeholder="Your phone number" required></b-input>
+            <b-input
+              class="btn3"
+              v-model="formRegister.mobile_phone"
+              placeholder="Your phone number"
+              type="number"
+              required
+            ></b-input>
           </b-field>
         </div>
         <div class="column"></div>
@@ -72,39 +93,66 @@
       <div class="columns">
         <div class="column">
           <b-field label="Address">
-            <b-input class="btn3" v-model="formRegister.address" placeholder="Your address" required></b-input>
+            <b-input
+              class="btn3"
+              v-model="formRegister.address"
+              placeholder="Your address"
+              required
+            ></b-input>
           </b-field>
         </div>
         <div class="column">
           <b-field label="District">
-            <b-input class="btn3" v-model="formRegister.district" placeholder="Your district" required></b-input>
+            <b-input
+              class="btn3"
+              v-model="formRegister.district"
+              placeholder="Your district"
+              required
+            ></b-input>
           </b-field>
         </div>
       </div>
       <div class="columns">
         <div class="column">
           <b-field label="Sub district">
-            <b-input class="btn3" v-model="formRegister.subdistrict" placeholder="Your sub district" required></b-input>
+            <b-input
+              class="btn3"
+              v-model="formRegister.subdistrict"
+              placeholder="Your sub district"
+              required
+            ></b-input>
           </b-field>
         </div>
         <div class="column">
           <b-field label="Province">
-            <b-input class="btn3" v-model="formRegister.province" placeholder="Your province" required></b-input>
+            <b-input
+              class="btn3"
+              v-model="formRegister.province"
+              placeholder="Your province"
+              required
+            ></b-input>
           </b-field>
         </div>
       </div>
       <div class="columns">
         <div class="column">
           <b-field label="Post code">
-            <b-input class="btn3" v-model="formRegister.postcode" placeholder="Your post code" required></b-input>
+            <b-input
+              class="btn3"
+              v-model="formRegister.postcode"
+              placeholder="Your post code"
+              required
+            ></b-input>
           </b-field>
         </div>
         <div class="column"></div>
       </div>
 
+      <div style="color: red;" v-show="isError">{{txtError}}</div>
       <button
         class="button btn3 color-brown"
-        style="margin: 16px 0px 16px 0px; width: 100%;" @click="clickRegister"
+        style="margin: 16px 0px 16px 0px; width: 100%;"
+        @click="clickRegister"
       >Register</button>
     </section>
   </div>
@@ -122,6 +170,8 @@ province
 export default {
   data() {
     return {
+      isError: true,
+      txtError: "",
       formRegister: {
         username: "",
         password: "",
@@ -140,15 +190,38 @@ export default {
 
   created() {
     console.log("created");
-    console.log("value", this.formRegister);
   },
 
   methods: {
     async clickRegister() {
-      if (this.formRegister.username && this.formRegister.password && this.formRegister.password2 && this.formRegister.first_name && this.formRegister.last_name && this.formRegister.email && this.formRegister.mobile_phone && this.formRegister.address && this.formRegister.district && this.formRegister.subdistrict && this.formRegister.postcode && this.formRegister.province) {
+      if (
+        this.formRegister.password &&
+        this.formRegister.password2 &&
+        this.formRegister.first_name &&
+        this.formRegister.last_name &&
+        this.formRegister.email &&
+        this.formRegister.mobile_phone &&
+        this.formRegister.address &&
+        this.formRegister.district &&
+        this.formRegister.subdistrict &&
+        this.formRegister.postcode &&
+        this.formRegister.province
+      ) {
         console.log("formRegister >> ", this.formRegister);
 
-        if(this.formRegister.password === this.formRegister.password2){
+        this.formRegister.username = this.formRegister.email;
+
+        if (this.formRegister.password !== this.formRegister.password2) {
+          console.log("password");
+          this.isError = true;
+          this.txtError = "password";
+        } else if (this.formRegister.mobile_phone.length !== 10) {
+          console.log("mobile_phone");
+          this.txtError = "";
+        } else if (this.formRegister.postcode.length !== 5) {
+          console.log("postcode");
+          this.txtError = "";
+        } else {
           await this.$http
             .post(
               "https://dezignserves.com/registers/",
@@ -173,14 +246,13 @@ export default {
             })
             .catch(error => {
               console.error("clickLogin error >> ", error);
-              this.isInvalid = true
+              this.isInvalid = true;
             });
         }
-
-      }else{
-
+      } else {
       }
-    }},
+    }
+  },
 
   computed: {}
 };
