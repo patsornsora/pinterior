@@ -157,14 +157,6 @@
       >Register</button>
     </section>
   </div>
-  <!--
-
-enter your address
-address
-district
-sub district
-province
-  post code-->
 </template>
 
 <script>
@@ -221,18 +213,18 @@ export default {
         } else if (this.formRegister.postcode.length !== 5) {
           this.txtError = "Postcode must be 5 digits. Please , try again.";
         } else {
-          // await this.$http
-          //   .post(
-          //     "https://dezignserves.com/registers/",
-          //     JSON.stringify(this.formRegister),
-          //     {
-          //       headers: {
-          //         "Content-Type": "application/json",
-          //         Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
-          //       }
-          //     }
-          //   )
-          //   .then(res => {
+          await this.$http
+            .post(
+              "https://dezignserves.com/registers/",
+              JSON.stringify(this.formRegister),
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+                }
+              }
+            )
+            .then(res => {
           window.sessionStorage.setItem(
             "user",
             JSON.stringify({
@@ -242,13 +234,13 @@ export default {
           this.$forceUpdate();
           this.$emit("childToParent", this.formRegister.username);
           console.log("success >> ", this.formRegister.username);
-          // this.$emit("childToParent", res.data);
-          // console.log("success >> ", res);
-          // })
-          // .catch(error => {
-          //   console.error("clickLogin error >> ", error);
-          //   this.isInvalid = true;
-          // });
+          this.$emit("childToParent", res.data);
+          console.log("success >> ", res);
+          })
+          .catch(error => {
+            console.error("clickLogin error >> ", error);
+            this.isInvalid = true;
+          });
         }
       } else {
       }
