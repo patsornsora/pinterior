@@ -5,16 +5,6 @@
     </header>
     <section class="modal-card-body">
       <div class="columns">
-        <!-- <div class="column">
-          <b-field label="Username">
-            <b-input
-              class="btn3"
-              v-model="formRegister.username"
-              placeholder="Your username"
-              required
-            ></b-input>
-          </b-field>
-        </div>-->
         <div class="column">
           <b-field label="Email">
             <b-input
@@ -203,11 +193,12 @@ export default {
 
         this.formRegister.username = this.formRegister.email;
 
-        if(this.formRegister.password.length < 6){
-
-          this.txtError = "Password at least 6 characters. Please re-enter your password.";
+        if (this.formRegister.password.length < 6) {
+          this.txtError =
+            "Password at least 6 characters. Please re-enter your password.";
         } else if (this.formRegister.password !== this.formRegister.password2) {
-          this.txtError = "Passwords don't match. Please re-enter your password.";
+          this.txtError =
+            "Passwords don't match. Please re-enter your password.";
         } else if (this.formRegister.mobile_phone.length !== 10) {
           this.txtError = "Phone number must be 10 digits. Please , try again.";
         } else if (this.formRegister.postcode.length !== 5) {
@@ -225,22 +216,27 @@ export default {
               }
             )
             .then(res => {
-          window.sessionStorage.setItem(
-            "user",
-            JSON.stringify({
-              user: this.formRegister.username
+              if (res.data.Status === "OK") {
+                window.sessionStorage.setItem(
+                  "user",
+                  JSON.stringify({
+                    user: this.formRegister.username
+                  })
+                );
+                this.$forceUpdate();
+                this.$emit("childToParent", this.formRegister.username);
+                console.log("success >> ", this.formRegister.username);
+                this.$emit("childToParent", res.data);
+                console.log("success >> ", res);
+              } else {
+                if (res.data.Error === "Username already exists")
+                  this.txtError = "That e-mail is taken. Try another.";
+              }
             })
-          );
-          this.$forceUpdate();
-          this.$emit("childToParent", this.formRegister.username);
-          console.log("success >> ", this.formRegister.username);
-          this.$emit("childToParent", res.data);
-          console.log("success >> ", res);
-          })
-          .catch(error => {
-            console.error("clickLogin error >> ", error);
-            this.isInvalid = true;
-          });
+            .catch(error => {
+              console.error("clickLogin error >> ", error);
+              this.isInvalid = true;
+            });
         }
       } else {
       }

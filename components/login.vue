@@ -1,5 +1,4 @@
 <template>
-  <!-- <div>11</div> -->
   <div class="modal-card" style="width: auto; margin: 20px;">
     <header class="modal-card-head" style="border-radius: 0px;">
       <p class="modal-card-title c-brown-black" style="text-align: center;">Login</p>
@@ -59,14 +58,13 @@
 
 <script>
 export default {
-  // props: ["value"],
   data() {
     return {
       value: {
         username: "",
         password: ""
       },
-      isInvalid: false,
+      isInvalid: false
     };
   },
   created() {
@@ -78,7 +76,6 @@ export default {
         .dispatch("signInWithFacebook")
         .then(() => {
           console.log("clickLoginFacebook");
-          // location.reload();
         })
         .catch(error => {
           console.log("clickLoginFacebook error >> ", error.message);
@@ -101,18 +98,20 @@ export default {
             }
           )
           .then(res => {
-            window.sessionStorage.setItem(
-              "user",
-              JSON.stringify({
-                user: this.value.username
-              })
-            );
-            this.$forceUpdate();
-            this.$emit("childToParent", res.data);
+            if (res.data.Status === "OK") {
+              window.sessionStorage.setItem(
+                "user",
+                JSON.stringify({
+                  user: this.value.username
+                })
+              );
+              this.$forceUpdate();
+              this.$emit("childToParent", res.data);
+            }
           })
           .catch(error => {
             console.error("clickLogin error >> ", error);
-            this.isInvalid = true
+            this.isInvalid = true;
           });
       }
     }

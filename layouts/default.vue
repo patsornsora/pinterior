@@ -1,6 +1,5 @@
 <template>
   <div app>
-    <!-- style="background-color: pink;" -->
     <nav class="navbar is-transparent navbar is-fixed-top">
       <div class="navbar-brand">
         <a class="navbar-item">
@@ -38,7 +37,6 @@
             <a class="navbar-item" @click="isComponentLogin = true" v-show="isLogin">LOGIN</a>
             <div class="navbar-item">{{userObj.user}}</div>
             <a class="navbar-item" @click="onLogoutClick" v-show="isLogout">LOGOUT</a>
-            <!-- <a class="navbar-item" @click="clickShowroom">SHOW ROOM</a> -->
             <div class="navbar-item" @click="clickProfile">
               <i class="far fa-user"></i>
             </div>
@@ -63,48 +61,6 @@
 
     <b-modal :active.sync="isComponentLogin" has-modal-card>
       <modal-login v-on:childToParent="onLoginClick"></modal-login>
-
-      <!-- <v-dialog
-      v-model="isComponentLogin"
-      :width="windowWidth-180"
-      :height="windowHeight-180"
-    >
-      <div class="modal-card" style="width: auto; margin: 20px;">
-        <header class="modal-card-head" style="border-radius: 0px;">
-          <p class="modal-card-title c-brown-black" style="text-align: center;">Login</p>
-        </header>
-        <section class="modal-card-body">
-          <b-field label="EMAIL">
-            <b-input class="btn3" v-model="value.username" placeholder="Your email" required></b-input>
-          </b-field>
-
-          <b-field label="PASSWORD">
-            <b-input
-              class="btn3"
-              type="password"
-              v-model="value.password"
-              password-reveal
-              placeholder="Your password"
-              required
-            ></b-input>
-          </b-field>
-
-          <div>
-            <b-checkbox>Remember me</b-checkbox>
-            <a class="a-brown">Forget password?</a>
-          </div>
-          <button
-            class="button btn3 color-brown"
-            style="margin: 16px 0px 16px 0px; width: 100%;"
-            @click="clickLogin"
-          >LOGIN</button>
-          <div style="text-align: center;">
-            No account?
-            <a class="a-brown">Sign up</a>
-          </div>
-        </section>
-      </div>
-      </v-dialog>-->
     </b-modal>
 
     <b-modal :active.sync="isComponentRegister" has-modal-card>
@@ -139,7 +95,7 @@ export default {
         username: "testuser1",
         password: "Thisisp@ssw0rd"
       },
-      userObj: JSON.parse(window.sessionStorage.getItem("user")) || {},
+      userObj: JSON.parse(window.sessionStorage.getItem("user")) || {}
     };
   },
   created() {
@@ -158,7 +114,7 @@ export default {
         this.isRegister = false;
         this.isLogin = false;
         this.isLogout = true;
-        this.userObj = JSON.parse(window.sessionStorage.getItem("user")) || {}
+        this.userObj = JSON.parse(window.sessionStorage.getItem("user")) || {};
       }
     },
     onLoginClick(data) {
@@ -168,7 +124,7 @@ export default {
         this.isRegister = false;
         this.isLogin = false;
         this.isLogout = true;
-        this.userObj = JSON.parse(window.sessionStorage.getItem("user")) || {}
+        this.userObj = JSON.parse(window.sessionStorage.getItem("user")) || {};
       }
     },
     onLogoutClick(data) {
@@ -184,7 +140,8 @@ export default {
           this.isRegister = true;
           this.isLogin = true;
           this.isLogout = false;
-          this.userObj = JSON.parse(window.sessionStorage.getItem("user")) || {}
+          this.userObj =
+            JSON.parse(window.sessionStorage.getItem("user")) || {};
         }
       });
     },
@@ -197,17 +154,8 @@ export default {
     clickTH() {
       this.language = "TH";
     },
-    clickShowroom() {
-      this.$router.push("/showroom");
-    },
     clickProfile() {
       this.$router.push("/profile");
-    },
-    clickLogin() {
-      console.log("clickLogin");
-    },
-    clickRegister() {
-      console.log("clickRegister");
     }
   },
   watch: {
