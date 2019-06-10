@@ -430,7 +430,7 @@ export default {
       furnitures: [],
       checkedRows: [],
 
-      list: [],
+      lists: [],
 
       isComponentContact: false,
       valueContact: "",
@@ -448,995 +448,148 @@ export default {
   async created() {
     console.log("created", this.$route.params.id);
 
+    await this.getLists();
+
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
     this.isMobile = this.windowWidth < 450 || this.windowHeight < 450;
 
     console.log("isMobile >> ", this.isMobile);
-    // this.getList();
 
-    this.getFurniture(193);
+    // this.getFurniture(193);
 
-    this.data.title = "SCANDINAVIAN";
+    //ex set data
+    // this.images = [
+    //   {
+    //     id: 1,
+    //     src: "room/r1/1.png"
+    //   },
+    //   {
+    //     id: 2,
+    //     src: "room/r1/2.png"
+    //   },
+    //   {
+    //     id: 3,
+    //     src: "room/r1/3.png"
+    //   }
+    // ];
+
+    this.furnitures = [
+      {
+        id: 1,
+        item: [
+          { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
+          {
+            id: 2,
+            head: "Built-In/Fit-In",
+            name: "MDF E1",
+            price: 0
+          }
+        ]
+      },
+      {
+        id: 2,
+        head: "เฟอร์นิเจอร์ลอยตัว",
+        name: "",
+        price: 25000
+      },
+      {
+        id: 3,
+        head: "ม่าน 2 ชั้น",
+        name: "",
+        price: 7000
+      },
+      {
+        id: 4,
+        head: "ทาสี TOA Duraclean",
+        name: "",
+        price: 4000
+      }
+    ];
+
+    // this.link = "https://roundme.com/embed/409197/1427363";
+
+    this.checkedRows = this.furnitures;
+    this.wall = this.furnitures[0].item[0];
+
+    // this.data.title = "Tropical Brown";
     this.data.roomType = "Studio";
-    this.data.roomSize = 30;
-    this.data.detail =
-      "สไตล์การแต่งห้องนอนแบบญี่ปุ่นจะเน้นความเรียบง่าย และมีระเบียบ เป็นการตกเต่งห้องแบบธรรมชาติแนว Minimalist และ Zen design การแต่งห้องนอนขนาดเล็กตามสไตล์ญี่ปุ่นจะทำให้พื้นที่ห้องแคบๆ ดูโล่งกว้างมากขึ้น เนื่องจากของตกแต่งห้องนอนและรูปแบบของเฟอร์นิเจอร์จะถูกออกแบบมาให้ดูเป็นระเบียบเรียบร้อย เหมาะกับห้องที่มีขนาดเล็ก และมีพื้นที่การจัดวางที่จำกัด";
-
-    switch (this.$route.params.id) {
-      case "254":
-        this.images = [
-          {
-            id: 1,
-            src: "room/r1/1.png"
-          },
-          {
-            id: 2,
-            src: "room/r1/2.png"
-          },
-          {
-            id: 3,
-            src: "room/r1/3.png"
-          }
-        ];
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 0
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 25000
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 7000
-          },
-          {
-            id: 4,
-            head: "ทาสี TOA Duraclean",
-            name: "",
-            price: 4000
-          }
-        ];
-
-        // this.link = "https://vizor.io/miniemeenie/dezigntool-room1";
-        this.link = "https://roundme.com/embed/409197/1427363";
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "Tropical Brown";
-        this.data.roomType = "Studio";
-        this.data.roomSize = 24;
-        this.data.detail =
-          "แรงบันดาลใจมาจากการจัดห้องแบบ Eclectic style ที่เลือกใช้ของหลากหลายแบรนด์มารวมกันอย่างลงตัว";
-        this.data.design1 = "ASSISTANT. CHIN, MINE";
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        break;
-      case "255":
-        this.images = [
-          {
-            id: 1,
-            src: "room/r3/1.png"
-          },
-          {
-            id: 2,
-            src: "room/r3/2.png"
-          }
-        ];
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 0
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 25000
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 7000
-          },
-          {
-            id: 4,
-            head: "ทาสี TOA Duraclean",
-            name: "",
-            price: 4000
-          }
-        ];
-
-        // this.link = "https://vizor.io/miniemeenie/dezigntool-room3/";
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "Bright Cozy";
-        this.data.roomType = "Pantry , Living Room";
-        this.data.roomSize = 24;
-        this.data.detail =
-          "นำแรงบันดาลใจมาจากระยะการจัด format ของคอลัมน์ในหนังสือที่มีระยะการเว้นช่องว่างเป็นระเบียบมาใช้ในการจัดวางพื้นที่บนผนังภายในห้อง โดยบรรยากาศเป็นรูปแบบ Modern style ที่เลือกใช้โทนสี ขาว  เทา ดำเป็นหลักบรรยากาศภายในจะเน้นสีขาวเป็นส่วนใหญ่เพื่อให้ห้องมีความโปร่งสว่าง และมีพื้นที่ใช้สอยมากขึ้น";
-        this.data.design1 = "ASSISTANT. CHIN, MINE";
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        break;
-      case "2":
-        this.getList();
-        // const proxyurl = "https://cors-anywhere.herokuapp.com/";
-        // const url = "https://example.com"; // site that doesn’t send Access-Control-*
-        // const proxyurl = "https://dezignserves.com:80/";
-        // const url =
-        //   "https://dezigntool.com" +
-        //   "api/orderitems/?order=" +
-        //   this.$route.params.id; // site that doesn’t send Access-Control-*
-        // fetch(proxyurl + url) // https://cors-anywhere.herokuapp.com/https://example.com
-        //   .then(response => response.text())
-        //   .then(contents => console.log("OK"))
-        //   .catch(() =>
-        //     console.log(
-        //       "Can’t access " + url + " response. Blocked by browser?"
-        //     )
-        //   );
-        this.images = [
-          {
-            id: 1,
-            src: "room/r2/1.png"
-          },
-          {
-            id: 2,
-            src: "room/r2/2.png"
-          },
-          {
-            id: 3,
-            src: "room/r2/3.png"
-          }
-        ];
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 0
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 25000
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 7000
-          },
-          {
-            id: 4,
-            head: "ทาสี TOA Duraclean",
-            name: "",
-            price: 4000
-          }
-        ];
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "Tropical Green";
-        this.data.roomType = "Pantry , Living Room";
-        this.data.roomSize = 24;
-        this.data.detail =
-          "ห้องนอนสไตล์ทรอปิคอล (Tropical Style) เลือกใช้สีเอิร์ทโทน บวกกับผนังสีเขียว เพื่อเพิ่มความใกล้ชิดธรรมชาติให้กับการตกแต่งมากขึ้น ซึ่งจะทำให้บรรยากาศของห้องดูอบอุ่น เพิ่มกลิ่นอายของธรรมชาติด้วยต้นไม้จริงที่มุมห้องบวกกับชั้นวางของบิ้วอิน และเฟอร์นิเจอร์ที่ออกแบบมาอย่างลงตัว";
-        this.data.design1 = 'ASSISTANT. CHIN, "ANNALOG"';
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        break;
-      case "4":
-        this.images = [
-          {
-            id: 1,
-            src: "room/r4/1.png"
-          },
-          {
-            id: 2,
-            src: "room/r4/2.png"
-          },
-          {
-            id: 3,
-            src: "room/r4/3.png"
-          }
-        ];
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              {
-                id: 1,
-                head: "Built-In/Fit-In",
-                name: "ไม้จริง",
-                price: 130000
-              },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 65000
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 122586
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 3000
-          },
-          {
-            id: 4,
-            head: "Wallpaper",
-            name: "",
-            price: 7500
-          }
-        ];
-
-        // this.link = "https://vizor.io/miniemeenie/dezigntool-mockuproomo2";
-        this.link = "https://roundme.com/embed/409202/1427381";
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "Luxury Brown";
-        this.data.roomType = "1 Bedroom";
-        this.data.roomSize = 24;
-        this.data.detail =
-          "ห้องนอนสไตล์โมเดิร์น ให้ความรู้สึกเรียบง่ายผสมผสานกลิ่นอายแบบไทย โดยถอดรูปทรงมาจากฝาปะกนของไทยผสมกับความโมเดิร์นแบบสมัยใหม่ของผนังหัวเตียงโดยการผสมผสานระหว่างไม้กับกระจกได้อย่างลงตัว ให้ความรู้สึกเรียบง่ายของเส้นสายที่สอดคล้องกับพื้นที่การใช้งาน บวกกับการใช้สีเอิร์ทโทนที่ให้ความรู้สึกผ่อนคลายเหมาะแก่การพักผ่อน";
-        this.data.design1 = 'ASSISTANT. CHIN, "ANNALOG"';
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        // id: res.data.id,
-        // pic: res.data.model,
-        // name: res.data.title,
-        // brand: res.data.supplier,
-        // price: res.data.cost * 0.23 + res.data.cost
-
-        break;
-      case "5":
-        this.images = [
-          {
-            id: 1,
-            src: "room/r5/1.jpg"
-          },
-          {
-            id: 2,
-            src: "room/r5/2.jpg"
-          }
-        ];
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 0
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 44634.4
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 3000
-          },
-          {
-            id: 4,
-            head: "ทาสี TOA Duraclean",
-            name: "",
-            price: 4375
-          }
-        ];
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "Cream & Brown Triangle";
-        this.data.roomType = "Bedroom";
-        this.data.roomSize = 14.34;
-        this.data.detail =
-          "ห้องนอนที่เรียบง่าย เน้นการใช้งาน มีจุดเด่นที่หัวเตียงสำหรับคนที่ต้องการฉีกเส้นสายของความจำเจ โดยใช้ลายเส้นเลขาคณิตเป็นรูปสามเหลี่ยมเรียงเป็นแพทเทิร์นเดียวกันโดยออกแบบตู้ให้ถูกซ้อนอย่างกลมกลืนกับผนังหัวเตียงด้วยลวดลายและการซ่อนไฟ บวกกับหน้าบานตู้ที่บุด้วยผ้าสีครีมสลับกับน้ำตาลอ่อนทั้งยังช่วยในการเก็บเสียง โดยรวมทั้งหมดของห้องเป็นสีเอิร์ทโทน ให้ความรู้สึกอบอุ่น ผ่อนคลายเหมาะแก่การพักผ่อน";
-        this.data.design1 = 'ASSISTANT. "ANNALOG"';
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        break;
-      case "6":
-        this.images = [
-          {
-            id: 1,
-            src: "room/r6/1.jpg"
-          },
-          {
-            id: 2,
-            src: "room/r6/2.jpg"
-          },
-          {
-            id: 3,
-            src: "room/r6/3.jpg"
-          }
-        ];
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 0
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 48565
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 3000
-          },
-          {
-            id: 4,
-            head: "ทาสี TOA Duraclean",
-            name: "",
-            price: 8242.5
-          }
-        ];
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "Mondrian Square";
-        this.data.roomType = "Living Room";
-        this.data.roomSize = 24;
-        this.data.detail =
-          "แรงบันดาลใจมาจากงานเส้นสายของ Mondrian ที่ได้ลดทอนเส้นสายและนำมาปรับรูปแบบกับการจัดวาง ใช้ในงานออกแบบในเรื่องของเฟอร์นิเจอร์ built in ภายในห้องนั่งเล่นใช้โทนสีน้ำตาลแบบ Earth tone เพื่อให้อารมณ์อบอุ่นในการอยู่อาศัย";
-        this.data.design1 = "ASSISTANT. MINE";
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        break;
-      case "7":
-        this.images = [
-          {
-            id: 1,
-            src: "room/r7/1.png"
-          },
-          {
-            id: 2,
-            src: "room/r7/2.png"
-          }
-        ];
-
-        this.link = "https://roundme.com/embed/409177/1427291";
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 0
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 25000
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 7000
-          },
-          {
-            id: 4,
-            head: "ทาสี TOA Duraclean",
-            name: "",
-            price: 4000
-          }
-        ];
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "MODERN LOFT";
-        this.data.roomType = "Cafe";
-        this.data.roomSize = 48;
-        this.data.detail =
-          "ร้านกาแฟอินดี้สำหรับชาว Hipster และพร้อมต้อนรับทุกคน เป็นสถานที่นัดพบแห่งใหม่ที่ตอบทุกโจทย์ความต้องการ ด้วยบรรยากาศอบอุ่นสไตล์ Loft ของปูนเปลือยที่ดูดิบ ผสมผสานกับเฟอร์นิเจอร์สีธรรมชาติโดยใช้สีน้ำตาล เทา ดำ เพื่อให้เกิดความรู้สึกอบอุ่นเหมือนนั่งอยู่ในห้องนั่งเล่น";
-        this.data.design1 = 'ASSISTANT. "CHIN", "ANNALOG"';
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        break;
-      case "8":
-        this.images = [
-          {
-            id: 1,
-            src: "room/r8/1.jpg"
-          }
-        ];
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 0
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 61992
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 3000
-          },
-          {
-            id: 4,
-            head: "ทาสี TOA Duraclean",
-            name: "",
-            price: 4393.75
-          }
-        ];
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "Brown Floral";
-        this.data.roomType = "Bedroom";
-        this.data.roomSize = 24;
-        this.data.detail =
-          "ห้องนอนสไตล์คอนเทมโพรารี่ (Contemporary) เป็นการตกแต่งแบบร่วมสมัยด้วยผนังหัวเตียงสีน้ำตาลหม่น บวกกับการประดับภาพถ่ายที่ทำให้ห้องดูผ่อนคลายมากขึ้น รวมไปถึงการจัดแสงที่ดูอบอุ่นลงตัว ด้วยโคมไฟที่มีความร่วมสมัย ผสมผสานกับเตียงไม้สีเข้ม เพื่อดึงเอาความรู้สึกถึงอารมณ์ของรูปแบบในอดีตมาผสมผสานกันได้อย่างลงตัว";
-        this.data.design1 = 'ASSISTANT. CHIN, "ANNALOG"';
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        break;
-      case "9":
-        this.images = [
-          {
-            id: 1,
-            src: "room/r9/1.png"
-          }
-        ];
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 0
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 55264
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 3000
-          },
-          {
-            id: 4,
-            head: "ทาสี TOA Duraclean",
-            name: "",
-            price: 4393.75
-          }
-        ];
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "Discreetly Dark Grey";
-        this.data.roomType = "Bedroom";
-        this.data.roomSize = 14.34;
-        this.data.detail =
-          "ห้องนอนสไตล์โมเดิร์น มีการตกแต่งผนังหัวเตียงสีดำกึ่งเงากึ่งด้าน ให้ความสุขุมนุ่มลึก ด้วยลักษณะกึ่งเงากึ่งด้านของผนัง ทำให้ห้องเกิดความรู้สึกความเรียบหรูที่เรียบง่าย ซึ่งสีดำสามารถเข้ากับเฟอร์นิเจอร์ได้ทุกสีโดยเฉพาะสีอ่อน ทั้งยังขับให้เฟอร์นิเจอร์ดูโดดเด่นมากขึ้นอีกด้วย โดยรวมของห้องใช้สีขาว เทา ดำ และน้ำตาล บวกกับเตียงที่ออกแบบมาอย่างลงตัวสมบูรณ์แบบ";
-        this.data.design1 = 'ASSISTANT. "ANNALOG" SUJITTRA DEXCORO ACADEMY#1';
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        break;
-      case "10":
-        this.images = [
-          {
-            id: 1,
-            src: "room/r10/1.png"
-          }
-        ];
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 0
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 37561
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 3000
-          },
-          {
-            id: 4,
-            head: "ทาสี TOA Duraclean",
-            name: "",
-            price: 4393.75
-          }
-        ];
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "Zensation";
-        this.data.roomType = "Bedroom";
-        this.data.roomSize = 24;
-        this.data.detail =
-          "ห้องนอนที่มีกลิ่นอายแบบเซน (Zen Style) สำหรับคนที่รักความสงบเรียบง่าย ใช้วัสดุธรรมชาติในการตกแต่งเป็นหลักมีจุดเด่นที่ผนังหัวเตียงออกแบบด้วยไม้เส้นแนวตั้งที่มีขนาดเล็กทำให้กดความรู้สึกละเอียดประณีต นำมาเรียงกันอย่างเป็นระเบียบแต่มีการจัดวางที่ให้ความรู้สึกสมดุลแต่ไม่สมมาตร ทำให้ห้องดูมีความน่าสนใจมากขึ้น บวกกับสีแนวเอิร์ทโทนบวกกับลวดลายเรียบง่าย ทำให้ห้องดูผ่อนคลายสบายตาเหมาะแก่การพักผ่อน รวมถึงการดรอปฝ้าซ่อนไฟ ซึ่งเป็นอีกหนึ่งวิธีที่ช่วยป้องกันแสงรบกวนเวลานอน";
-        this.data.design1 = 'ASSISTANT. "ANNALOG"';
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        break;
-      case "11":
-        this.images = [
-          {
-            id: 1,
-            src: "room/r11/1.png"
-          }
-        ];
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 0
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 61992
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 3000
-          },
-          {
-            id: 4,
-            head: "ทาสี TOA Duraclean",
-            name: "",
-            price: 4393.75
-          }
-        ];
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "Walnut Brown";
-        this.data.roomType = "Bedroom";
-        this.data.roomSize = 24;
-        this.data.detail =
-          "ห้องนอนที่มีกลิ่นอายแบบเซน (Zen Style) สำหรับคนที่รักความสงบเรียบง่าย ใช้วัสดุธรรมชาติในการตกแต่งเป็นหลักมีจุดเด่นที่ผนังหัวเตียงออกแบบด้วยไม้เส้นแนวตั้งที่มีขนาดเล็กทำให้กดความรู้สึกละเอียดประณีต นำมาเรียงกันอย่างเป็นระเบียบแต่มีการจัดวางที่ให้ความรู้สึกสมดุลแต่ไม่สมมาตร ทำให้ห้องดูมีความน่าสนใจมากขึ้น บวกกับสีแนวเอิร์ทโทนบวกกับลวดลายเรียบง่าย ทำให้ห้องดูผ่อนคลายสบายตาเหมาะแก่การพักผ่อน รวมถึงการดรอปฝ้าซ่อนไฟ ซึ่งเป็นอีกหนึ่งวิธีที่ช่วยป้องกันแสงรบกวนเวลานอน";
-        this.data.design1 = 'ASSISTANT. "ANNALOG"';
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        break;
-      case "12":
-        this.images = [
-          {
-            id: 1,
-            src: "room/r12/1.png"
-          },
-          {
-            id: 2,
-            src: "room/r12/2.png"
-          }
-        ];
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 0
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 44634.4
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 3000
-          },
-          {
-            id: 4,
-            head: "ทาสี TOA Duraclean",
-            name: "",
-            price: 4375
-          }
-        ];
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "Warm & Soft Brown";
-        this.data.roomType = "Bedroom";
-        this.data.roomSize = 14.34;
-        this.data.detail =
-          "ห้องนอนที่มีกลิ่นอายแบบเซน (Zen Style) สำหรับคนที่รักความสงบเรียบง่าย ใช้วัสดุธรรมชาติในการตกแต่งเป็นหลักมีจุดเด่นที่ผนังหัวเตียงออกแบบด้วยไม้เส้นแนวตั้งที่มีขนาดเล็กทำให้กดความรู้สึกละเอียดประณีต นำมาเรียงกันอย่างเป็นระเบียบแต่มีการจัดวางที่ให้ความรู้สึกสมดุลแต่ไม่สมมาตร ทำให้ห้องดูมีความน่าสนใจมากขึ้น บวกกับสีแนวเอิร์ทโทนบวกกับลวดลายเรียบง่าย ทำให้ห้องดูผ่อนคลายสบายตาเหมาะแก่การพักผ่อน รวมถึงการดรอปฝ้าซ่อนไฟ ซึ่งเป็นอีกหนึ่งวิธีที่ช่วยป้องกันแสงรบกวนเวลานอน";
-        this.data.design1 = 'ASSISTANT. "ANNALOG"';
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        break;
-      case "13":
-        this.images = [
-          {
-            id: 1,
-            src: "room/r13/1.jpg"
-          },
-          {
-            id: 2,
-            src: "room/r13/2.jpg"
-          },
-          {
-            id: 3,
-            src: "room/r13/3.jpg"
-          }
-        ];
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 0
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 25000
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 7000
-          },
-          {
-            id: 4,
-            head: "ทาสี TOA Duraclean",
-            name: "",
-            price: 4000
-          }
-        ];
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "KIOSK MA PANG";
-        this.data.roomType = "Studio";
-        this.data.roomSize = 24;
-        this.data.detail =
-          "แรงบันดาลใจมาจากกลิ่นอายของขนมอบที่มีกลิ่นหอมเป็นเอกลักษณ์ เมื่อนำมารวมกับร้าน ที่มีวัสดุ อิฐ ไม้ เหล็ก หินอ่อน จะให้อารมณ์อบอุ่นในงานรูปแบบ Modern Loft Style ที่ใช้เหล็กเส้นบางและเป็นพื้นที่เปิดโล่งจะส่งเสริมกลิ่นอายขนมปังให้เป็นที่น่าสนใจ";
-        this.data.design1 = "ASSISTANT. CHIN, MINE";
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        break;
-      case "14":
-        this.images = [
-          {
-            id: 1,
-            src: "room/r14/1.png"
-          },
-          {
-            id: 2,
-            src: "room/r14/2.png"
-          },
-          {
-            id: 3,
-            src: "room/r14/3.png"
-          }
-        ];
-
-        this.furnitures = [
-          {
-            id: 1,
-            item: [
-              { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 70000 },
-              {
-                id: 2,
-                head: "Built-In/Fit-In",
-                name: "MDF E1",
-                price: 35000
-              }
-            ]
-          },
-          {
-            id: 2,
-            head: "เฟอร์นิเจอร์ลอยตัว",
-            name: "",
-            price: 65254
-          },
-          {
-            id: 3,
-            head: "ม่าน 2 ชั้น",
-            name: "",
-            price: 7000
-          }
-        ];
-
-        this.link = "https://roundme.com/embed/409230/1427459";
-
-        this.checkedRows = this.furnitures;
-        this.wall = this.furnitures[0].item[0];
-
-        this.data.title = "Minimal White Wood";
-        this.data.roomType = "1 Bedroom";
-        this.data.roomSize = 24;
-        this.data.detail =
-          "ห้องนี้ตกแต่งห้องสไตล์มินิมอล เน้นความเรียบง่ายโดยใช้สีขาว และลายไม้ ให้บรรยากาศที่อบอุ่น ปลอดโปร่งและสบายตา พร้อมทั้งเลือกใช้เฟอร์นิเจอร์ที่จำเป็น เน้นเป็นไม้สีอ่อน มีกลิ่นอายความญี่ปุ่น ให้ความรู้สึกใกล้ชิดธรรมชาติ";
-        this.data.design1 = "ASSISTANT. CHIN";
-        this.data.design2 = "DEXCORO DESIGN DIRECTOR";
-
-        break;
-      default:
-        this.images = [
-          {
-            id: 1,
-            src: "room/r1/1.png"
-          },
-          {
-            id: 2,
-            src: "room/r1/2.png"
-          },
-          {
-            id: 3,
-            src: "room/r1/3.png"
-          }
-        ];
-    }
-
-    this.image = this.images[0];
+    this.data.roomSize = 24;
+    // this.data.detail =
+    //   "แรงบันดาลใจมาจากการจัดห้องแบบ Eclectic style ที่เลือกใช้ของหลากหลายแบรนด์มารวมกันอย่างลงตัว";
+    this.data.design1 = "ASSISTANT. CHIN, MINE";
+    this.data.design2 = "DEXCORO DESIGN DIRECTOR";
   },
 
   methods: {
-    async getList() {
-      console.log("getList");
-
-      this.getFurniture(193);
-
-      try {
-        // var session_url = "/api/orderitems";
-        var session_url = "/orderitems/?order=" + this.$route.params.id;
-        let proxyurl = "https://dezignserves.com:5432/";
-        let url =
-          "https://dezigntool.com" +
-          "api/orderitems/?order=" +
-          this.$route.params.id; // site that doesn’t send Access-Control-*
-        let response = await this.$http.get(proxyurl + url, {
-          // headers: {
-          //   "Content-Type": "application/json",
-          //   Authorization: "Basic YWRtaW46cXdlcjEyMzQ=",
-          //   "Access-Control-Allow-Origin": "*",
-          //   "Access-Control-Allow-Credentials": true,
-          //   "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE",
-          //   "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token"
-          // },
-          // credentials: false,
-          credentials: true,
-          auth: {
-            Username: "admin",
-            Password: "qwer1234"
+    async getLists() {
+      console.log("getLists");
+      await this.$http
+        .get("https://dezignserves.com/api/themes/" + this.$route.params.id, {
+          headers: {
+            Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
           }
+        })
+        .then(res => {
+          console.log("success >> ", res);
+          if (res.status === 200) {
+            console.log("data >> ", res.data);
+
+            if (res.data.link360) {
+              this.link = res.data.link360;
+            }
+
+            this.data.detail = res.data.description;
+            this.data.title = res.data.title;
+
+            this.images = res.data.themePicture.map(item => {
+              let img = {};
+              img.id = item.id;
+              img.src = item.picture;
+              return img;
+            });
+            this.image = this.images[0];
+
+            console.log("images >> ", this.images);
+            console.log("data.detail >> ", this.data.detail);
+            console.log("lists >> ", this.lists);
+          }
+        })
+        .catch(error => {
+          console.error("error >> ", error);
+          this.isInvalid = true;
         });
-        console.log("response >> ", response);
-      } catch (error) {
-        console.error("getList error >> ", error);
-      }
-
-      // var session_url =
-      //   "https://dezignserves.com/api/orderitems/?order=" +
-      //   this.$route.params.id;
-      // this.$http
-      //   .get(
-      //     session_url,
-      //     // {},
-      //     {
-      //       auth: {
-      //         username: "admin",
-      //         password: "qwer1234"
-      //       }
-      //     }
-      //   )
-      //   .then(function(response) {
-      //     console.log("response >> ", response);
-      //   })
-      //   .catch(function(error) {
-      //     console.log("Error >> ", error);
-      //   });
-
-      // let res = await this.$http.get(
-      //   "https://dezignserves.com/api/orderitems/?order=" +
-      //     this.$route.params.id,
-      //   {
-      //     headers: {
-      //       "Access-Control-Allow-Origin": "*"
-      //       // "Access-Control-Allow-Credentials": true
-      //       // Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
-      //     },
-      //     auth: {
-      //       Username: "admin",
-      //       Password: "qwer1234"
-      //     }
-      //   }
-      //   // { useCredentails: true }
-      // );
-
-      // console.log("getList res >> ", res);
-
-      // if (res.status === 200) {
-      //   this.list = res.data;
-      //   this.list.forEach(item => {
-      //     this.getFurniture(item.furniture);
-      //   });
-      // } else {
-      //   console.log("error >> ", res);
-      // }
     },
 
     async getFurniture(id) {
       console.log("getFurniture");
-      let res = await this.$http.get("/api/furnitures/" + id, {
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        },
-        auth: {
-          Username: "admin",
-          Password: "qwer1234"
-        }
-      });
+      // let res = await this.$http.get("/api/furnitures/" + id, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "Access-Control-Allow-Origin": "*"
+      //   },
+      //   auth: {
+      //     Username: "admin",
+      //     Password: "qwer1234"
+      //   }
+      // });
 
-      console.log("getFurniture res >> ", res);
+      // console.log("getFurniture res >> ", res);
 
-      let data = {
-        id: res.data.id,
-        pic: res.data.model,
-        name: res.data.title,
-        brand: res.data.supplier,
-        price: res.data.cost * 0.23 + res.data.cost
-        // prePrice: res.data.cost
-      };
+      // let data = {
+      //   id: res.data.id,
+      //   pic: res.data.model,
+      //   name: res.data.title,
+      //   brand: res.data.supplier,
+      //   price: res.data.cost * 0.23 + res.data.cost
+      //   // prePrice: res.data.cost
+      // };
 
-      if (res.status === 200) {
-        this.furnitures.push(data);
-        this.checkedRows.push(data);
-        this.sortFurnitures();
-      }
+      // if (res.status === 200) {
+      //   this.furnitures.push(data);
+      //   this.checkedRows.push(data);
+      //   this.sortFurnitures();
+      // }
     },
 
     sortFurnitures() {
@@ -1533,15 +686,15 @@ export default {
 .v-dialog {
   box-shadow: none;
 }
-      .vr-display {
-        font-family: sans-serif;
-        font-size: 0.8em;
-        border-bottom: 1px solid #888;
-      }
-      .vr-display h1 {
-        font-size: 1.2em;
-      }
-      .vr-display .float-array {
-        font-family: monospace;
-      }
+.vr-display {
+  font-family: sans-serif;
+  font-size: 0.8em;
+  border-bottom: 1px solid #888;
+}
+.vr-display h1 {
+  font-size: 1.2em;
+}
+.vr-display .float-array {
+  font-family: monospace;
+}
 </style>

@@ -34,12 +34,14 @@
                 <a class="navbar-item" @click="clickTH">TH</a>
               </div>
             </div>-->
-            <a class="navbar-item" @click="isComponentRegister = true">REGISTER</a>
-            <a class="navbar-item" @click="isComponentLogin = true">LOGIN</a>
+            <a class="navbar-item" @click="isComponentRegister = true" v-show="isRegister">REGISTER</a>
+            <a class="navbar-item" @click="isComponentLogin = true" v-show="isLogin">LOGIN</a>
+            <div class="navbar-item">{{userObj.user}}</div>
+            <a class="navbar-item" @click="onLogoutClick" v-show="isLogout">LOGOUT</a>
             <!-- <a class="navbar-item" @click="clickShowroom">SHOW ROOM</a> -->
-            <a class="navbar-item" @click="clickProfile">
+            <div class="navbar-item" @click="clickProfile">
               <i class="far fa-user"></i>
-            </a>
+            </div>
           </div>
         </div>
       </div>
@@ -124,6 +126,9 @@ export default {
       active: "",
       menu: "",
       language: "EN",
+      isRegister: true,
+      isLogin: true,
+      isLogout: false,
       isComponentLogin: false,
       isComponentRegister: false,
       formProps: {
@@ -133,33 +138,58 @@ export default {
       value: {
         username: "testuser1",
         password: "Thisisp@ssw0rd"
-      }
+      },
+      userObj: JSON.parse(window.sessionStorage.getItem("user")) || {},
     };
   },
-  created() {},
+  created() {
+    if (window.sessionStorage.getItem("user")) {
+      this.isRegister = false;
+      this.isLogin = false;
+      this.isLogout = true;
+    }
+  },
 
   methods: {
-    onRegisterClick(data){
+    onRegisterClick(data) {
       console.log("onRegisterClick", data);
-      this.isComponentLogin = false;
+      if (data) {
+        this.isComponentRegister = false;
+        this.isRegister = false;
+        this.isLogin = false;
+        this.isLogout = true;
+        this.userObj = JSON.parse(window.sessionStorage.getItem("user")) || {}
+      }
     },
     onLoginClick(data) {
       console.log("onLoginClick", data);
-      this.isComponentLogin = false;
+      if (data) {
+        this.isComponentLogin = false;
+        this.isRegister = false;
+        this.isLogin = false;
+        this.isLogout = true;
+        this.userObj = JSON.parse(window.sessionStorage.getItem("user")) || {}
+      }
+    },
+    onLogoutClick(data) {
+      console.log("onLogoutClick", data);
+      this.$dialog.confirm({
+        message: "Are you sure you want to logout?",
+        cancelText: "CANCEL",
+        type: "is-danger",
+        hasIcon: true,
+        onConfirm: () => {
+          console.log("Logout");
+          window.sessionStorage.removeItem("user");
+          this.isRegister = true;
+          this.isLogin = true;
+          this.isLogout = false;
+          this.userObj = JSON.parse(window.sessionStorage.getItem("user")) || {}
+        }
+      });
     },
     clickToolbar() {
       this.active = this.active === "" ? "is-active" : "";
-    },
-    clickMenu(value) {
-      if (value === "home") {
-        this.$router.push("/");
-      } else if (value === "logout") {
-        window.sessionStorage.removeItem("user");
-        this.isLogin = false;
-        this.$router.push("/");
-      } else {
-        this.$router.push("/" + value);
-      }
     },
     clickEN() {
       this.language = "EN";

@@ -584,160 +584,161 @@ export default {
   },
 
   async created() {
+    this.getTheme();
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
     this.isMobile = this.windowWidth < 450 || this.windowHeight < 450;
 
-    var list = [
-      {
-        id: 254,
-        title: "Title1",
-        designer: "dexcoro",
-        project: "Project1",
-        type: "Type",
-        img: "/room/r1/1.png",
-        price: "36000",
-        // link: "https://vizor.io/miniemeenie/dezigntool-room1",
-        link: "https://roundme.com/embed/409197/1427363",
-        favorite: false
-      },
-      {
-        id: 255,
-        title: "Title3",
-        designer: "dexcoro",
-        project: "Project3",
-        type: "Type",
-        img: "/room/r3/1.png",
-        price: "36000",
-        // link: "https://vizor.io/miniemeenie/dezigntool-room3/",
-        favorite: false
-      },
-      {
-        id: 2,
-        title: "Title2",
-        designer: "dexcoro",
-        project: "Project2",
-        type: "Type",
-        img: "/room/r2/1.png",
-        price: "36000",
-        favorite: false
-      },
-      {
-        id: 4,
-        title: "Title4",
-        designer: "dexcoro",
-        project: "Project4",
-        type: "Type",
-        img: "/room/r4/1.png",
-        price: "263086",
-        // link: "https://vizor.io/miniemeenie/dezigntool-mockuproomo2",
-        link: "https://roundme.com/embed/409202/1427381",
-        favorite: false
-      },
-      {
-        id: 5,
-        title: "Title5",
-        designer: "dexcoro",
-        project: "Project5",
-        type: "Type",
-        img: "/room/r5/1.jpg",
-        price: "52009",
-        favorite: false
-      },
-      {
-        id: 6,
-        title: "Title6",
-        designer: "dexcoro",
-        project: "Project6",
-        type: "Type",
-        img: "/room/r6/1.jpg",
-        price: "59807",
-        favorite: false
-      },
-      {
-        id: 7,
-        title: "Title7",
-        designer: "dexcoro",
-        project: "Project7",
-        type: "Type",
-        img: "room/r7/1.png",
-        price: "36000",
-        // link: "https://vizor.io/miniemeenie/dexcoroweb_cafe1/",
-        link: "https://roundme.com/embed/409177/1427291",
-        favorite: false
-      },
-      {
-        id: 8,
-        title: "Title8",
-        designer: "dexcoro",
-        project: "Project8",
-        type: "Type",
-        img: "/room/r8/1.jpg",
-        price: "69385",
-        favorite: false
-      },
-      {
-        id: 9,
-        title: "Title9",
-        designer: "dexcoro",
-        project: "Project9",
-        type: "Type",
-        img: "/room/r9/1.png",
-        price: "62657",
-        favorite: false
-      },
-      {
-        id: 10,
-        title: "Title10",
-        designer: "dexcoro",
-        project: "Project10",
-        type: "Type",
-        img: "/room/r10/1.png",
-        price: "44954",
-        favorite: false
-      },
-      {
-        id: 11,
-        title: "Title11",
-        designer: "dexcoro",
-        project: "Project11",
-        type: "Type",
-        img: "/room/r11/1.png",
-        price: "69385",
-        favorite: false
-      },
-      {
-        id: 12,
-        title: "Title12",
-        designer: "dexcoro",
-        project: "Project12",
-        type: "Type",
-        img: "/room/r12/1.png",
-        price: "52009",
-        favorite: false
-      },
-      {
-        id: 13,
-        title: "Title13",
-        designer: "dexcoro",
-        project: "Project13",
-        type: "Type",
-        img: "/room/r13/1.jpg",
-        price: "36000",
-        favorite: false
-      },
-      {
-        id: 14,
-        title: "Title14",
-        designer: "dexcoro",
-        project: "Project14",
-        type: "Type",
-        img: "/room/r14/1.png",
-        price: "142254",
-        link: "https://roundme.com/embed/409230/1427459",
-        favorite: false
-      }
-    ];
+    // var list = [
+    //   {
+    //     id: 254,
+    //     title: "Title1",
+    //     designer: "dexcoro",
+    //     project: "Project1",
+    //     type: "Type",
+    //     img: "/room/r1/1.png",
+    //     price: "36000",
+    //     // link: "https://vizor.io/miniemeenie/dezigntool-room1",
+    //     link: "https://roundme.com/embed/409197/1427363",
+    //     favorite: false
+    //   },
+    //   {
+    //     id: 255,
+    //     title: "Title3",
+    //     designer: "dexcoro",
+    //     project: "Project3",
+    //     type: "Type",
+    //     img: "/room/r3/1.png",
+    //     price: "36000",
+    //     // link: "https://vizor.io/miniemeenie/dezigntool-room3/",
+    //     favorite: false
+    //   },
+    //   {
+    //     id: 2,
+    //     title: "Title2",
+    //     designer: "dexcoro",
+    //     project: "Project2",
+    //     type: "Type",
+    //     img: "/room/r2/1.png",
+    //     price: "36000",
+    //     favorite: false
+    //   },
+    //   {
+    //     id: 4,
+    //     title: "Title4",
+    //     designer: "dexcoro",
+    //     project: "Project4",
+    //     type: "Type",
+    //     img: "/room/r4/1.png",
+    //     price: "263086",
+    //     // link: "https://vizor.io/miniemeenie/dezigntool-mockuproomo2",
+    //     link: "https://roundme.com/embed/409202/1427381",
+    //     favorite: false
+    //   },
+    //   {
+    //     id: 5,
+    //     title: "Title5",
+    //     designer: "dexcoro",
+    //     project: "Project5",
+    //     type: "Type",
+    //     img: "/room/r5/1.jpg",
+    //     price: "52009",
+    //     favorite: false
+    //   },
+    //   {
+    //     id: 6,
+    //     title: "Title6",
+    //     designer: "dexcoro",
+    //     project: "Project6",
+    //     type: "Type",
+    //     img: "/room/r6/1.jpg",
+    //     price: "59807",
+    //     favorite: false
+    //   },
+    //   {
+    //     id: 7,
+    //     title: "Title7",
+    //     designer: "dexcoro",
+    //     project: "Project7",
+    //     type: "Type",
+    //     img: "room/r7/1.png",
+    //     price: "36000",
+    //     // link: "https://vizor.io/miniemeenie/dexcoroweb_cafe1/",
+    //     link: "https://roundme.com/embed/409177/1427291",
+    //     favorite: false
+    //   },
+    //   {
+    //     id: 8,
+    //     title: "Title8",
+    //     designer: "dexcoro",
+    //     project: "Project8",
+    //     type: "Type",
+    //     img: "/room/r8/1.jpg",
+    //     price: "69385",
+    //     favorite: false
+    //   },
+    //   {
+    //     id: 9,
+    //     title: "Title9",
+    //     designer: "dexcoro",
+    //     project: "Project9",
+    //     type: "Type",
+    //     img: "/room/r9/1.png",
+    //     price: "62657",
+    //     favorite: false
+    //   },
+    //   {
+    //     id: 10,
+    //     title: "Title10",
+    //     designer: "dexcoro",
+    //     project: "Project10",
+    //     type: "Type",
+    //     img: "/room/r10/1.png",
+    //     price: "44954",
+    //     favorite: false
+    //   },
+    //   {
+    //     id: 11,
+    //     title: "Title11",
+    //     designer: "dexcoro",
+    //     project: "Project11",
+    //     type: "Type",
+    //     img: "/room/r11/1.png",
+    //     price: "69385",
+    //     favorite: false
+    //   },
+    //   {
+    //     id: 12,
+    //     title: "Title12",
+    //     designer: "dexcoro",
+    //     project: "Project12",
+    //     type: "Type",
+    //     img: "/room/r12/1.png",
+    //     price: "52009",
+    //     favorite: false
+    //   },
+    //   {
+    //     id: 13,
+    //     title: "Title13",
+    //     designer: "dexcoro",
+    //     project: "Project13",
+    //     type: "Type",
+    //     img: "/room/r13/1.jpg",
+    //     price: "36000",
+    //     favorite: false
+    //   },
+    //   {
+    //     id: 14,
+    //     title: "Title14",
+    //     designer: "dexcoro",
+    //     project: "Project14",
+    //     type: "Type",
+    //     img: "/room/r14/1.png",
+    //     price: "142254",
+    //     link: "https://roundme.com/embed/409230/1427459",
+    //     favorite: false
+    //   }
+    // ];
 
     if (
       sessionStorage.getItem("isRandom") ||
@@ -756,25 +757,14 @@ export default {
         this.lists = JSON.parse(window.sessionStorage.getItem("isRandom"));
       }
     } else {
-      var listLength = list.length;
+      var listLength = this.lists.length;
       for (var i = 0; i < listLength; i++) {
-        var r = Math.ceil(Math.random() * list.length - 1);
+        var r = Math.ceil(Math.random() * this.lists.length - 1);
         this.lists.push(list[r]);
-        list.splice(r, 1);
+        this.lists.splice(r, 1);
       }
       window.sessionStorage.setItem("isRandom", JSON.stringify(this.lists));
     }
-
-    // let res = await this.$http.get(
-    //   "https://dezignserves.com/api/orderitems/?order=255",
-    //   {
-    //     headers: {
-    //       Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
-    //     }
-    //   }
-    // );
-
-    // console.log("getList res >> ", res);
   },
 
   watch: {
@@ -810,11 +800,41 @@ export default {
   },
 
   methods: {
-    // aaaa() {
-    //   console.log("aaaa");
-    //   this.isSelectColor = !this.isSelectColor;
-    //   console.log("isSelectColor >> ", this.isSelectColor);
-    // },
+    async getTheme() {
+      console.log("getTheme");
+      await this.$http
+        .get("https://dezignserves.com/api/themes", {
+          headers: {
+            // "Content-Type": "application/json",
+            Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+          }
+        })
+        .then(res => {
+          console.log("success >> ", res);
+          if (res.status === 200) {
+            console.log("data >> ", res.data);
+            this.lists = res.data.map(item => {
+              let rItem = {};
+              rItem.id = item.id;
+              if (item.themePicture[0]) {
+                rItem.img = item.themePicture[0].picture;
+              }
+              if (item.link360 !== "") {
+                rItem.link = item.link360;
+              }
+              if (item.themeFurniture) {
+                rItem.price = 55555;
+              }
+              return rItem;
+            });
+            console.log("lists >> ", this.lists);
+          }
+        })
+        .catch(error => {
+          console.error("error >> ", error);
+          this.isInvalid = true;
+        });
+    },
     goLink(link) {
       // window.open(link, "_blank");
     },

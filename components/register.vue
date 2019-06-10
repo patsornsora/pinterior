@@ -1,7 +1,7 @@
 <template>
   <div class="modal-card" style="width: auto; margin: 20px;">
     <header class="modal-card-head" style="border-radius: 0px;">
-      <p class="modal-card-title c-brown-black" style="text-align: center;">register</p>
+      <p class="modal-card-title c-brown-black" style="text-align: center;">Register</p>
     </header>
     <section class="modal-card-body">
       <div class="columns">
@@ -136,11 +136,12 @@
       </div>
       <div class="columns">
         <div class="column">
-          <b-field label="Post code">
+          <b-field label="Postcode">
             <b-input
               class="btn3"
               v-model="formRegister.postcode"
-              placeholder="Your post code"
+              placeholder="Your postcode"
+              type="number"
               required
             ></b-input>
           </b-field>
@@ -148,7 +149,7 @@
         <div class="column"></div>
       </div>
 
-      <div style="color: red;" v-show="isError">{{txtError}}</div>
+      <div style="color: red; text-align: center">{{txtError}}</div>
       <button
         class="button btn3 color-brown"
         style="margin: 16px 0px 16px 0px; width: 100%;"
@@ -170,7 +171,6 @@ province
 export default {
   data() {
     return {
-      isError: true,
       txtError: "",
       formRegister: {
         username: "",
@@ -211,43 +211,44 @@ export default {
 
         this.formRegister.username = this.formRegister.email;
 
-        if (this.formRegister.password !== this.formRegister.password2) {
-          console.log("password");
-          this.isError = true;
-          this.txtError = "password";
+        if(this.formRegister.password.length < 6){
+
+          this.txtError = "Password at least 6 characters. Please re-enter your password.";
+        } else if (this.formRegister.password !== this.formRegister.password2) {
+          this.txtError = "Passwords don't match. Please re-enter your password.";
         } else if (this.formRegister.mobile_phone.length !== 10) {
-          console.log("mobile_phone");
-          this.txtError = "";
+          this.txtError = "Phone number must be 10 digits. Please , try again.";
         } else if (this.formRegister.postcode.length !== 5) {
-          console.log("postcode");
-          this.txtError = "";
+          this.txtError = "Postcode must be 5 digits. Please , try again.";
         } else {
-          await this.$http
-            .post(
-              "https://dezignserves.com/registers/",
-              JSON.stringify(this.formRegister),
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
-                }
-              }
-            )
-            .then(res => {
-              window.sessionStorage.setItem(
-                "user",
-                JSON.stringify({
-                  user: this.formRegister.username
-                })
-              );
-              this.$forceUpdate();
-              this.$emit("childToParent", res.data);
-              console.log("success >> ", res);
+          // await this.$http
+          //   .post(
+          //     "https://dezignserves.com/registers/",
+          //     JSON.stringify(this.formRegister),
+          //     {
+          //       headers: {
+          //         "Content-Type": "application/json",
+          //         Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+          //       }
+          //     }
+          //   )
+          //   .then(res => {
+          window.sessionStorage.setItem(
+            "user",
+            JSON.stringify({
+              user: this.formRegister.username
             })
-            .catch(error => {
-              console.error("clickLogin error >> ", error);
-              this.isInvalid = true;
-            });
+          );
+          this.$forceUpdate();
+          this.$emit("childToParent", this.formRegister.username);
+          console.log("success >> ", this.formRegister.username);
+          // this.$emit("childToParent", res.data);
+          // console.log("success >> ", res);
+          // })
+          // .catch(error => {
+          //   console.error("clickLogin error >> ", error);
+          //   this.isInvalid = true;
+          // });
         }
       } else {
       }
