@@ -37,7 +37,7 @@
         ></b-input>
       </b-field>
 
-      <div style="color: red;" v-show="isInvalid">INVALID EMAIL OR PASSWORD</div>
+      <div style="color: red; text-align: center">{{txtError}}</div>
 
       <!-- <div>
         <b-checkbox>Remember me</b-checkbox>
@@ -64,7 +64,8 @@ export default {
         username: "",
         password: ""
       },
-      isInvalid: false
+      isInvalid: false,
+      txtError: ""
     };
   },
   created() {
@@ -98,6 +99,7 @@ export default {
             }
           )
           .then(res => {
+            console.log("res.data >> ", res);
             if (res.data.Status === "OK") {
               window.sessionStorage.setItem(
                 "user",
@@ -107,11 +109,14 @@ export default {
               );
               this.$forceUpdate();
               this.$emit("childToParent", res.data);
+            } else {
+              this.txtError = res.data.Error;
             }
           })
           .catch(error => {
             console.error("clickLogin error >> ", error);
             this.isInvalid = true;
+            this.txtError = "INVALID EMAIL OR PASSWORD";
           });
       }
     }
