@@ -685,8 +685,8 @@ export default {
                 rItem.link = item.link360;
               }
               if (item.themeFurniture) {
-                rItem.price = item.themeFurniture.reduce((sum, number) => {
-                  return sum + number.cost;
+                rItem.price = item.themeFurniture.reduce((sum, item) => {
+                  return sum + item.cost * item.quantity;
                 }, 0);
               }
               return rItem;

@@ -125,7 +125,7 @@
             <b>{{data.title}}</b>
           </div>
           <div class="s12" style="text-align: left;">{{data.roomType}}</div>
-          <div class="s12" style="text-align: left; margin-bottom: 20px;">{{data.roomSize}} SQ.M.</div>
+          <div class="s12" style="text-align: left; margin-bottom: 20px;">{{data.roomSize}}</div>
           <div class="th" style="text-align: left;">{{data.detail}}</div>
           <div
             class="s12"
@@ -456,67 +456,8 @@ export default {
 
     console.log("isMobile >> ", this.isMobile);
 
-    // this.getFurniture(193);
-
     //ex set data
-    // this.images = [
-    //   {
-    //     id: 1,
-    //     src: "room/r1/1.png"
-    //   },
-    //   {
-    //     id: 2,
-    //     src: "room/r1/2.png"
-    //   },
-    //   {
-    //     id: 3,
-    //     src: "room/r1/3.png"
-    //   }
-    // ];
-
-    this.furnitures = [
-      {
-        id: 1,
-        item: [
-          { id: 1, head: "Built-In/Fit-In", name: "ไม้จริง", price: 0 },
-          {
-            id: 2,
-            head: "Built-In/Fit-In",
-            name: "MDF E1",
-            price: 0
-          }
-        ]
-      },
-      {
-        id: 2,
-        head: "เฟอร์นิเจอร์ลอยตัว",
-        name: "",
-        price: 25000
-      },
-      {
-        id: 3,
-        head: "ม่าน 2 ชั้น",
-        name: "",
-        price: 7000
-      },
-      {
-        id: 4,
-        head: "ทาสี TOA Duraclean",
-        name: "",
-        price: 4000
-      }
-    ];
-
-    // this.link = "https://roundme.com/embed/409197/1427363";
-
-    this.checkedRows = this.furnitures;
-    this.wall = this.furnitures[0].item[0];
-
-    // this.data.title = "Tropical Brown";
     this.data.roomType = "Studio";
-    this.data.roomSize = 24;
-    // this.data.detail =
-    //   "แรงบันดาลใจมาจากการจัดห้องแบบ Eclectic style ที่เลือกใช้ของหลากหลายแบรนด์มารวมกันอย่างลงตัว";
     this.data.design1 = "ASSISTANT. CHIN, MINE";
     this.data.design2 = "DEXCORO DESIGN DIRECTOR";
   },
@@ -539,6 +480,7 @@ export default {
               this.link = res.data.link360;
             }
 
+            this.data.roomSize = res.data.planData.type;
             this.data.detail = res.data.description;
             this.data.title = res.data.title;
 
@@ -550,51 +492,118 @@ export default {
             });
             this.image = this.images[0];
 
-            console.log("images >> ", this.images);
-            console.log("data.detail >> ", this.data.detail);
-            console.log("lists >> ", this.lists);
+            let fitIn = res.data.themeFurniture.filter(item => {
+              return item.work === "7";
+            });
+
+            if (fitIn.length > 0) {
+              this.furnitures.push({
+                id: 1,
+                item: [
+                  {
+                    id: 1,
+                    head: "Built-In/Fit-In",
+                    name: "ไม้จริง",
+                    price: fitIn
+                      .filter(item => {
+                        return item.group === "mdf";
+                      })
+                      .reduce((sum, item) => {
+                        return sum + item.cost * item.quantity;
+                      }, 0)
+                  },
+                  {
+                    id: 2,
+                    head: "Built-In/Fit-In",
+                    name: "MDF E1",
+                    price: fitIn
+                      .filter(item => {
+                        return item.group === "realwood";
+                      })
+                      .reduce((sum, item) => {
+                        return sum + item.cost * item.quantity;
+                      }, 0)
+                  }
+                ]
+              });
+              this.wall = this.furnitures[0].item[0];
+            }
+
+            let floating = res.data.themeFurniture
+              .filter(item => {
+                return item.work === "8";
+              })
+              .reduce((sum, item) => {
+                return sum + item.cost * item.quantity;
+              }, 0);
+
+            if (floating > 0) {
+              this.furnitures.push({
+                id: 2,
+                head: "เฟอร์นิเจอร์ลอยตัว",
+                name: "",
+                price: floating
+              });
+            }
+
+            let curtain = res.data.themeFurniture
+              .filter(item => {
+                return item.work === "9";
+              })
+              .reduce((sum, item) => {
+                return sum + item.cost * item.quantity;
+              }, 0);
+
+            if (curtain > 0) {
+              this.furnitures.push({
+                id: 3,
+                head: "ม่าน 2 ชั้น",
+                name: "",
+                price: curtain
+              });
+            }
+
+            let paint = res.data.themeFurniture
+              .filter(item => {
+                return item.work === "5";
+              })
+              .reduce((sum, item) => {
+                return sum + item.cost * item.quantity;
+              }, 0);
+
+            if (paint > 0) {
+              this.furnitures.push({
+                id: 4,
+                head: "ทาสี TOA Duraclean",
+                name: "",
+                price: paint
+              });
+            }
+
+            let wall = res.data.themeFurniture
+              .filter(item => {
+                return item.work === "6";
+              })
+              .reduce((sum, item) => {
+                return sum + item.cost * item.quantity;
+              }, 0);
+
+            if (wall > 0) {
+              this.furnitures.push({
+                id: 5,
+                head: "Wall paper",
+                name: "",
+                price: wall
+              });
+            }
+
+            this.checkedRows = this.furnitures;
           }
         })
         .catch(error => {
           console.error("error >> ", error);
           this.isInvalid = true;
         });
-    },
-
-    async getFurniture(id) {
-      console.log("getFurniture");
-      // let res = await this.$http.get("/api/furnitures/" + id, {
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "Access-Control-Allow-Origin": "*"
-      //   },
-      //   auth: {
-      //     Username: "admin",
-      //     Password: "qwer1234"
-      //   }
-      // });
-
-      // console.log("getFurniture res >> ", res);
-
-      // let data = {
-      //   id: res.data.id,
-      //   pic: res.data.model,
-      //   name: res.data.title,
-      //   brand: res.data.supplier,
-      //   price: res.data.cost * 0.23 + res.data.cost
-      //   // prePrice: res.data.cost
-      // };
-
-      // if (res.status === 200) {
-      //   this.furnitures.push(data);
-      //   this.checkedRows.push(data);
-      //   this.sortFurnitures();
-      // }
-    },
-
-    sortFurnitures() {
-      console.log("sortFurnitures");
-      this.furnitures = this.furnitures.sort((a, b) => a.name - b.name);
     },
 
     clickImg(id) {
