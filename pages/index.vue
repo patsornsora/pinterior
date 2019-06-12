@@ -678,6 +678,7 @@ export default {
             this.lists = res.data.map(item => {
               let rItem = {};
               rItem.id = item.id;
+              rItem.favorite = false;
               if (item.themePicture[0]) {
                 rItem.img = item.themePicture[0].picture;
               }

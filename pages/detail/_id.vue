@@ -484,9 +484,10 @@ export default {
             this.data.detail = res.data.description;
             this.data.title = res.data.title;
 
-            this.images = res.data.themePicture.map(item => {
+            this.images = res.data.themePicture.map((item, index) => {
               let img = {};
               img.id = item.id;
+              img.index = index;
               img.src = item.picture;
               return img;
             });
@@ -613,16 +614,20 @@ export default {
     clickLeft() {
       this.image = this.images.find(
         img =>
-          img.id ===
-          (this.image.id === 1 ? this.images.length : this.image.id - 1)
+          img.index ===
+          (this.image.index === 0
+            ? this.images.length - 1
+            : this.image.index - 1)
       );
     },
 
     clickRight() {
       this.image = this.images.find(
         img =>
-          img.id ===
-          (this.image.id === this.images.length ? 1 : this.image.id + 1)
+          img.index ===
+          (this.image.index === this.images.length - 1
+            ? 0
+            : this.image.index + 1)
       );
     },
 
@@ -654,10 +659,6 @@ export default {
 
     clickView360() {
       this.isIframe = true;
-      console.log("windowWidth >> ", this.windowWidth);
-      console.log("isMobile >> ", this.isMobile);
-      console.log("clickView360 >> ", "|" + this.link + "|");
-      console.log("clickView360 >> ", this.link.length);
     },
 
     onChildClick(data) {
