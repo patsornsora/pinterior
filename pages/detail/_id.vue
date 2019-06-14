@@ -131,12 +131,8 @@
             class="s12"
             style="text-align: left; margin-top: 20px;"
             v-if="data.design1"
-          >DESIGN {{data.design1}}</div>
-          <div
-            class="s12"
-            style="text-align: left;"
-            v-if="data.design2"
-          >DESIGN CONSULTANT {{data.design2}}</div>
+          >DESIGN ASSISTANT. {{data.design1.toUpperCase()}}</div>
+          <div class="s12" style="text-align: left;">DESIGN CONSULTANT DEXCORO DESIGN DIRECTOR</div>
         </div>
       </v-flex>
     </v-layout>
@@ -420,8 +416,7 @@ export default {
         roomSize: "",
         roomType: "",
         detail: "",
-        design1: "",
-        design2: ""
+        design1: ""
       },
       link: "",
       price: 0,
@@ -458,8 +453,6 @@ export default {
 
     //ex set data
     this.data.roomType = "Studio";
-    this.data.design1 = "ASSISTANT. CHIN, MINE";
-    this.data.design2 = "DEXCORO DESIGN DIRECTOR";
   },
 
   methods: {
@@ -483,6 +476,7 @@ export default {
             this.data.roomSize = res.data.planData.type;
             this.data.detail = res.data.description;
             this.data.title = res.data.title;
+            this.data.design1 = res.data.customerName;
 
             this.images = res.data.themePicture.map((item, index) => {
               let img = {};
@@ -496,7 +490,6 @@ export default {
             let fitIn = res.data.themeFurniture.filter(item => {
               return item.work === "7";
             });
-
             if (fitIn.length > 0) {
               this.furnitures.push({
                 id: 1,

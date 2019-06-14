@@ -368,11 +368,23 @@
                               <b
                                 class="s18"
                                 v-show="showFilter"
-                              >{{Number(item.price).toLocaleString()}}</b>
+                                v-if="isLogin"
+                              >{{formatNum(item.price)}}</b>
+                              <b
+                                class="s18"
+                                v-show="showFilter"
+                                v-if="!isLogin"
+                              >{{formatNum(convertPrice(item.price))}}</b>
                               <b
                                 class="s14"
                                 v-show="!showFilter"
-                              >{{Number(item.price).toLocaleString()}}</b>
+                                v-if="isLogin"
+                              >{{formatNum(item.price)}}</b>
+                              <b
+                                class="s14"
+                                v-show="!showFilter"
+                                v-if="!isLogin"
+                              >{{formatNum(convertPrice(item.price))}}</b>
                               <div class="s8" style="text-align: right;">THB</div>
                             </div>
                           </div>
@@ -489,6 +501,9 @@ export default {
   // layout: "template",
   data(context) {
     return {
+      user: false,
+      // isLogin: false,
+
       isIframe: false,
       iframeSrc: "",
       isMobile: false,
@@ -584,6 +599,8 @@ export default {
   },
 
   async created() {
+    this.isLogin = sessionStorage.getItem("user") !== null;
+    console.log("isLogin >> ", this.isLogin);
     this.getTheme();
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
@@ -649,9 +666,21 @@ export default {
     valueImage() {
       console.log("valueImage >> ", this.valueImage);
     }
+    // user() {
+    //   this.isLogin = sessionStorage.getItem("user") !== null;
+    // }
   },
 
   mounted() {
+    // if (sessionStorage.getItem("user")) {
+    //   this.user = sessionStorage.getItem("user") !== null;
+    //   console.log("user >> ", this.user);
+    // }
+    window.addEventListener("storage", e => {
+      if (e.key === "mytoken" && e.newValue === null) {
+        console.log("e >> ", e);
+      }
+    });
     this.$nextTick(() => {
       window.addEventListener("resize", () => {
         this.windowWidth = window.innerWidth;
@@ -661,13 +690,19 @@ export default {
     });
   },
 
+  computed: {
+    // isLogin() {
+    //   return sessionStorage.getItem("user") !== null;
+    //   console.log("computed");
+    // }
+  },
+
   methods: {
     async getTheme() {
       console.log("getTheme");
       await this.$http
         .get("https://dezignserves.com/api/themes", {
           headers: {
-            // "Content-Type": "application/json",
             Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
           }
         })
@@ -689,6 +724,8 @@ export default {
                 rItem.price = item.themeFurniture.reduce((sum, item) => {
                   return sum + item.cost * item.quantity;
                 }, 0);
+
+                rItem.priceX = this.convertPrice(rItem.price);
               }
               return rItem;
             });
@@ -699,6 +736,38 @@ export default {
           console.error("error >> ", error);
           this.isInvalid = true;
         });
+    },
+    convertPrice(price) {
+      let xxx = "";
+      for (let i = 1; i < price.toString().length; i++) {
+        xxx += "X";
+      }
+      return price.toString().substring(0, 1) + xxx;
+    },
+    formatNum(number) {
+      var newNum = "";
+      var oldNumStr = number + "";
+      var done = 0;
+      var parts = oldNumStr.split(".");
+      var newPart1 = "";
+      var newPart2 = parts[1];
+      for (var j = parts[0].length - 1; j >= 0; j--) {
+        newNum = parts[0][j] + newNum;
+        done++;
+        if (done % 3 == 0) newNum = "," + newNum;
+      }
+      if (newNum.charAt(0) === ",") {
+        newNum = newNum.substr(1, newNum.length);
+      }
+      return newNum;
+    },
+    priceWithCommas(price) {
+      let l = parseInt(price.toString().length / 3);
+      console.log("length >> ", l);
+      let xx = ["1xxx"];
+      xx = xx.splice(1, 0, ",");
+      console.log("price >> ", xx);
+      // return price.toString().length;
     },
     goLink(link) {
       // window.open(link, "_blank");
