@@ -23,7 +23,7 @@
           type="email"
       -->
       <b-field label="EMAIL">
-        <b-input class="btn3" v-model="value.username" placeholder="Your email" required></b-input>
+        <b-input class="btn3" v-model="value.username" placeholder="Your email" ref="username"></b-input>
       </b-field>
 
       <b-field label="PASSWORD">
@@ -33,7 +33,7 @@
           v-model="value.password"
           password-reveal
           placeholder="Your password"
-          required
+          @keyup.enter="clickLogin"
         ></b-input>
       </b-field>
 
@@ -50,7 +50,7 @@
       >LOGIN</button>
       <div style="text-align: center;">
         No account?
-        <a class="a-brown">Sign up</a>
+        <a class="a-brown" @click="clickSignUp">Sign up</a>
       </div>
     </section>
   </div>
@@ -70,6 +70,7 @@ export default {
   },
   created() {
     console.log("created");
+    this.$nextTick(() => this.$refs.username.focus());
   },
   methods: {
     clickLoginFacebook() {
@@ -84,7 +85,10 @@ export default {
     },
 
     async clickLogin() {
-      if (this.value.username && this.value.password) {
+      if (!this.value.username || !this.value.password) {
+        this.txtError = "PLEASE ENTER EMAIL OR PASSWORD";
+        return;
+      } else {
         console.log("value >> ", this.value);
 
         await this.$http
@@ -104,10 +108,10 @@ export default {
               window.sessionStorage.setItem(
                 "user",
                 JSON.stringify({
-                  user: this.value.username
+                  user: this.value.username,
+                  customerID: res.data.Data.customerID
                 })
               );
-              this.$forceUpdate();
               this.$emit("childToParent", res.data);
             } else {
               this.txtError = res.data.Error;
@@ -119,6 +123,10 @@ export default {
             this.txtError = "INVALID EMAIL OR PASSWORD";
           });
       }
+    },
+
+    clickSignUp() {
+      this.$emit("childToParent", "register");
     }
   }
 };

@@ -114,7 +114,7 @@
           </div>
           <div style="text-align: center;">
             <span v-for="item in images" :key="item.id">
-              <img :src="item.src" style="width: 20%; margin: 3px;" @click="clickImg(item.id)">
+              <img :src="item.src" style="width: 20%; margin: 3px;" @click="clickImg(item.id)" />
             </span>
           </div>
         </div>
@@ -137,7 +137,7 @@
       </v-flex>
     </v-layout>
 
-    <div class="columns">
+    <div class="columns" v-if="isLogin">
       <!--style="margin: 20px;"-->
       <!-- <div class="column"></div> -->
       <div class="column is-11" style="margin: 20px;">
@@ -255,16 +255,16 @@
         </section>
       </div>
     </div>
-    <v-layout row wrap>
-      <v-flex xs1 md7></v-flex>
+    <v-layout row wrap v-if="isLogin">
+      <v-flex xs3 md6></v-flex>
       <v-flex xs2 md1>
         <b>TOTAL</b>
       </v-flex>
-      <v-flex xs4 md1 style="text-align: right;">
+      <v-flex xs2 md1 style="text-align: right;">
         <b class="s18">{{Number(total).toLocaleString()}}</b>
         <div class="s8">THB</div>
       </v-flex>
-      <v-flex xs4 md2 style="text-align: right;">
+      <v-flex xs2 md2 style="text-align: right;">
         <div>
           <button
             class="button color-brown"
@@ -274,6 +274,15 @@
         </div>
         <div class="s10 th" style="text-align: right;">ติดต่อเพื่อประเมินราคา</div>
       </v-flex>
+      <!-- <v-flex xs2 md1 style="margin-left: 12px;">
+        <div>
+          <button
+            class="button color-brown"
+            style="background-color: #1c4b7c; border-radius: 4px;"
+            @click="clickBuyNow"
+          >BUY NOW</button>
+        </div>
+      </v-flex>-->
 
       <!-- <v-flex xs12>
         <div class="columns">
@@ -299,10 +308,24 @@
       </v-flex>-->
     </v-layout>
 
+    <v-layout row wrap style="margin: 80px;" v-if="!isLogin">
+      <v-flex xs12 style="text-align: center;">
+        <div>
+          <span class="th s20">สมัครสมาชิก ที่นี่</span>
+          <button
+            class="button color-brown s14"
+            style="background-color: #1c4b7c; border-radius: 4px; margin: 0px 8px; vertical-align:bottom"
+            @click="isComponentRegister = true"
+          >REGISTER</button>
+          <span class="th s20">เพื่อแสดงรายละเอียดเพิ่มเติม</span>
+        </div>
+      </v-flex>
+    </v-layout>
+
     <v-layout row wrap style="margin-top: 28px;">
       <v-flex xs5>
         <div class="column" style="text-align: right; margin-right: 20px;">
-          <img style="max-height: 145px; max-width: 145px;" src="LogoDezigntool.png">
+          <img style="max-height: 145px; max-width: 145px;" src="LogoDezigntool.png" />
         </div>
       </v-flex>
       <v-flex xs7>
@@ -316,14 +339,14 @@
           width="148"
           style="margin-top: 20px;"
           @click="clickDownload('ios')"
-        >
+        />
         <input
           type="image"
           src="/download/googlePlay.png"
           alt="Submit"
           width="132"
           @click="clickDownload('android')"
-        >
+        />
       </v-flex>
     </v-layout>
     <!-- <div id="fb-root"></div>
@@ -351,10 +374,6 @@
         <img src="b\"ANNALOG\"er/1.png" @click="clickGiftSet(1)">
       </figure>
     </div>-->
-
-    <b-modal :active.sync="isComponentContact" has-modal-card>
-      <modal-contact :valueContact="valueContact" v-on:childToParent="onChildClick"></modal-contact>
-    </b-modal>
 
     <v-dialog
       v-model="isIframe"
@@ -399,15 +418,35 @@
         ></iframe>
       </section>
     </v-dialog>
+
+    <b-modal :active.sync="isComponentContact" has-modal-card>
+      <modal-contact :valueContact="valueContact" v-on:childToParent="onChildClick"></modal-contact>
+    </b-modal>
+
+    <b-modal :active.sync="isComponentRegister" has-modal-card>
+      <modal-register v-on:childToParent="onRegisterClick" style="min-width: 300px;"></modal-register>
+    </b-modal>
+
+    <b-modal :active.sync="isComponentAddAddress" has-modal-card>
+      <modal-add-address
+        :customerID="customerID"
+        v-on:childToParent="onAddressClick"
+        style="min-width: 300px;"
+      ></modal-add-address>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import ModalContact from "~/components/contact";
+import ModalRegister from "~/components/register";
+import ModalAddAddress from "~/components/addAddress";
 
 export default {
   components: {
-    ModalContact
+    ModalContact,
+    ModalRegister,
+    ModalAddAddress
   },
   data() {
     return {
@@ -425,10 +464,17 @@ export default {
       furnitures: [],
       checkedRows: [],
 
+      furnituresItem: [],
+
       lists: [],
 
+      address: [],
+
+      isComponentAddAddress: false,
+      isComponentRegister: false,
       isComponentContact: false,
       valueContact: "",
+      customerID: "",
 
       wall: "",
 
@@ -436,12 +482,18 @@ export default {
 
       windowWidth: 0,
       windowHeight: 0,
-      isMobile: false
+      isMobile: false,
+      isLogin: false,
+
+      userObj: JSON.parse(window.sessionStorage.getItem("user")) || {}
     };
   },
 
   async created() {
     console.log("created", this.$route.params.id);
+
+    this.isLogin = sessionStorage.getItem("user") !== null;
+    console.log("isLogin >> ", this.isLogin);
 
     await this.getLists();
 
@@ -468,6 +520,14 @@ export default {
           console.log("success >> ", res);
           if (res.status === 200) {
             console.log("data >> ", res.data);
+
+            this.furnituresItem = res.data.themeFurniture.map((item, index) => {
+              let furniture = {};
+              furniture.furID = item.funitureID;
+              furniture.price = item.cost;
+              furniture.quantity = item.quantity;
+              return furniture;
+            });
 
             if (res.data.link360) {
               this.link = res.data.link360;
@@ -500,7 +560,7 @@ export default {
                     name: "ไม้จริง",
                     price: fitIn
                       .filter(item => {
-                        return item.group === "mdf";
+                        return item.group.trim().toLowerCase() === "realwood";
                       })
                       .reduce((sum, item) => {
                         return sum + item.cost * item.quantity;
@@ -512,7 +572,7 @@ export default {
                     name: "MDF E1",
                     price: fitIn
                       .filter(item => {
-                        return item.group === "realwood";
+                        return item.group.trim().toLowerCase() === "mdf";
                       })
                       .reduce((sum, item) => {
                         return sum + item.cost * item.quantity;
@@ -520,7 +580,7 @@ export default {
                   }
                 ]
               });
-              this.wall = this.furnitures[0].item[0];
+              this.wall = this.furnitures[0].item[1];
             }
 
             let floating = res.data.themeFurniture
@@ -600,6 +660,22 @@ export default {
         });
     },
 
+    onRegisterClick(data) {
+      console.log("onRegisterClick", data);
+      if (data) {
+        this.isComponentRegister = false;
+        this.isRegister = false;
+        this.isLogin = false;
+        this.isLogout = true;
+        this.userObj = JSON.parse(window.sessionStorage.getItem("user")) || {};
+      }
+    },
+
+    onAddressClick() {
+      console.log("onAddressClick");
+      this.isComponentAddAddress = false;
+    },
+
     clickImg(id) {
       this.image = this.images.find(img => img.id === id);
     },
@@ -648,6 +724,82 @@ export default {
 
     clickContactUs() {
       window.open("https://www.messenger.com/t/dexcoro.official", "_blank");
+    },
+
+    async clickBuyNow() {
+      console.log("clickBuyNow user >> ", this.userObj.customerID);
+      this.customerID = this.userObj.customerID;
+
+      await this.getAddress();
+
+      if (this.address.length === 0) {
+        this.isComponentAddAddress = true;
+        return;
+      }
+
+      console.log("clickBuyNow address >> ", this.address[0].id);
+      console.log("clickBuyNow furnituresItem >> ", this.furnituresItem);
+      console.log("clickBuyNow customerID >> ", this.customerID);
+
+      await this.$http
+        .post(
+          "https://dezignserves.com/neworders/",
+          {
+            customerID: this.customerID,
+            addressID: this.address[0].id,
+            item: this.furnituresItem
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+            }
+          }
+        )
+        .then(res => {
+          console.log("res >> ", res);
+          if (res.status === 200) {
+            console.log("res.data >> ", res.data);
+            this.OrderID = res.data.OrderID;
+            console.log("OrderID>> ", this.OrderID);
+            this.isConfirm = true;
+            this.$router.push("/order/" + this.OrderID);
+          } else {
+            console.error("res.statusText >> ", res.statusText);
+          }
+        })
+        .catch(error => {
+          console.error("clickConfirm error >> ", error);
+        });
+    },
+
+    async getAddress() {
+      console.log("getAddress user >> ", this.userObj.customerID);
+      await this.$http
+        .get("https://dezignserves.com/api/addresses/", {
+          params: {
+            customer: this.userObj.customerID
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+          }
+        })
+        .then(res => {
+          if (res.status === 200) {
+            console.log("res >> ", res);
+            this.address = res.data;
+          } else {
+            console.error("res.statusText >> ", res.statusText);
+          }
+        })
+        .catch(error => {
+          console.error("clickConfirm error >> ", error);
+        });
+    },
+
+    newOrder() {
+      console.log("newOrder");
     },
 
     clickView360() {

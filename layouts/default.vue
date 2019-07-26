@@ -7,7 +7,7 @@
             style="max-height: 145px; max-width: 145px;"
             src="logo-dexcoro-COFFEE.png"
             @click="$router.push('/')"
-          >
+          />
         </a>
         <a
           role="button"
@@ -35,17 +35,47 @@
             </div>-->
             <a class="navbar-item" @click="isComponentRegister = true" v-show="isRegister">REGISTER</a>
             <a class="navbar-item" @click="isComponentLogin = true" v-show="isLogin">LOGIN</a>
-            <div class="navbar-item">{{userObj.user}}</div>
-            <a class="navbar-item" @click="onLogoutClick" v-show="isLogout">LOGOUT</a>
-            <div class="navbar-item" @click="clickProfile">
-              <i class="far fa-user"></i>
+            <div class="navbar-item">
+              <b-dropdown class="is-right" aria-role="list">
+                <p slot="trigger" v-show="!isLogin">
+                  {{userObj.user}}
+                  <i
+                    class="far fa-user"
+                    style="margin-left: 12px; margin-right: 12px;"
+                  ></i>
+                </p>
+                <!-- <b-dropdown-item aria-role="listitem">
+                  <div class="media">
+                    <b-icon class="media-left" icon="heart" pack="fa"></b-icon>
+                    <div class="media-content">
+                      <span class="s14">My Favorite</span>
+                    </div>
+                  </div>
+                </b-dropdown-item>
+                <b-dropdown-item aria-role="listitem" @click="onOrderClick">
+                  <div class="media">
+                    <b-icon class="media-left" icon="shopping-cart" pack="fa"></b-icon>
+                    <div class="media-content">
+                      <span class="s14">My Order</span>
+                    </div>
+                  </div>
+                </b-dropdown-item> -->
+                <b-dropdown-item aria-role="listitem" @click="onLogoutClick" v-show="isLogout">
+                  <div class="media">
+                    <b-icon class="media-left" icon="sign-out-alt" pack="fa"></b-icon>
+                    <div class="media-content">
+                      <span class="s14">Logout</span>
+                    </div>
+                  </div>
+                </b-dropdown-item>
+              </b-dropdown>
             </div>
           </div>
         </div>
       </div>
     </nav>
 
-    <nuxt style="padding: 60px 0px 48px 0px;"/>
+    <nuxt style="padding: 60px 0px 48px 0px;" />
 
     <div class="level navbar is-fixed-bottom">
       <div class="level-left"></div>
@@ -70,8 +100,11 @@
 </template>
 
 <script>
+// import { mapGetters } from 'vuex'
+
 import ModalRegister from "../components/register";
 import ModalLogin from "../components/login";
+
 export default {
   components: {
     ModalLogin,
@@ -104,6 +137,7 @@ export default {
       this.isLogin = false;
       this.isLogout = true;
     }
+    // console.log('mapGetters isMobile >> ', mapGetters(['isMobile']))
   },
 
   methods: {
@@ -119,12 +153,18 @@ export default {
     },
     onLoginClick(data) {
       console.log("onLoginClick", data);
+      if (data === "register") {
+        this.isComponentLogin = false;
+        this.isComponentRegister = true;
+        return;
+      }
       if (data) {
         this.isComponentLogin = false;
         this.isRegister = false;
         this.isLogin = false;
         this.isLogout = true;
         this.userObj = JSON.parse(window.sessionStorage.getItem("user")) || {};
+        window.location.reload();
       }
     },
     onLogoutClick(data) {
@@ -142,8 +182,14 @@ export default {
           this.isLogout = false;
           this.userObj =
             JSON.parse(window.sessionStorage.getItem("user")) || {};
+          window.location.reload();
+          this.$router.push("/");
         }
       });
+    },
+    onOrderClick() {
+      console.log("onOrderClick");
+      this.$router.push("/order");
     },
     clickToolbar() {
       this.active = this.active === "" ? "is-active" : "";

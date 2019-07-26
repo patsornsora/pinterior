@@ -722,7 +722,11 @@ export default {
               }
               if (item.themeFurniture) {
                 rItem.price = item.themeFurniture.reduce((sum, item) => {
-                  return sum + item.cost * item.quantity;
+                  if (item.group.trim().toLowerCase() === "realwood") {
+                    return sum;
+                  } else {
+                    return sum + item.cost * item.quantity;
+                  }
                 }, 0);
 
                 rItem.priceX = this.convertPrice(rItem.price);

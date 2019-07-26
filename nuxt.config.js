@@ -20,6 +20,10 @@ module.exports = {
     {
       src: "~/plugins/vuex-persistedstate",
       ssr: false
+    },
+    {
+      src: '~plugins/ga.js',
+      ssr: false
     }
   ],
 
@@ -30,23 +34,22 @@ module.exports = {
     credentials: false
   },
 
+  server: {
+    port: 8000, // default: 3000
+    host: '0.0.0.0', // default: localhost
+  },
+
+  serverMiddleware: [{
+    path: '~/result',
+    handler: '~/serverMiddleware/postRequestHandler.js'
+  }, ],
+
   proxy: {
-    // "/api": "http://127.0.0.1:5432",
     "/api": "http://dezignserves.com:5432",
-    // "/api": {
-    // target: "http://127.0.0.1:5432",
-    // changeOrigin: true
-    // changeOrigin: false
-    // },
-    // "/": {
-    //   target: "https://dezignserves.com:80",
-    //   changeOrigin: false
-    // },
     ws: true
   },
 
   modules: ["nuxt-buefy", "@nuxtjs/proxy", "@nuxtjs/axios"],
-  // "@nuxtjs/proxy", "@nuxtjs/axios", ,
 
   // render: {
   //   csp: true
@@ -57,8 +60,7 @@ module.exports = {
    */
   head: {
     title: "DEXCORO",
-    meta: [
-      {
+    meta: [{
         charset: "utf-8"
       },
       {
@@ -74,20 +76,17 @@ module.exports = {
         "http-equiv": "origin-trial",
         "data-feature": "WebVR (For Chrome M62+)",
         "data-expires": "2018-09-10",
-        content:
-          "AhQcOrbjvS0+50wwuqtAidzraKNfZj8Bj159g2+2LsT5QRHe9IeebCl5ApORwd3oGxfKzl5H8s5K3aTMNzC+5gsAAABPeyJvcmlnaW4iOiJodHRwczovL3dlYnZyLmluZm86NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xTTYyIiwiZXhwaXJ5IjoxNTM2NjAxNDEzfQ=="
+        content: "AhQcOrbjvS0+50wwuqtAidzraKNfZj8Bj159g2+2LsT5QRHe9IeebCl5ApORwd3oGxfKzl5H8s5K3aTMNzC+5gsAAABPeyJvcmlnaW4iOiJodHRwczovL3dlYnZyLmluZm86NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xTTYyIiwiZXhwaXJ5IjoxNTM2NjAxNDEzfQ=="
       }
     ],
-    link: [
-      {
+    link: [{
         rel: "icon",
         type: "image/x-icon",
         href: "/iconDexcoromini.ico"
       },
       {
         rel: "stylesheet",
-        href:
-          "https://fonts.googleapis.com/css?family=Lato|Montserrat|Kanit|Pattaya"
+        href: "https://fonts.googleapis.com/css?family=Lato|Montserrat|Kanit|Pattaya"
       }
     ]
   },
@@ -113,7 +112,10 @@ module.exports = {
     /*
      ** Run ESLint on save
      */
-    extend(config, { isDev, isClient }) {
+    extend(config, {
+      isDev,
+      isClient
+    }) {
       if (isDev && isClient) {
         config.module.rules.push({
           enforce: "pre",
