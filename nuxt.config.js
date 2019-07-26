@@ -36,7 +36,8 @@ module.exports = {
 
   server: {
     port: 8000, // default: 3000
-    host: '0.0.0.0', // default: localhost
+    host: 'localhost', // default: localhost
+    // host: '0.0.0.0', // default: localhost
   },
 
   serverMiddleware: [{
