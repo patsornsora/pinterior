@@ -138,11 +138,11 @@
     </div>
 
     <b-modal :active.sync="isComponentPayment" has-modal-card>
-      <modal-payment :valuePayment="valuePayment" v-on:childToParent="onPaymentClick"></modal-payment>
+      <modal-payment :valuePayment="valuePayment" @childToParent="onPaymentClick"></modal-payment>
     </b-modal>
 
     <b-modal :active.sync="isComponentChangeAddress" has-modal-card>
-      <modal-change-address :valueAddress="valueAddress" v-on:childToParent="onChangeAddressClick"></modal-change-address>
+      <modal-change-address :valueAddress="valueAddress" @childToParent="onChangeAddressClick"></modal-change-address>
     </b-modal>
 
     <b-modal :active.sync="isComponentAddAddress" has-modal-card>
@@ -150,6 +150,7 @@
         :customerID="this.userObj.customerID"
         v-on:childToParent="onAddressClick"
         style="min-width: 300px;"
+        :canCancel="false"
       ></modal-add-address>
     </b-modal>
   </div>
@@ -210,6 +211,7 @@ export default {
 
       address: [],
       orderItems: [],
+      preAdd: {},
 
       valuePayment: {},
       valueAddress: {},
@@ -244,7 +246,6 @@ export default {
       console.log("onChangeAddressClick");
 
       this.form.ad = data;
-
       this.isComponentChangeAddress = false;
     },
 
@@ -253,11 +254,7 @@ export default {
     },
 
     clickEditAddress() {
-      this.valueAddress = {
-        address: this.address,
-        ad: this.form.ad
-      };
-
+      this.valueAddress = this.form.ad;
       this.isComponentChangeAddress = true;
     },
 
@@ -318,8 +315,6 @@ export default {
       await this.getAddress();
       await this.getOrder();
 
-      this.form.ad = this.address[0];
-
       console.log("getData address >> ", this.form.ad);
     },
 
@@ -327,20 +322,25 @@ export default {
       console.log("getAddress");
 
       await this.$http
-        .get("https://dezignserves.com/api/addresses/", {
-          params: {
-            customer: this.userObj.customerID
-          },
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+        .get(
+          "https://dezignserves.com/api/customerdetails/" +
+            this.userObj.customerID,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+            }
           }
-        })
+        )
         .then(res => {
           if (res.status === 200) {
-            console.log("res >> ", res);
+            this.address = res.data.addAll.filter(
+              item => item.working === true
+            );
+            console.log("address >> ", this.address);
+            this.form.ad = this.address[0];
 
-            this.address = res.data;
+            window.sessionStorage.setItem("address", this.preAdd.id);
           } else {
             console.error("res.statusText >> ", res.statusText);
           }
@@ -430,6 +430,19 @@ export default {
     }
   },
 
-  watch: {}
+  watch: {
+    isComponentChangeAddress() {
+      if (
+        !this.isComponentChangeAddress &&
+        window.sessionStorage.getItem("address") !== this.form.ad
+      ) {
+        this.form.ad = this.address.filter(
+          item =>
+            item.id.toString() ===
+            window.sessionStorage.getItem("address").toString()
+        )[0];
+      }
+    }
+  }
 };
 </script>

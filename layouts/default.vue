@@ -59,7 +59,7 @@
                       <span class="s14">My Order</span>
                     </div>
                   </div>
-                </b-dropdown-item> -->
+                </b-dropdown-item>-->
                 <b-dropdown-item aria-role="listitem" @click="onLogoutClick" v-show="isLogout">
                   <div class="media">
                     <b-icon class="media-left" icon="sign-out-alt" pack="fa"></b-icon>
@@ -177,6 +177,7 @@ export default {
         onConfirm: () => {
           console.log("Logout");
           window.sessionStorage.removeItem("user");
+          window.sessionStorage.removeItem("address");
           this.isRegister = true;
           this.isLogin = true;
           this.isLogout = false;

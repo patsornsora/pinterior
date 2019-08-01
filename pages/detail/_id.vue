@@ -274,7 +274,7 @@
         </div>
         <div class="s10 th" style="text-align: right;">ติดต่อเพื่อประเมินราคา</div>
       </v-flex>
-      <!-- <v-flex xs2 md1 style="margin-left: 12px;">
+      <v-flex xs2 md1 style="margin-left: 12px;">
         <div>
           <button
             class="button color-brown"
@@ -282,7 +282,7 @@
             @click="clickBuyNow"
           >BUY NOW</button>
         </div>
-      </v-flex>-->
+      </v-flex>
 
       <!-- <v-flex xs12>
         <div class="columns">
