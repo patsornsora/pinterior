@@ -74,11 +74,6 @@ export default {
     this.getAddress();
   },
 
-  watch: {
-    address() {
-      window.sessionStorage.setItem("address", this.address.id);
-    }
-  },
   methods: {
     async clickDelete(id) {
       console.log("clickDelete >> ", this.address);
@@ -151,6 +146,13 @@ export default {
       this.addressAll.push(res);
       this.address = res;
     }
+  },
+
+  watch: {},
+
+  destroyed() {
+    console.log("destroyed");
+    this.$emit("childToParent", this.address);
   }
 };
 </script>

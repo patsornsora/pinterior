@@ -82,7 +82,7 @@
         <v-flex xs6>
           <div
             class="th"
-          >{{form.ad.address}} {{form.ad.district}} {{form.ad.sub_district}} {{form.ad.province}} {{form.ad.post_code}}</div>
+          >{{form.address.address}} {{form.address.district}} {{form.address.sub_district}} {{form.address.province}} {{form.address.post_code}}</div>
         </v-flex>
       </v-layout>
     </div>
@@ -137,6 +137,14 @@
       >Confirm Order</button>
     </div>
 
+    <b-modal :active.sync="isComponentLogin" has-modal-card>
+      <modal-login v-on:childToParent="onLoginClick"></modal-login>
+    </b-modal>
+
+    <b-modal :active.sync="isComponentRegister" has-modal-card>
+      <modal-register v-on:childToParent="onRegisterClick" style="min-width: 300px;"></modal-register>
+    </b-modal>
+
     <b-modal :active.sync="isComponentPayment" has-modal-card>
       <modal-payment :valuePayment="valuePayment" @childToParent="onPaymentClick"></modal-payment>
     </b-modal>
@@ -153,31 +161,48 @@
         :canCancel="false"
       ></modal-add-address>
     </b-modal>
+
+    <b-modal :active.sync="isComponentSelectDate" has-modal-card>
+      <modal-select-date
+        :valueSelectDate="valueSelectDate"
+        @childToParent="onSelectDateClick"
+        style="min-width: 300px;"
+      ></modal-select-date>
+    </b-modal>
   </div>
 </template>
 
 <script>
+import ModalLogin from "~/components/login";
+import ModalRegister from "~/components/register";
 import ModalPayment from "~/components/payment";
 import ModalChangeAddress from "~/components/changeAddress";
 import ModalAddAddress from "~/components/addAddress";
+import ModalSelectDate from "~/components/selectDate";
 
 export default {
   components: {
+    ModalLogin,
+    ModalRegister,
     ModalPayment,
     ModalChangeAddress,
-    ModalAddAddress
+    ModalAddAddress,
+    ModalSelectDate
   },
   data() {
     return {
+      isComponentLogin: false,
+      isComponentRegister: false,
       isComponentPayment: false,
       isComponentChangeAddress: false,
       isComponentAddAddress: false,
+      isComponentSelectDate: true,
 
       form: {
         orderID: "",
         name: "",
         phone: "",
-        ad: {
+        address: {
           address: "",
           district: "",
           post_code: "",
@@ -215,6 +240,7 @@ export default {
 
       valuePayment: {},
       valueAddress: {},
+      valueSelectDate: {},
 
       userObj: JSON.parse(window.sessionStorage.getItem("user")) || {}
     };
@@ -225,19 +251,45 @@ export default {
 
     console.log("created reservation >> ", this.amountString(this.reservation));
 
-    this.form.orderID = this.$route.params.id;
-    console.log("created >> orderID", this.form.orderID);
-
     if (window.sessionStorage.getItem("user")) {
-      console.log("created query >> ", this.$route.query);
-      console.log("created params >> ", this.$route.params);
+      this.form.orderID = this.$route.params.id;
+      console.log("created >> orderID", this.form.orderID);
 
-      await this.getData();
-      console.log("getData form >> ", this.form);
+      if (window.sessionStorage.getItem("user")) {
+        console.log("created query >> ", this.$route.query);
+        console.log("created params >> ", this.$route.params);
+
+        await this.getData();
+        console.log("getData form >> ", this.form);
+      }
+    } else {
+      this.isComponentLogin = true;
     }
   },
 
   methods: {
+    onLoginClick(data) {
+      console.log("onLoginClick", data);
+      if (data === "register") {
+        this.isComponentLogin = false;
+        this.isComponentRegister = true;
+        return;
+      }
+      if (data) {
+        this.isComponentLogin = false;
+        this.userObj = JSON.parse(window.sessionStorage.getItem("user")) || {};
+        window.location.reload();
+      }
+    },
+
+    onRegisterClick(data) {
+      console.log("onRegisterClick", data);
+      if (data) {
+        this.isComponentRegister = false;
+        this.userObj = JSON.parse(window.sessionStorage.getItem("user")) || {};
+      }
+    },
+
     onPaymentClick() {
       console.log("onPaymentClick");
     },
@@ -245,22 +297,23 @@ export default {
     onChangeAddressClick(data) {
       console.log("onChangeAddressClick");
 
-      this.form.ad = data;
+      this.form.address = data;
       this.isComponentChangeAddress = false;
     },
 
-    onRegisterClick(data) {
-      console.log("onRegisterClick");
-    },
-
     clickEditAddress() {
-      this.valueAddress = this.form.ad;
+      this.valueAddress = this.form.address;
       this.isComponentChangeAddress = true;
     },
 
     onAddressClick() {
       console.log("onAddressClick");
       this.isComponentAddAddress = false;
+    },
+
+    onSelectDateClick() {
+      console.log("onSelectDateClick");
+      this.isComponentSelectDate = false;
     },
 
     async clickConfirm() {
@@ -273,8 +326,8 @@ export default {
             orderID: this.form.orderID,
             amountString: this.amountString(this.reservation),
             payment_description: "paymentOrder" + this.form.orderID,
-            result_url: "http://localhost:3000/#/result"
-            // result_url: "http://localhost:3000/#/order/" + this.form.orderID
+            result_url: "http://localhost:8000/#/result"
+            // result_url: "http://localhost:8000/#/order/" + this.form.orderID
           },
           {
             headers: {
@@ -315,7 +368,7 @@ export default {
       await this.getAddress();
       await this.getOrder();
 
-      console.log("getData address >> ", this.form.ad);
+      console.log("getData address >> ", this.form.address);
     },
 
     async getAddress() {
@@ -338,7 +391,7 @@ export default {
               item => item.working === true
             );
             console.log("address >> ", this.address);
-            this.form.ad = this.address[0];
+            this.form.address = this.address[0];
 
             window.sessionStorage.setItem("address", this.preAdd.id);
           } else {
@@ -430,19 +483,6 @@ export default {
     }
   },
 
-  watch: {
-    isComponentChangeAddress() {
-      if (
-        !this.isComponentChangeAddress &&
-        window.sessionStorage.getItem("address") !== this.form.ad
-      ) {
-        this.form.ad = this.address.filter(
-          item =>
-            item.id.toString() ===
-            window.sessionStorage.getItem("address").toString()
-        )[0];
-      }
-    }
-  }
+  watch: {}
 };
 </script>
