@@ -511,11 +511,14 @@ export default {
     async getLists() {
       console.log("getLists");
       await this.$http
-        .get("https://dezignserves.com/api/themes/" + this.$route.params.id, {
-          headers: {
-            Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+        .get(
+          "https://dezignserves.com/api/themes/" + this.$route.params.id + "/",
+          {
+            headers: {
+              Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+            }
           }
-        })
+        )
         .then(res => {
           console.log("success >> ", res);
           if (res.status === 200) {

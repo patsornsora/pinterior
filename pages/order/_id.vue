@@ -116,7 +116,7 @@
             <v-flex xs6 class="th s12" style="text-align: right;">฿{{formatNum(total)}}</v-flex>
           </v-layout>
           <v-layout row wrap>
-            <v-flex xs6 class="th s12">RESERVATION COST</v-flex>
+            <v-flex xs6 class="th s12">RESERVAT6.ION COST</v-flex>
             <v-flex xs6 class="th s12" style="text-align: right;">฿{{formatNum(reservation)}}</v-flex>
           </v-layout>
 
@@ -214,11 +214,11 @@ export default {
       reservation: 10000,
 
       status: {
-        p1: "/icon/showroom.png",
-        p2: "/icon/showroom.png",
-        p3: "/icon/showroom.png",
-        p4: "/icon/showroom.png",
-        p5: "/icon/showroom.png",
+        p1: "/icon/p_box_active.png",
+        p2: "/icon/p_hand_active.png",
+        p3: "/icon/p_appointment_active.png",
+        p4: "/icon/p_delivery_active.png",
+        p5: "/icon/p_checked_active.png",
         s1: "lens",
         s2: "panorama_fish_eye",
         s3: "panorama_fish_eye",
@@ -407,7 +407,7 @@ export default {
       console.log("getOrder");
 
       await this.$http
-        .get("https://dezignserves.com/api/orderitems", {
+        .get("https://dezignserves.com/api/orderitems/", {
           params: {
             order: this.form.orderID
           },

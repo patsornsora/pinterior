@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="editor" ref="editor">
+    <div id="editor" ref="editor" v-show="!statusLike">
       <figure class="image is-full">
         <v-img :aspect-ratio="7/2" src="banner/b1.png" target="_blank"></v-img>
       </figure>
@@ -200,7 +200,22 @@
       </div>-->
     </div>
 
-    <div class="columns is-gapless">
+    <div style="position: fixed; left: 0%; right: 0%;">
+      <div v-show="statusLike" style="height: 70px;">
+        <div class="s12" style="text-align: left;">
+          <div class="s18" style=" text-align: center;">
+            <b-icon class="media-left" icon="heart" pack="fa"></b-icon>
+            <b>My Favorite</b>
+          </div>
+          <v-btn icon @click="clickBackFavorite()">
+            <v-icon>keyboard_arrow_left</v-icon>
+          </v-btn>
+          <a class="has-text-black" @click="clickBackFavorite()">BACK</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-gapless" :style="statusLike?'margin-top: 70px;':''">
       <!-- <div class="column is-narrow" v-show="showFilter">
         <div style="width: 200px; padding: 10px 10px 10px 10px;">
           <b-field label="DEVOLOPER">
@@ -348,11 +363,14 @@
                             @click="item.favorite = !item.favorite"
                             style="margin: 0px;"
                           >
-                            <v-icon v-if="!item.favorite" @click="clickFavorite()">favorite_border</v-icon>
+                            <v-icon
+                              v-if="!item.favorite"
+                              @click="clickFavorite(item.id)"
+                            >favorite_border</v-icon>
                             <v-icon
                               v-if="item.favorite"
                               color="red"
-                              @click="clickUnFavorite()"
+                              @click="clickUnFavorite(item.likeID)"
                             >favorite</v-icon>
                           </v-btn>
                         </div>
@@ -480,6 +498,13 @@
         ></iframe>
       </section>
     </v-dialog>
+
+    <!-- <v-dialog v-model="isComponentEvent" width="640">
+      <v-card class="text-xs-right" style="background-color: rgba(0, 0, 0, 0.1);">
+        <v-icon style="color: rgba(255, 255, 255, 0.7);" @click="isComponentEvent = false">cancel</v-icon>
+        <v-img style="min-width: 200px;" src="/event/12aug.png"></v-img>
+      </v-card>
+    </v-dialog>-->
   </div>
 </template>
 
@@ -504,6 +529,8 @@ export default {
       user: false,
       // isLogin: false,
 
+      isBanner: true,
+      isComponentEvent: false,
       isIframe: false,
       iframeSrc: "",
       isMobile: false,
@@ -591,58 +618,32 @@ export default {
         { value: "innolife", text: "innolife" }
       ],
       lists: [],
+      AllList: [],
       color: "#4a4a4a",
       colors: [],
       cbStyle: [],
-      isRandom: true
+      isRandom: true,
+      statusLike:
+        JSON.parse(window.sessionStorage.getItem("statusLike")) || false,
+      likes: [],
+
+      userObj: JSON.parse(window.sessionStorage.getItem("user")) || {}
     };
   },
 
   async created() {
-    this.isLogin = sessionStorage.getItem("user") !== null;
     console.log("isLogin >> ", this.isLogin);
-    this.getTheme();
+    this.isLogin = sessionStorage.getItem("user") !== null;
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
     this.isMobile = this.windowWidth < 450 || this.windowHeight < 450;
 
-    // var list = [
-    //   {
-    //     id: 254,
-    //     title: "Title1",
-    //     designer: "dexcoro",
-    //     project: "Project1",
-    //     type: "Type",
-    //     img: "/room/r1/1.png",
-    //     price: "36000",
-    //     link: "https://roundme.com/embed/409197/1427363",
-    //     favorite: false
-    //   }]
-
-    if (
-      sessionStorage.getItem("isRandom") ||
-      sessionStorage.getItem("isSearchByImage")
-    ) {
-      this.isRandom = false;
-      if (sessionStorage.getItem("isSearchByImage")) {
-        console.log('sessionStorage.getItem("isSearchByImage")');
-        this.lists = JSON.parse(
-          window.sessionStorage.getItem("isSearchByImage")
-        ).lists;
-        this.imgSearch = JSON.parse(
-          window.sessionStorage.getItem("isSearchByImage")
-        ).imgSearch;
-      } else {
-        this.lists = JSON.parse(window.sessionStorage.getItem("isRandom"));
-      }
-    } else {
-      var listLength = this.lists.length;
-      for (var i = 0; i < listLength; i++) {
-        var r = Math.ceil(Math.random() * this.lists.length - 1);
-        this.lists.push(list[r]);
-        this.lists.splice(r, 1);
-      }
-      window.sessionStorage.setItem("isRandom", JSON.stringify(this.lists));
+    // await this.setEvent();
+    await this.getTheme();
+    await this.setTheme();
+    if (this.isLogin) {
+      await this.getLike();
+      await this.setLike();
     }
   },
 
@@ -650,12 +651,14 @@ export default {
     windowWidth() {
       this.showFilter = this.windowWidth > 960;
     },
+
     color() {
       console.log("color", this.color);
       // this.isComponentColor = false;
       this.colors.push({ color: this.color });
       this.isSelectColor = !this.isSelectColor;
     },
+
     colors() {
       if (this.colors.length < 5) {
         this.isAddColor = true;
@@ -663,9 +666,12 @@ export default {
         this.isAddColor = false;
       }
     },
+
     valueImage() {
       console.log("valueImage >> ", this.valueImage);
-    }
+    },
+
+    likes() {}
     // user() {
     //   this.isLogin = sessionStorage.getItem("user") !== null;
     // }
@@ -683,7 +689,7 @@ export default {
     });
     this.$nextTick(() => {
       window.addEventListener("resize", () => {
-        this.windowWidth = window.innerWidth;
+        this.windowWidth = window.innerWidth;  
         this.windowHeight = window.innerHeight;
         this.isMobile = this.windowWidth < 450 || this.windowHeight < 450;
       });
@@ -692,16 +698,119 @@ export default {
 
   computed: {
     // isLogin() {
+      //
     //   return sessionStorage.getItem("user") !== null;
     //   console.log("computed");
     // }
   },
 
   methods: {
+    clickBackFavorite() {
+      console.log("clickBackFavorite");
+      window.sessionStorage.setItem("statusLike", !this.statusLike);
+      window.location.reload();
+    },
+
+    setLike() {
+      // console.log("setLike");
+      if (this.statusLike) {
+        this.lists = JSON.parse(this.AllList).filter(
+          item => item.favorite === true
+        );
+      }
+    },
+
+    async getLike() {
+      console.log("getLike");
+      await this.$http
+        .get("https://dezignserves.com/api/likes/", {
+          params: {
+            customer: this.userObj.customerID
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+          }
+        })
+        .then(res => {
+          if (res.status === 200) {
+            console.log("getLike", res.data);
+            res.data.forEach(item =>
+              this.likes.push({ themeID: item.theme, likeID: item.id })
+            );
+
+            this.lists = JSON.parse(this.AllList).filter(itemA => {
+              if (
+                this.likes.filter(itemL => itemL.themeID === itemA.id).length >
+                0
+              ) {
+                if (
+                  itemA.id ===
+                  this.likes.filter(itemL => itemL.themeID === itemA.id)[0]
+                    .themeID
+                ) {
+                  itemA.favorite = true;
+
+                  itemA.likeID = this.likes.filter(
+                    itemL => itemL.themeID === itemA.id
+                  )[0].likeID;
+                }
+                return itemA;
+              }
+              return itemA;
+            });
+
+            this.AllList = JSON.stringify(this.lists);
+            console.log("AllList", this.lists);
+          } else {
+            console.error("getLike status is not 200 >> ", res.statusText);
+          }
+        })
+        .catch(error => {
+          console.error("getLike error >> ", error);
+        });
+    },
+
+    setEvent() {
+      if (sessionStorage.getItem("isComponentEvent")) {
+        this.isComponentEvent = false;
+      } else {
+        this.isComponentEvent = true;
+        window.sessionStorage.setItem("isComponentEvent", false);
+      }
+    },
+
+    setTheme() {
+      if (
+        sessionStorage.getItem("isRandom") ||
+        sessionStorage.getItem("isSearchByImage")
+      ) {
+        this.isRandom = false;
+        if (sessionStorage.getItem("isSearchByImage")) {
+          this.lists = JSON.parse(
+            window.sessionStorage.getItem("isSearchByImage")
+          ).lists;
+          this.imgSearch = JSON.parse(
+            window.sessionStorage.getItem("isSearchByImage")
+          ).imgSearch;
+        } else {
+          this.lists = JSON.parse(sessionStorage.getItem("isRandom"));
+        }
+      } else {
+        var listLength = this.lists.length;
+        for (var i = 0; i < listLength; i++) {
+          var r = Math.ceil(Math.random() * this.lists.length - 1);
+          this.lists.push(this.lists[r]);
+          this.lists.splice(r, 1);
+        }
+        window.sessionStorage.setItem("isRandom", JSON.stringify(this.lists));
+      }
+    },
+
     async getTheme() {
       console.log("getTheme");
       await this.$http
-        .get("https://dezignserves.com/api/themes", {
+        .get("https://dezignserves.com/api/themes/", {
           headers: {
             Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
           }
@@ -734,13 +843,18 @@ export default {
               return rItem;
             });
             console.log("lists >> ", this.lists);
+          } else {
+            console.error("getTheme status is not 200 >> ", res.statusText);
           }
         })
         .catch(error => {
           console.error("error >> ", error);
           this.isInvalid = true;
         });
+      this.AllList = JSON.stringify(this.lists);
+      // console.log("AllList >> ", this.AllList);
     },
+
     convertPrice(price) {
       let xxx = "";
       for (let i = 1; i < price.toString().length; i++) {
@@ -748,6 +862,7 @@ export default {
       }
       return price.toString().substring(0, 1) + xxx;
     },
+
     formatNum(number) {
       var newNum = "";
       var oldNumStr = number + "";
@@ -765,6 +880,7 @@ export default {
       }
       return newNum;
     },
+
     priceWithCommas(price) {
       let l = parseInt(price.toString().length / 3);
       console.log("length >> ", l);
@@ -773,24 +889,121 @@ export default {
       console.log("price >> ", xx);
       // return price.toString().length;
     },
+
     goLink(link) {
       // window.open(link, "_blank");
     },
-    clickFavorite() {
-      console.log("clickFavorite");
+
+    async clickFavorite(themeID) {
+      console.log("clickFavorite themeID >> ", themeID);
+
+      await this.$http
+        .post(
+          "https://dezignserves.com/api/likes/",
+          JSON.stringify({
+            customer: this.userObj.customerID,
+            theme: themeID
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+            }
+          }
+        )
+        .then(res => {
+          if (res.status === 201) {
+          } else {
+            console.error(
+              "clickFavorite status is not 201 >> ",
+              res.statusText
+            );
+          }
+        })
+        .catch(error => {
+          console.error("getLike error >> ", error);
+        });
     },
-    clickUnFavorite() {
-      console.log("clickUnFavorite");
+
+    async clickUnFavorite(likeID) {
+      console.log("clickUnFavorite", likeID);
+      let aList = JSON.parse(this.AllList).filter(
+        item => item.likeID === likeID
+      );
+
+      console.log("aList", aList);
+      console.log("aList", aList[0]);
+      console.log("AllList", JSON.parse(this.AllList));
+
+      let ll = JSON.parse(this.AllList).map(item => {
+        let rItem = {};
+        rItem.id = item.id;
+        rItem.img = item.img;
+        rItem.price = item.price;
+        rItem.priceX = item.priceX;
+        rItem.likeID = item.likeID ? item.likeID : "";
+        if (item.id === aList[0].id) {
+          rItem.favorite = false;
+        }
+        return rItem;
+      });
+
+      console.log("ll", ll);
+
+      this.AllList = JSON.stringify(ll);
+      // console.log(
+      //   "ll",
+      //   JSON.parse(this.AllList).map(item => {
+      //     console.log("item", item);
+      //     if (item === aList[0]) {
+      //       console.log("1");
+      //       let rItem = {};
+      //       rItem.id = item.id;
+      //       return rItem;
+      //     }
+      //   })
+      // );
+
+      console.log("AllList", JSON.parse(this.AllList));
+
+      await this.$http
+        .post(
+          "https://dezignserves.com/api/unlike/",
+          {
+            id_like: likeID
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+            }
+          }
+        )
+        .then(res => {
+          if (res.status === 200) {
+          } else {
+            console.error(
+              "clickFavorite status is not 200 >> ",
+              res.statusText
+            );
+          }
+        })
+        .catch(error => {
+          console.error("getLike error >> ", error);
+        });
     },
+
     clickPicture() {
       console.log("clickPicture");
     },
+
     clickDetail(id) {
       // this.$router.push("/detail");
       if (!this.isIframe) {
         this.$router.push("/detail/" + id);
       }
     },
+
     clickTab(type) {
       switch (type) {
         case "all":
@@ -885,6 +1098,7 @@ export default {
           break;
       }
     },
+
     setList(typeHome) {
       console.log(
         "filter",
@@ -897,19 +1111,23 @@ export default {
         this.colors
       );
     },
+
     clickView360(link) {
       this.isIframe = true;
       this.iframeSrc = link;
 
       console.log("clickView360");
     },
+
     clickAddColor() {
       this.isComponentAddColor = true;
       console.log("clickAddColor");
     },
+
     clickClearColor() {
       this.colors = [];
     },
+
     clickResetFilter() {
       this.developer = "0";
       this.brandProduct = "0";
@@ -938,6 +1156,7 @@ export default {
 
       this.setList("all");
     },
+
     clickColor(index) {
       this.$dialog.confirm({
         // title: "Deleting COLOR TONE",
@@ -949,6 +1168,7 @@ export default {
         onConfirm: () => this.colors.splice(index, 1)
       });
     },
+
     onChildClick(file) {
       this.isComponentImage = false;
       if (file) {

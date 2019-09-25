@@ -111,7 +111,8 @@ export default {
       await this.$http
         .get(
           "https://dezignserves.com/api/customerdetails/" +
-            this.userObj.customerID,
+            this.userObj.customerID +
+            "/",
           {
             headers: {
               "Content-Type": "application/json",

@@ -58,7 +58,7 @@
       <template slot-scope="props">
         <b-table-column field="id" label="ID" width="40" sortable numeric>{{ props.row.id }}</b-table-column>
         <b-table-column field="model" label="Model" width="250" centered>
-          <img :src="props.row.model" style="height: 200px;">
+          <img :src="props.row.model" style="height: 200px;" />
         </b-table-column>
         <b-table-column
           field="supplier"
@@ -143,7 +143,7 @@ export default {
     async getFurniture() {
       console.log("getFurniture");
       await this.$http
-        .get("https://dezignserves.com/api/furnitures", {
+        .get("https://dezignserves.com/api/furnitures/", {
           headers: {
             Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
           }

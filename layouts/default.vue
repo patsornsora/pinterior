@@ -44,15 +44,15 @@
                     style="margin-left: 12px; margin-right: 12px;"
                   ></i>
                 </p>
-                <!-- <b-dropdown-item aria-role="listitem">
+                <b-dropdown-item aria-role="listitem" @click="clickFavorite">
                   <div class="media">
-                    <b-icon class="media-left" icon="heart" pack="fa"></b-icon>
+                    <b-icon class="media-left" icon="heart" :pack="packHeart"></b-icon>
                     <div class="media-content">
                       <span class="s14">My Favorite</span>
                     </div>
                   </div>
                 </b-dropdown-item>
-                <b-dropdown-item aria-role="listitem" @click="onOrderClick">
+                <!-- <b-dropdown-item aria-role="listitem" @click="onOrderClick">
                   <div class="media">
                     <b-icon class="media-left" icon="shopping-cart" pack="fa"></b-icon>
                     <div class="media-content">
@@ -128,7 +128,13 @@ export default {
         username: "testuser1",
         password: "Thisisp@ssw0rd"
       },
-      userObj: JSON.parse(window.sessionStorage.getItem("user")) || {}
+      userObj: JSON.parse(window.sessionStorage.getItem("user")) || {},
+
+      statusLike:
+        JSON.parse(window.sessionStorage.getItem("statusLike")) || false,
+      packHeart: JSON.parse(window.sessionStorage.getItem("statusLike"))
+        ? "far"
+        : "fa"
     };
   },
   created() {
@@ -137,10 +143,24 @@ export default {
       this.isLogin = false;
       this.isLogout = true;
     }
+    console.log("statusLike", this.statusLike);
     // console.log('mapGetters isMobile >> ', mapGetters(['isMobile']))
   },
 
   methods: {
+    async clickFavorite() {
+      console.log("clickFavorite");
+
+      window.sessionStorage.setItem("statusLike", !this.statusLike);
+      this.statusLike = !this.statusLike;
+      if (this.statusLike) {
+        this.packHeart = "fa";
+      } else {
+        this.packHeart = "far";
+      }
+      window.location.reload();
+    },
+
     onRegisterClick(data) {
       console.log("onRegisterClick", data);
       if (data) {
@@ -206,7 +226,7 @@ export default {
     }
   },
   watch: {
-    formProps() {
+    statusLike() {
       console.log("formProps");
     }
   }

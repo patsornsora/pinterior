@@ -36,7 +36,7 @@ export default {
   methods: {
     get360(id) {
       this.$http
-        .get("https://dezignserves.com/api/themes/" + id, {
+        .get("https://dezignserves.com/api/themes/" + id + "/", {
           headers: {
             Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
           }
