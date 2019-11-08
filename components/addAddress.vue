@@ -103,7 +103,7 @@ export default {
         .post(
           "https://dezignserves.com/api/addresses/",
           {
-            customer: 15,
+            customer: this.customerID,
             district: this.form.district,
             sub_district: this.form.subDistrict,
             province: this.form.province,

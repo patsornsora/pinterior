@@ -1,5 +1,9 @@
 <template>
-  <ul>
+  <div>
+    <div>test</div>
+    <nuxt-link to="~/components/payment">payment</nuxt-link>
+  </div>
+  <!-- <ul>
     <li v-for="todo in todos" :key="todo">
       <input type="checkbox" :checked="todo.done" @change="toggle(todo)">
       <span :class="{ done: todo.done }">{{ todo.text }}</span>
@@ -18,35 +22,39 @@
       <input placeholder="favorites?" @keyup.enter="addFavorite">
     </li>
     {{$store.state.favorites.list}}
-  </ul>
+  </ul>-->
 </template>
 
 <script>
 import { mapMutations } from "vuex";
+import Payment from "~/components/payment";
 
 export default {
-  computed: {
-    todos() {
-      return this.$store.state.todos.list;
-    },
-    favorites() {
-      return this.$store.state.favorites.list;
-    }
-  },
-  methods: {
-    addTodo(e) {
-      this.$store.commit("todos/add", e.target.value);
-      e.target.value = "";
-    },
-    ...mapMutations({
-      toggle: "todos/toggle"
-      // toggle: "favorites/toggle"
-    }),
-    addFavorite(e) {
-      this.$store.commit("favorites/add", e.target.value);
-      e.target.value = "";
-    }
+  components: {
+    Payment
   }
+  // computed: {
+  //   todos() {
+  //     return this.$store.state.todos.list;
+  //   },
+  //   favorites() {
+  //     return this.$store.state.favorites.list;
+  //   }
+  // },
+  // methods: {
+  //   addTodo(e) {
+  //     this.$store.commit("todos/add", e.target.value);
+  //     e.target.value = "";
+  //   },
+  //   ...mapMutations({
+  //     toggle: "todos/toggle"
+  //     // toggle: "favorites/toggle"
+  //   }),
+  //   addFavorite(e) {
+  //     this.$store.commit("favorites/add", e.target.value);
+  //     e.target.value = "";
+  //   }
+  // }
 };
 </script>
 

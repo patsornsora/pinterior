@@ -33,18 +33,8 @@
                 <a class="navbar-item" @click="clickTH">TH</a>
               </div>
             </div>-->
-            <a
-              class="navbar-item"
-              style="font-size: 13px;"
-              @click="isComponentRegister = true"
-              v-show="isRegister"
-            >REGISTER</a>
-            <a
-              class="navbar-item"
-              style="font-size: 13px;"
-              @click="isComponentLogin = true"
-              v-show="isLogin"
-            >LOGIN</a>
+            <a class="navbar-item" @click="isComponentRegister = true" v-show="isRegister">REGISTER</a>
+            <a class="navbar-item" @click="isComponentLogin = true" v-show="isLogin">LOGIN</a>
             <div class="navbar-item">
               <b-dropdown class="is-right" aria-role="list">
                 <p slot="trigger" v-show="!isLogin">
@@ -62,14 +52,14 @@
                     </div>
                   </div>
                 </b-dropdown-item>
-                <b-dropdown-item aria-role="listitem" @click="clickOrder" v-if="isCustomer">
+                <!-- <b-dropdown-item aria-role="listitem" @click="onOrderClick">
                   <div class="media">
                     <b-icon class="media-left" icon="shopping-cart" pack="fa"></b-icon>
                     <div class="media-content">
                       <span class="s14">My Order</span>
                     </div>
                   </div>
-                </b-dropdown-item>
+                </b-dropdown-item>-->
                 <b-dropdown-item aria-role="listitem" @click="onLogoutClick" v-show="isLogout">
                   <div class="media">
                     <b-icon class="media-left" icon="sign-out-alt" pack="fa"></b-icon>
@@ -87,7 +77,7 @@
 
     <nuxt style="padding: 60px 0px 48px 0px;" />
 
-    <div class="level navbar is-fixed-bottom" style="margin-bottom: 0rem;">
+    <div class="level navbar is-fixed-bottom">
       <div class="level-left"></div>
       <div class="level-right">
         <div class="level-item">
@@ -106,35 +96,6 @@
     <b-modal :active.sync="isComponentRegister" has-modal-card>
       <modal-register v-on:childToParent="onRegisterClick" style="min-width: 300px;"></modal-register>
     </b-modal>
-
-    <v-dialog v-model="dOrderList" width="300">
-      <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>MY ORDER</v-card-title>
-
-        <v-card-text v-if="orderList.length === 0">No order</v-card-text>
-
-        <div v-if="orderList.length > 1">
-          <div v-for="(item, i) in orderList" :key="i" style="text-align: center;">
-            <button
-              class="button btn3 color-brown"
-              style="margin: 6px 0px 6px 0px; width: 90%;"
-              text
-              @click="clickOrderDetail(item.id)"
-            >Order #{{item.id}}</button>
-          </div>
-        </div>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <button
-            class="button btn3 color-brown"
-            style="margin: 6px 10px 6px 0px;"
-            text
-            @click="dOrderList = false"
-          >CLOSE</button>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
@@ -151,8 +112,6 @@ export default {
   },
   data() {
     return {
-      orderList: [],
-      dOrderList: false,
       active: "",
       menu: "",
       language: "EN",
@@ -170,7 +129,6 @@ export default {
         password: "Thisisp@ssw0rd"
       },
       userObj: JSON.parse(window.sessionStorage.getItem("user")) || {},
-      isCustomer: true,
 
       statusLike:
         JSON.parse(window.sessionStorage.getItem("statusLike")) || false,
@@ -184,9 +142,6 @@ export default {
       this.isRegister = false;
       this.isLogin = false;
       this.isLogout = true;
-    }
-    if (this.userObj.supplierID) {
-      this.isCustomer = false;
     }
     console.log("statusLike", this.statusLike);
     // console.log('mapGetters isMobile >> ', mapGetters(['isMobile']))
@@ -253,42 +208,9 @@ export default {
         }
       });
     },
-    async clickOrder() {
-      await this.$http
-        .get("https://dezignserves.com/api/orders/", {
-          params: {
-            customer: this.userObj.customerID
-          },
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
-          }
-        })
-        .then(res => {
-          if (res.status === 200) {
-            switch (res.data.length) {
-              case 0:
-                this.dOrderList = true;
-                break;
-              case 1:
-                this.$router.push("/order/detail/" + res.data[0].id);
-                break;
-              default:
-                this.orderList = res.data;
-                this.dOrderList = true;
-                break;
-            }
-          } else {
-            console.error("getOrder status is not 200 >> ", res.statusText);
-          }
-        })
-        .catch(error => {
-          console.error("getLike error >> ", error);
-        });
-    },
-    clickOrderDetail(orderId) {
-      this.dOrderList = false;
-      this.$router.push("/order/detail/" + orderId);
+    onOrderClick() {
+      console.log("onOrderClick");
+      this.$router.push("/order");
     },
     clickToolbar() {
       this.active = this.active === "" ? "is-active" : "";

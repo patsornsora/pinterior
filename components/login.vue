@@ -99,20 +99,34 @@ export default {
               headers: {
                 "Content-Type": "application/json",
                 Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+                // "Cache-Control": "no-cache"
               }
             }
           )
           .then(res => {
             console.log("res.data >> ", res);
             if (res.data.Status === "OK") {
-              window.sessionStorage.setItem(
-                "user",
-                JSON.stringify({
-                  user: this.value.username,
-                  customerID: res.data.Data.customerID
-                })
-              );
-              this.$emit("childToParent", res.data);
+              if (res.data.Data.supplierID) {
+                console.log("supplierID");
+                window.sessionStorage.setItem(
+                  "user",
+                  JSON.stringify({
+                    user: this.value.username,
+                    supplierID: res.data.Data.supplierID
+                  })
+                );
+                this.$emit("childToParent", res.data);
+              } else {
+                console.log("customerID");
+                window.sessionStorage.setItem(
+                  "user",
+                  JSON.stringify({
+                    user: this.value.username,
+                    customerID: res.data.Data.customerID
+                  })
+                );
+                this.$emit("childToParent", res.data);
+              }
             } else {
               this.txtError = res.data.Error;
             }
@@ -140,6 +154,9 @@ a.a-brown {
 }
 a.a-brown:hover {
   color: black;
+}
+label {
+  font-size: 12px;
 }
 </style>
 

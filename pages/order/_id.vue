@@ -134,7 +134,8 @@
         class="button color-brown"
         style="border-radius: 4px; padding: 0px 25px;"
         @click="clickConfirm()"
-      >Confirm Order</button>
+      >ส่งหลักฐานการโอนเงิน</button>
+      <!-- Confirm Order -->
     </div>
 
     <b-modal :active.sync="isComponentLogin" has-modal-card>
@@ -196,7 +197,7 @@ export default {
       isComponentPayment: false,
       isComponentChangeAddress: false,
       isComponentAddAddress: false,
-      isComponentSelectDate: true,
+      isComponentSelectDate: false,
 
       form: {
         orderID: "",
@@ -211,7 +212,8 @@ export default {
         }
       },
 
-      reservation: 10000,
+      // reservation: 10000,
+      reservation: 0.01,
 
       status: {
         p1: "/icon/p_box_active.png",
@@ -317,47 +319,50 @@ export default {
     },
 
     async clickConfirm() {
-      console.log("clickConfirm");
+      console.log("2p2c");
 
-      await this.$http
-        .post(
-          "https://dezignserves.com/encrypt2c2p/",
-          {
-            orderID: this.form.orderID,
-            amountString: this.amountString(this.reservation),
-            payment_description: "paymentOrder" + this.form.orderID,
-            result_url: "http://localhost:8000/#/result"
-            // result_url: "http://localhost:8000/#/order/" + this.form.orderID
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
-            }
-          }
-        )
-        .then(res => {
-          console.log("res >> ", res);
-          if (res.status === 200) {
-            console.log("res.data >> ", res.data);
-            this.valuePayment = {
-              amountString: res.data.amountString,
-              currency: res.data.currency,
-              hash_val: res.data.hash_val,
-              merchant_id: res.data.merchant_id,
-              orderID: res.data.orderID,
-              payment_description: res.data.payment_description,
-              result_url: res.data.result_url,
-              version: res.data.version
-            };
-            this.isComponentPayment = true;
-          } else {
-            console.log("res.statusText >> ", res.statusText);
-          }
-        })
-        .catch(error => {
-          console.error("clickConfirm error >> ", error);
-        });
+      window.open("https://www.messenger.com/t/dexcoro.official", "_blank");
+
+      // TODO 2c2p
+      // await this.$http
+      //   .post(
+      //     "https://dezignserves.com/encrypt2c2p/",
+      //     {
+      //       orderID: this.form.orderID,
+      //       amountString: this.amountString(this.reservation),
+      //       payment_description: "paymentOrder" + this.form.orderID,
+      //       result_url: ""
+      //       // result_url: "http://localhost:3000/#/order/detail/" + this.form.orderID
+      //     },
+      //     {
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+      //       }
+      //     }
+      //   )
+      //   .then(res => {
+      //     console.log("2p2c res >> ", res);
+      //     if (res.status === 200) {
+      //       console.log("2p2c res.data >> ", res.data);
+      //       this.valuePayment = {
+      //         amountString: res.data.amountString,
+      //         currency: res.data.currency,
+      //         hash_val: res.data.hash_val,
+      //         merchant_id: res.data.merchant_id,
+      //         orderID: res.data.orderID,
+      //         payment_description: res.data.payment_description,
+      //         result_url: res.data.result_url,
+      //         version: res.data.version
+      //       };
+      //       this.isComponentPayment = true;
+      //     } else {
+      //       console.log("res.statusText >> ", res.statusText);
+      //     }
+      //   })
+      //   .catch(error => {
+      //     console.error("clickConfirm error >> ", error);
+      //   });
     },
 
     async getData() {
@@ -419,6 +424,14 @@ export default {
         .then(res => {
           if (res.status === 200) {
             this.orderItems = res.data;
+
+            // Order
+            // Operation100
+            // Operation30
+            // Operation20
+            // Done
+            // Cancel
+
             console.log("getOrder order >> ", this.orderItems);
           } else {
             console.error("res.statusText >> ", res.statusText);

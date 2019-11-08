@@ -77,6 +77,7 @@ export default {
   methods: {
     async clickDelete(id) {
       console.log("clickDelete >> ", this.address);
+      console.log("id >> ", id);
       await this.$http
         .post(
           "https://dezignserves.com/changeaddress/",

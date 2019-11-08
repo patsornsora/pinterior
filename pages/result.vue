@@ -12,11 +12,17 @@
 // };
 
 export default {
-  async asyncData(context) {
-    console.log("result context >> ", context);
-    // const slug = params.slug; // When calling /abc the slug will be "abc"
-    // return { slug };
+  async fetch({ store, params }) {
+    let { data } = await axios.get("http://my-api/stars");
+    store.commit("setStars", data);
   }
+
+  // async asyncData(context) {
+  //   console.log("result context >> ", context);
+  // const slug = params.slug; // When calling /abc the slug will be "abc"
+  // return { slug };
+  // }
+
   // async asyncData({ req, res }) {
   //   console.log("result req >> ", req);
   //   console.log("result res >> ", res);

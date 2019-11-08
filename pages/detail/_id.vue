@@ -274,7 +274,7 @@
         </div>
         <div class="s10 th" style="text-align: right;">ติดต่อเพื่อประเมินราคา</div>
       </v-flex>
-      <!-- <v-flex xs2 md1 style="margin-left: 12px;">
+      <v-flex xs2 md1 style="margin-left: 12px;">
         <div>
           <button
             class="button color-brown"
@@ -282,7 +282,7 @@
             @click="clickBuyNow"
           >BUY NOW</button>
         </div>
-      </v-flex>-->
+      </v-flex>
 
       <!-- <v-flex xs12>
         <div class="columns">
@@ -740,9 +740,9 @@ export default {
         return;
       }
 
-      console.log("clickBuyNow address >> ", this.address[0].id);
-      console.log("clickBuyNow furnituresItem >> ", this.furnituresItem);
-      console.log("clickBuyNow customerID >> ", this.customerID);
+      console.log("neworders address >> ", this.address[0].id);
+      console.log("neworders furnituresItem >> ", this.furnituresItem);
+      console.log("neworders customerID >> ", this.customerID);
 
       await this.$http
         .post(
@@ -756,6 +756,7 @@ export default {
             headers: {
               "Content-Type": "application/json",
               Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+              // "Cache-Control": "no-cache"
             }
           }
         )

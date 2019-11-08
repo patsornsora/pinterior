@@ -7,11 +7,13 @@ module.exports = {
     resourceHints: false
   },
   router: {
-    mode: "hash"
+    mode: "history"
+    // mode: "hash"
     // middleware: "router-auth"
   },
 
   plugins: [
+    '~/plugins/moment.js',
     "~/plugins/buefy",
     "~/plugins/vuetify",
     "~/plugins/axios",
@@ -34,10 +36,10 @@ module.exports = {
     credentials: false
   },
 
-  server: {
-    port: 8000, // default: 3000
-    host: 'localhost', // host: '0.0.0.0', // default: localhost
-  },
+  // server: {
+  //   port: 8001, // default: 3000
+  //   host: 'localhost', // host: '0.0.0.0', // default: localhost
+  // },
 
   serverMiddleware: [{
     path: '~/result',
@@ -87,6 +89,10 @@ module.exports = {
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css?family=Lato|Montserrat|Kanit|Pattaya"
+      },
+      {
+        rel: "stylesheet",
+        href: "https://unpkg.com/buefy/dist/buefy.min.css"
       }
     ]
   },

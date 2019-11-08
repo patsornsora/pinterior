@@ -4,6 +4,200 @@
       <figure class="image is-full">
         <v-img :aspect-ratio="7/2" src="banner/b1.png" target="_blank"></v-img>
       </figure>
+
+      <!-- <div class="columns is-gapless is-mobile" style="margin: 16px;">
+        <a class="navbar-item" v-show="!showFilter" @click="isComponentFilter = true">
+          <b-icon icon="filter" pack="fas"></b-icon>
+        </a>
+
+        <div class="column is-half-desktop is-three-quarters-mobile">
+          <b-field class="s8">
+            <b-input
+              class="c-brown"
+              style="font-size: 20px;"
+              placeholder="TYPE KEYWORD YOU WANT TO SEARCH HERE"
+              type="search"
+              icon="magnify"
+            ></b-input>
+          </b-field>
+        </div>
+        <div class="column">
+          <div class="columns">
+            <div class="column">
+              <v-btn icon>
+                <v-icon style="color: #846857;" title="search by image" @click="isComponentImage = true">photo_camera</v-icon>
+              </v-btn>
+            </div>
+            <div class="column image-preview" v-if="imgSearch.length > 0">
+              <img class="preview" :src="imgSearch" style="margin: 0px;">
+            </div>
+            <div class="column"></div>
+            <div class="column"></div>
+          </div>
+        </div>
+
+        <div
+          class="column is-one-quarters is-mobile cursor"
+          style="max-height: 28px;"
+          v-show="showFilter"
+        >
+          <div class="columns is-mobile">
+            <div
+              class="column"
+              style="text-align: center; padding: 8px 0px 0px 0px;"
+              @click="clickTab('all')"
+            >
+              <img :src="imageTab.all" style="max-height: 28px;">
+            </div>
+            <div
+              class="column"
+              style="text-align: center; padding: 8px 0px 0px 0px;"
+              @click="clickTab('condo')"
+            >
+              <img :src="imageTab.condo" style="max-height: 28px;">
+            </div>
+            <div
+              class="column"
+              style="text-align: center; padding: 8px 0px 0px 0px;"
+              @click="clickTab('townhome')"
+            >
+              <img :src="imageTab.townhome" style="max-height: 28px;">
+            </div>
+            <div
+              class="column"
+              style="text-align: center; padding: 8px 0px 0px 0px;"
+              @click="clickTab('house')"
+            >
+              <img :src="imageTab.house" style="max-height: 28px;">
+            </div>
+          </div>
+          <div class="columns is-mobile">
+            <div class="column" style="text-align: center; padding: 0px;" @click="clickTab('all')">
+              <font size="1" :style="textTab.all">ALL</font>
+            </div>
+            <div
+              class="column"
+              style="text-align: center; padding: 0px;"
+              @click="clickTab('condo')"
+            >
+              <font size="1" :style="textTab.condo">CONDO</font>
+            </div>
+            <div
+              class="column"
+              style="text-align: center; padding: 0px;"
+              @click="clickTab('townhome')"
+            >
+              <font size="1" :style="textTab.townhome">TOWNHOME</font>
+            </div>
+            <div
+              class="column"
+              style="text-align: center; padding: 0px;"
+              @click="clickTab('house')"
+            >
+              <font size="1" :style="textTab.house">HOUSE</font>
+            </div>
+          </div>
+          <div class="columns is-mobile" style="margin-bottom: 15px;">
+            <div class="column" style="text-align: center; padding: 0px;" @click="clickTab('all')">
+              <img :src="lineTab.all" style="max-height: 28px;">
+            </div>
+            <div
+              class="column"
+              style="text-align: center; padding: 0px;"
+              @click="clickTab('condo')"
+            >
+              <img :src="lineTab.condo" style="max-height: 28px;">
+            </div>
+            <div
+              class="column"
+              style="text-align: center; padding: 0px;"
+              @click="clickTab('townhome')"
+            >
+              <img :src="lineTab.townhome" style="max-height: 28px;">
+            </div>
+            <div
+              class="column"
+              style="text-align: center; padding: 0px;"
+              @click="clickTab('house')"
+            >
+              <img :src="lineTab.house" style="max-height: 28px;">
+            </div>
+          </div>
+        </div>
+      </div>-->
+
+      <!-- <div
+        class="column is-one-quarters is-mobile cursor"
+        style="max-height: 64px; max-width: 400px; margin: 0px 20px;"
+        v-show="!showFilter"
+      >
+        <div class="columns is-mobile">
+          <div
+            class="column"
+            style="text-align: center; padding: 8px 0px 0px 0px;"
+            @click="clickTab('all')"
+          >
+            <img :src="imageTab.all" style="max-height: 28px;">
+          </div>
+          <div
+            class="column"
+            style="text-align: center; padding: 8px 0px 0px 0px;"
+            @click="clickTab('condo')"
+          >
+            <img :src="imageTab.condo" style="max-height: 28px;">
+          </div>
+          <div
+            class="column"
+            style="text-align: center; padding: 8px 0px 0px 0px;"
+            @click="clickTab('townhome')"
+          >
+            <img :src="imageTab.townhome" style="max-height: 28px;">
+          </div>
+          <div
+            class="column"
+            style="text-align: center; padding: 8px 0px 0px 0px;"
+            @click="clickTab('house')"
+          >
+            <img :src="imageTab.house" style="max-height: 28px;">
+          </div>
+        </div>
+        <div class="columns is-mobile">
+          <div class="column" style="text-align: center; padding: 0px;" @click="clickTab('all')">
+            <font size="1" :style="textTab.all">ALL</font>
+          </div>
+          <div class="column" style="text-align: center; padding: 0px;" @click="clickTab('condo')">
+            <font size="1" :style="textTab.condo">CONDO</font>
+          </div>
+          <div
+            class="column"
+            style="text-align: center; padding: 0px;"
+            @click="clickTab('townhome')"
+          >
+            <font size="1" :style="textTab.townhome">TOWNHOME</font>
+          </div>
+          <div class="column" style="text-align: center; padding: 0px;" @click="clickTab('house')">
+            <font size="1" :style="textTab.house">HOUSE</font>
+          </div>
+        </div>
+        <div class="columns is-mobile" style="margin-bottom: 15px;">
+          <div class="column" style="text-align: center; padding: 0px;" @click="clickTab('all')">
+            <img :src="lineTab.all" style="max-height: 28px;">
+          </div>
+          <div class="column" style="text-align: center; padding: 0px;" @click="clickTab('condo')">
+            <img :src="lineTab.condo" style="max-height: 28px;">
+          </div>
+          <div
+            class="column"
+            style="text-align: center; padding: 0px;"
+            @click="clickTab('townhome')"
+          >
+            <img :src="lineTab.townhome" style="max-height: 28px;">
+          </div>
+          <div class="column" style="text-align: center; padding: 0px;" @click="clickTab('house')">
+            <img :src="lineTab.house" style="max-height: 28px;">
+          </div>
+        </div>
+      </div>-->
     </div>
 
     <div style="position: fixed; left: 0%; right: 0%;">
@@ -22,6 +216,94 @@
     </div>
 
     <div class="columns is-gapless" :style="statusLike?'margin-top: 70px;':''">
+      <!-- <div class="column is-narrow" v-show="showFilter">
+        <div style="width: 200px; padding: 10px 10px 10px 10px;">
+          <b-field label="DEVOLOPER">
+            <b-select expanded v-model="developer">
+              <option v-for="item in developers" :value="item.value" :key="item.value">{{item.text}}</option>
+            </b-select>
+          </b-field>
+          <b-field label="BRAND">
+            <b-select expanded v-model="brandProduct">
+              <option
+                v-for="item in brandProducts"
+                :value="item.value"
+                :key="item.value"
+              >{{item.text}}</option>
+            </b-select>
+          </b-field>
+          <b-field label="PROJECT">
+            <b-select expanded v-model="project">
+              <option v-for="item in projects" :value="item.value" :key="item.value">{{item.text}}</option>
+            </b-select>
+          </b-field>
+          <b-field label="TYPE">
+            <b-select expanded v-model="type">
+              <option v-for="item in types" :value="item.value" :key="item.value">{{item.text}}</option>
+            </b-select>
+          </b-field>
+
+          <h6 class="subtitle is-6" style="margin-bottom: 10px;">
+            <b-field label="STYLE"></b-field>
+          </h6>
+
+          <section>
+            <div class="field">
+              <b-checkbox v-model="cbStyle" native-value="Loft">LOFT</b-checkbox>
+            </div>
+            <div class="field">
+              <b-checkbox v-model="cbStyle" native-value="Modern">MODERN</b-checkbox>
+            </div>
+            <div class="field">
+              <b-checkbox v-model="cbStyle" native-value="Nordic">NORDIC</b-checkbox>
+            </div>
+            <div class="field">
+              <b-checkbox v-model="cbStyle" native-value="Scandinavian">SCANDINAVIAN</b-checkbox>
+            </div>
+          </section>
+
+          <h6 class="subtitle is-6" style="margin-bottom: 10px; margin-top: 10px;">
+            <b-field label="COLOR TONE"></b-field>
+          </h6>
+
+          <div style="display: inline;">
+            <div
+              style="padding: 0px; display: inline;"
+              v-for="(item, index) in colors"
+              :key="index"
+            >
+              <div
+                class="button is-rounded"
+                :style="{'background-color': item.color, 'width': '30px', 'height': '30px'}"
+                @click="clickColor(index)"
+              ></div>
+            </div>
+            <div style="display: inline;">
+              <v-img
+                class="button is-rounded"
+                src="icon/addColor.png"
+                style="width: 30px; height: 30px; padding: 14px;"
+                :aspect-ratio="1"
+                target="_blank"
+                v-show="isAddColor"
+                @click="aaaa"
+              ></v-img>
+            </div>
+          </div>
+          <div class="custom-ui-class" v-show="isSelectColor">
+            <swatches v-model="color" shapes="circles" :colors="addColors" inline></swatches>
+          </div>
+          <div class="level-right">
+            <a @click="clickClearColor">CLEAR COLOR</a>
+          </div>
+          <a
+            class="button"
+            style="color: black; width: 100%;"
+            @click="clickResetFilter"
+          >RESET FILTER</a>
+        </div>
+      </div>-->
+
       <div class="column is-mobile">
         <v-container grid-list-md fluid style="min-width: 300px; padding: 8px;">
           <v-layout wrap>
@@ -40,6 +322,7 @@
                       target="_blank"
                       @click="clickDetail(item.id)"
                     >
+                      <!-- @click="clickDetail(item.id)" -->
                       <v-container fill-height fluid pa-0>
                         <v-layout fill-height>
                           <v-flex xs12 align-end flexbox>
@@ -57,6 +340,13 @@
                         </v-layout>
                       </v-container>
                     </v-img>
+                    <!-- <div style="padding: 8px;">
+                      <v-list-tile-sub-title class="s16" style="color: #62503D;">{{item.title}}</v-list-tile-sub-title>
+                      <div class="level is-mobile">
+                        <div class="level-left s14" style="color: #62503D;">{{item.project}}</div>
+                        <div class="level-right s12" style="color: #62503D;">By {{item.designer}}</div>
+                      </div>
+                    </div>-->
                     <v-divider style="margin: 0px;"></v-divider>
                     <v-flex xs12>
                       <div class="level is-mobile">
@@ -138,6 +428,16 @@
       <div class="custom-ui-class">
         <swatches v-model="color" shapes="circles" :colors="addColors" inline></swatches>
       </div>
+      <!-- <div class="form__input" style="border: 2px;">
+        <swatches
+          v-model="color"
+          :colors="addColors"
+          row-length="4"
+          shapes="circles"
+          show-border
+          popover-to="left"
+        ></swatches>
+      </div>-->
     </b-modal>
 
     <b-modal :active.sync="isComponentFilter" has-modal-card>
@@ -166,12 +466,14 @@
       <v-icon @click="isIframe = false">cancel</v-icon>
       <section class="modal-card-body" style="padding: 10px;">
         <iframe
+          :width="windowWidth-200"
+          :height="windowHeight-200"
           :src="iframeSrc"
           frameborder="0"
           webkitallowfullscreen
           mozallowfullscreen
           allowfullscreen
-          :style="{'width': windowWidth-200 + 'px', 'height': windowHeight-200 + 'px', 'margin': '0px', 'padding': '0px'}"
+          style="margin: 0px; padding: 0px;"
         ></iframe>
       </section>
     </v-dialog>
@@ -196,6 +498,13 @@
         ></iframe>
       </section>
     </v-dialog>
+
+    <!-- <v-dialog v-model="isComponentEvent" width="640">
+      <v-card class="text-xs-right" style="background-color: rgba(0, 0, 0, 0.1);">
+        <v-icon style="color: rgba(255, 255, 255, 0.7);" @click="isComponentEvent = false">cancel</v-icon>
+        <v-img style="min-width: 200px;" src="/event/12aug.png"></v-img>
+      </v-card>
+    </v-dialog>-->
   </div>
 </template>
 
@@ -323,20 +632,6 @@ export default {
   },
 
   async created() {
-    if (sessionStorage.getItem("user")) {
-      console.log("user", sessionStorage.getItem("user"));
-      console.log(
-        "supplierID",
-        JSON.parse(window.sessionStorage.getItem("user")).supplierID
-      );
-      if (JSON.parse(window.sessionStorage.getItem("user")).supplierID) {
-        this.$router.push(
-          "/supplier/" +
-            JSON.parse(window.sessionStorage.getItem("user")).supplierID
-        );
-      }
-    }
-
     console.log("isLogin >> ", this.isLogin);
     this.isLogin = sessionStorage.getItem("user") !== null;
     this.windowWidth = window.innerWidth;
