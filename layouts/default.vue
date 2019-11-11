@@ -54,11 +54,19 @@
                     style="margin-left: 12px; margin-right: 12px;"
                   ></i>
                 </p>
-                <b-dropdown-item aria-role="listitem" @click="clickFavorite">
+                <b-dropdown-item aria-role="listitem" @click="clickFavorite" v-if="isCustomer">
                   <div class="media">
                     <b-icon class="media-left" icon="heart" :pack="packHeart"></b-icon>
                     <div class="media-content">
                       <span class="s14">My Favorite</span>
+                    </div>
+                  </div>
+                </b-dropdown-item>
+                <b-dropdown-item aria-role="listitem" @click="clickTask" v-if="!isCustomer">
+                  <div class="media">
+                    <b-icon class="media-left" icon="calendar" :pack="packHeart"></b-icon>
+                    <div class="media-content">
+                      <span class="s14">My Tasks</span>
                     </div>
                   </div>
                 </b-dropdown-item>
@@ -108,8 +116,11 @@
     </b-modal>
 
     <v-dialog v-model="dOrderList" width="300">
-      <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>MY ORDER</v-card-title>
+      <v-card style="text-align: center;">
+        <v-card-title
+          class="headline grey lighten-2 justify-center c-brown-black"
+          primary-title
+        >My Order</v-card-title>
 
         <v-card-text v-if="orderList.length === 0">No order</v-card-text>
 
@@ -204,6 +215,13 @@ export default {
         this.packHeart = "far";
       }
       window.location.reload();
+    },
+
+    clickTask() {
+      this.$router.push(
+        "/supplier/" +
+          JSON.parse(window.sessionStorage.getItem("user")).supplierID
+      );
     },
 
     onRegisterClick(data) {

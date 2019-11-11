@@ -271,10 +271,10 @@
                       <div
                         class="column is-one-quarter"
                         style="text-align: right; margin-top: 8px;"
-                      >Quantity</div>
+                      >Quality</div>
                       <div class="column">
                         <star-rating
-                          v-model="item.quantity"
+                          v-model="item.quality"
                           v-bind:star-size="20"
                           v-bind:increment="1"
                           read-only
@@ -339,7 +339,7 @@ export default {
           name: "delivery"
         },
         {
-          name: "quantity"
+          name: "quality"
         },
         {
           name: "service"
@@ -369,6 +369,7 @@ export default {
       this.$router.push("/order/detail/" + orderID);
     },
     getRatingSnapshots(fil) {
+      console.log("getRatingSnapshots", this.rateList);
       return this.rateList.reduce(
         (accumulator, item) => {
           switch (item[fil]) {
@@ -564,7 +565,7 @@ export default {
       await this.$http
         .get("https://dezignserves.com/api/satisfactions/", {
           params: {
-            supplierID: this.userObj.supplierID
+            supplier: this.userObj.supplierID
           },
           headers: {
             "Content-Type": "application/json",
@@ -573,16 +574,33 @@ export default {
         })
         .then(res => {
           if (res.status === 200) {
-            this.rateList = res.data;
+            console.log("getRating", res.data);
+
+            this.rateList = res.data.map(item => {
+              let rItem = {};
+              rItem.id = item.id;
+              rItem.customer = item.customer;
+              rItem.customerName = item.customerName;
+              rItem.supplier = item.supplier;
+              rItem.supplierName = item.supplierName;
+              rItem.furniture = item.furniture;
+              rItem.furnitureName = item.furnitureName;
+              rItem.orderitem = item.orderitem;
+              rItem.delivery = item.delivery;
+              rItem.quality = item.quantity;
+              rItem.service = item.service;
+              rItem.comment = item.comment;
+              return rItem;
+            });
 
             let delivery =
               this.rateList.reduce((accumulator, item) => {
                 return accumulator + item.delivery;
               }, 0) / this.rateList.length;
 
-            let quantity =
+            let quality =
               this.rateList.reduce((accumulator, item) => {
-                return accumulator + item.quantity;
+                return accumulator + item.quality;
               }, 0) / this.rateList.length;
 
             let service =
@@ -590,54 +608,30 @@ export default {
                 return accumulator + item.service;
               }, 0) / this.rateList.length;
 
-            this.rate = (delivery + quantity + service) / 3;
+            this.rate = (delivery + quality + service) / 3;
 
             this.ratingAvg = [
               {
                 name: "Transportation",
                 src: "icon/p_delivery_truck.png",
-                rate: delivery,
+                rate: delivery.toFixed(2),
                 per: (delivery * 100) / 5
               },
               {
                 name: "Product Quality",
                 src: "icon/p_gift.png",
-                rate: quantity,
-                per: (quantity * 100) / 5
+                rate: quality.toFixed(2),
+                per: (quality * 100) / 5
               },
               {
                 name: "Service",
                 src: "icon/p_gift.png",
-                rate: service,
+                rate: service.toFixed(2),
                 per: (service * 100) / 5
               }
             ];
 
             this.ratingAll = this.getRatingSnapshots("delivery");
-
-            // this.rateListFilter = this.
-
-            // this.ratingAll
-
-            // comment: "This Service is great"
-            // customer: 2
-            // customerName: "testuser1"
-            // delivery: 4
-            // furniture: 2
-            // furnitureName: "HATORI Sofa"
-            // id: 1
-            // orderitem: 344
-            // quantity: 5
-            // service: 3
-            // supplier: 1
-            // supplierName: "WokenWood"
-
-            // res.data.forEach(item =>
-            //   this.rateList.push({ themeID: item.theme, likeID: item.id })
-            // );
-
-            // this.AllList = JSON.stringify(this.lists);
-            // console.log("AllList", this.lists);
           } else {
             console.error("getLike status is not 200 >> ", res.statusText);
           }
