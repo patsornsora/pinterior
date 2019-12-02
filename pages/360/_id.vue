@@ -1,16 +1,13 @@
 <template>
   <div style="padding-top: 55px; text-align: center;">
-    <div>
-      <iframe
-        :width="windowWidth"
-        :height="windowHeight-120"
-        :src="link"
-        frameborder="0"
-        webkitallowfullscreen
-        mozallowfullscreen
-        allowfullscreen
-      ></iframe>
-    </div>
+    <iframe
+      :style="{'width': windowWidth + 'px', 'height': windowHeight-120 + 'px'}"
+      :src="link"
+      frameborder="0"
+      webkitallowfullscreen
+      mozallowfullscreen
+      allowfullscreen
+    ></iframe>
   </div>
 </template>
 
@@ -64,6 +61,9 @@ export default {
       window.addEventListener("resize", () => {
         this.windowWidth = window.innerWidth;
         this.windowHeight = window.innerHeight;
+
+        console.log("windowWidth", this.windowWidth);
+        console.log("windowHeight", this.windowHeight);
       });
     });
   }

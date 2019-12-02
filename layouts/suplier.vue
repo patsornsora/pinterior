@@ -5,7 +5,7 @@
         <a class="navbar-item">
           <img
             style="max-height: 145px; max-width: 145px;"
-            src="logo-dexcoro-COFFEE.png"
+            src="/logo-dexcoro-COFFEE.png"
             @click="$router.push('/')"
           />
         </a>
@@ -38,7 +38,7 @@
             <div class="navbar-item">
               <b-dropdown class="is-right" aria-role="list">
                 <p slot="trigger" v-show="!isLogin">
-                  {{userObj.user}}
+                  {{ userObj.user }}
                   <i
                     class="far fa-user"
                     style="margin-left: 12px; margin-right: 12px;"
@@ -138,6 +138,12 @@ export default {
     };
   },
   created() {
+    // console.log("protocol", location.protocol);
+    if (location.protocol != "https:") {
+      location.protocol =
+        "https:" +
+        window.location.href.substring(window.location.protocol.length);
+    }
     if (window.sessionStorage.getItem("user")) {
       this.isRegister = false;
       this.isLogin = false;
@@ -233,7 +239,6 @@ export default {
 };
 </script>
 
-
 <style>
 /* .modal-close {
   right: 560px;
@@ -242,5 +247,3 @@ export default {
   height: 10px;
 } */
 </style>
-
-

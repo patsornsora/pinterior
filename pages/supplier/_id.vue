@@ -312,8 +312,8 @@
   </div>
 </template>
 
-// Wokenwood
-// Pass4sup
+// Wokenwood   Sosignatureonce
+// Pass4sup    pass4sup
 
 <script>
 import SweetCalendar from "vue-sweet-calendar";
@@ -365,48 +365,28 @@ export default {
   },
   methods: {
     clickOderDetail(orderID) {
-      console.log("clickOderDetail");
-      this.$router.push("/order/detail/" + orderID);
+      // console.log("clickOderDetail");
+      this.$router.push("/orderDetail/" + orderID);
     },
     getRatingSnapshots(fil) {
-      console.log("getRatingSnapshots", this.rateList);
+      // console.log("getRatingSnapshots", this.rateList);
       return this.rateList.reduce(
         (accumulator, item) => {
           switch (item[fil]) {
             case 5:
-              if (item[fil] in accumulator) {
-                accumulator[0].sum++;
-              } else {
-                accumulator[0].sum = 1;
-              }
+              accumulator[0].sum++;
               break;
             case 4:
-              if (item[fil] in accumulator) {
-                accumulator[1].sum++;
-              } else {
-                accumulator[1].sum = 1;
-              }
+              accumulator[1].sum++;
               break;
             case 3:
-              if (item[fil] in accumulator) {
-                accumulator[2].sum++;
-              } else {
-                accumulator[2].sum = 1;
-              }
+              accumulator[2].sum++;
               break;
             case 2:
-              if (item[fil] in accumulator) {
-                accumulator[3].sum++;
-              } else {
-                accumulator[3].sum = 1;
-              }
+              accumulator[3].sum++;
               break;
             case 1:
-              if (item[fil] in accumulator) {
-                accumulator[4].sum++;
-              } else {
-                accumulator[4].sum = 1;
-              }
+              accumulator[4].sum++;
               break;
           }
           return accumulator;
@@ -442,7 +422,7 @@ export default {
     },
 
     async getSupplierOrder(supplierID) {
-      console.log("getSupplierOrder", supplierID);
+      // console.log("getSupplierOrder", supplierID);
       await this.$http
         .post(
           "https://dezignserves.com/supplierorder/",
@@ -505,15 +485,17 @@ export default {
                 rItem.address = item[i].customer_addr;
                 rItem.phone = item[i].customer_phone;
                 rItem.title = item[i].items[j].title;
-                console.log("today", this.today + "||" + rItem.date);
-                console.log(
-                  "today",
-                  moment(this.today) + "||" + moment(rItem.date)
-                );
-                console.log("today", this.today === rItem.date);
+                // console.log("today", this.today + "||" + rItem.date);
+                // console.log(
+                //   "today",
+                //   moment(this.today) + "||" + moment(rItem.date)
+                // );
+                console.log("rItem", rItem);
                 if (moment(this.today) < moment(rItem.date)) {
+                  console.log("orderList");
                   this.orderList.push(rItem);
                 } else if (this.today === rItem.date) {
+                  console.log("orderListToday");
                   this.orderListToday.push(rItem);
                 }
               }
@@ -535,6 +517,7 @@ export default {
         });
     },
     sortDateAndTime(lists) {
+      console.log("lists", lists);
       lists
         .sort((a, b) => {
           const dateA = a.date.toUpperCase();
@@ -574,8 +557,7 @@ export default {
         })
         .then(res => {
           if (res.status === 200) {
-            console.log("getRating", res.data);
-
+            // console.log("getRating", res.data);
             this.rateList = res.data.map(item => {
               let rItem = {};
               rItem.id = item.id;
@@ -607,6 +589,10 @@ export default {
               this.rateList.reduce((accumulator, item) => {
                 return accumulator + item.service;
               }, 0) / this.rateList.length;
+
+            // console.log('delivery', delivery)
+            // console.log('quality', quality)
+            // console.log('service', service)
 
             this.rate = (delivery + quality + service) / 3;
 
@@ -644,7 +630,7 @@ export default {
 
   watch: {
     valueFilter() {
-      console.log("valueFilter", this.valueFilter);
+      // console.log("valueFilter", this.valueFilter);
       this.ratingAll = this.getRatingSnapshots(this.valueFilter);
     }
   }

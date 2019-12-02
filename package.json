@@ -25,6 +25,7 @@
     "nuxt": "^2.0.0",
     "nuxt-buefy": "^0.3.3",
     "nuxt-sass-resources-loader": "^2.0.5",
+    "redirect-ssl": "^1.4.1",
     "vue-axios": "^2.1.4",
     "vue-star-rating": "^1.6.1",
     "vue-swatches": "^1.0.3",

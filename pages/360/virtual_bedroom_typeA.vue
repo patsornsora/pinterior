@@ -2,8 +2,7 @@
   <div style="padding-top: 55px; text-align: center;">
     <div>
       <iframe
-        :width="windowWidth"
-        :height="windowHeight-120"
+        :style="{'width': windowWidth + 'px', 'height': windowHeight-120 + 'px'}"
         src="https://roundme.com/embed/441860/1516743"
         frameborder="0"
         webkitallowfullscreen

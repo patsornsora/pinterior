@@ -1,6 +1,9 @@
 import pkg from "./package";
+import axios from "axios";
 
 module.exports = {
+  build: {},
+  // serverMiddleware: ["redirect-ssl"],
   mode: "spa",
   // mode: 'universal',
   render: {
@@ -8,23 +11,81 @@ module.exports = {
   },
   router: {
     mode: "history"
-    // mode: "hash"
-    // middleware: "router-auth"
+    // mode: "hash",
+    // middleware: "router-auth",
+  },
+  generate: {
+    routes: function (callback) {
+      axios
+        .all([
+          axios.get("https://dezignserves.com/api/themes/", {
+            headers: {
+              Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+            }
+          }),
+          axios.get("https://dezignserves.com/api/orders/", {
+            headers: {
+              Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+            }
+          }),
+          axios.get("https://dezignserves.com/api/suppliers/", {
+            headers: {
+              Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+            }
+          })
+        ])
+        .then(
+          axios.spread(function (themes, orders, suppliers) {
+            let routes1 = themes.data.map(theme => {
+              return "/detail/" + theme.id;
+            });
+
+            let routes2 = orders.data.map(order => {
+              return "/order/" + order.id;
+            });
+
+            let routes3 = orders.data.map(order => {
+              return "/orderDetail/" + order.id;
+            });
+
+            let routes4 = suppliers.data.map(supplier => {
+              return "/supplier/" + supplier.id;
+            });
+
+            let routes5 = themes.data.map(theme => {
+              return "/360/" + theme.id;
+            });
+
+            callback(
+              null,
+              routes1
+              .concat(routes2)
+              .concat(routes3)
+              .concat(routes4)
+              .concat(routes5)
+            );
+          }),
+          function (err) {
+            return next(err);
+          }
+        );
+    }
   },
 
   plugins: [
-    '~/plugins/moment.js',
+    "~/plugins/moment.js",
     "~/plugins/buefy",
     "~/plugins/vuetify",
     "~/plugins/axios",
     "~/plugins/vuex",
     "~/plugins/swatches",
+    // "~/plugins/redirect-ssl",
     {
       src: "~/plugins/vuex-persistedstate",
       ssr: false
     },
     {
-      src: '~plugins/ga.js',
+      src: "~plugins/ga.js",
       ssr: false
     }
   ],
@@ -40,11 +101,10 @@ module.exports = {
   //   port: 8001, // default: 3000
   //   host: 'localhost', // host: '0.0.0.0', // default: localhost
   // },
-
   serverMiddleware: [{
-    path: '~/result',
-    handler: '~/serverMiddleware/postRequestHandler.js'
-  }, ],
+    path: "~/result",
+    handler: "~/serverMiddleware/postRequestHandler.js"
+  }],
 
   proxy: {
     "/api": "http://dezignserves.com:5432",

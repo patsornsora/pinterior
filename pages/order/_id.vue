@@ -2,7 +2,7 @@
   <div style="background: #f5f3f2;">
     <div style="background: #b2ada7; color: white; text-align: center; padding: 14px;">
       <span>ORDER</span>
-      <span>TRACKING #{{form.orderID}}</span>
+      <span>TRACKING #{{ form.orderID }}</span>
     </div>
 
     <div style="background: white; text-align: center; padding: 24px;">
@@ -13,9 +13,9 @@
             <img :src="status.p1" style="max-height: 28px;" />
           </div>
           <div>
-            <i class="material-icons">{{status.s1}}</i>
+            <i class="material-icons">{{ status.s1 }}</i>
           </div>
-          <div class="th s10">{{status.t1}}</div>
+          <div class="th s10">{{ status.t1 }}</div>
         </v-flex>
         <v-flex>
           <i class="material-icons" style="margin-top: 32px;">more_horiz</i>
@@ -25,9 +25,9 @@
             <img :src="status.p2" style="max-height: 28px;" />
           </div>
           <div>
-            <i class="material-icons">{{status.s2}}</i>
+            <i class="material-icons">{{ status.s2 }}</i>
           </div>
-          <div class="th s10">{{status.t2}}</div>
+          <div class="th s10">{{ status.t2 }}</div>
         </v-flex>
         <v-flex>
           <i class="material-icons" style="margin-top: 32px;">more_horiz</i>
@@ -37,9 +37,9 @@
             <img :src="status.p3" style="max-height: 28px;" />
           </div>
           <div>
-            <i class="material-icons">{{status.s3}}</i>
+            <i class="material-icons">{{ status.s3 }}</i>
           </div>
-          <div class="th s10">{{status.t3}}</div>
+          <div class="th s10">{{ status.t3 }}</div>
         </v-flex>
         <v-flex>
           <i class="material-icons" style="margin-top: 32px;">more_horiz</i>
@@ -49,9 +49,9 @@
             <img :src="status.p4" style="max-height: 28px;" />
           </div>
           <div>
-            <i class="material-icons">{{status.s4}}</i>
+            <i class="material-icons">{{ status.s4 }}</i>
           </div>
-          <div class="th s10">{{status.t4}}</div>
+          <div class="th s10">{{ status.t4 }}</div>
         </v-flex>
         <v-flex>
           <i class="material-icons" style="margin-top: 32px;">more_horiz</i>
@@ -61,9 +61,9 @@
             <img :src="status.p5" style="max-height: 28px;" />
           </div>
           <div>
-            <i class="material-icons">{{status.s5}}</i>
+            <i class="material-icons">{{ status.s5 }}</i>
           </div>
-          <div class="th s10">{{status.t5}}</div>
+          <div class="th s10">{{ status.t5 }}</div>
         </v-flex>
         <v-flex xs3></v-flex>
       </v-layout>
@@ -76,13 +76,15 @@
           <a class="th" @click="clickEditAddress">แก้ไขที่อยู่</a>
         </v-flex>
         <v-flex xs3>
-          <div class="th">{{form.name}}</div>
-          <div class="th">โทร {{form.phone}}</div>
+          <div class="th">{{ form.name }}</div>
+          <div class="th">โทร {{ form.phone }}</div>
         </v-flex>
         <v-flex xs6>
-          <div
-            class="th"
-          >{{form.address.address}} {{form.address.district}} {{form.address.sub_district}} {{form.address.province}} {{form.address.post_code}}</div>
+          <div class="th">
+            {{ form.address.address }} {{ form.address.district }}
+            {{ form.address.sub_district }} {{ form.address.province }}
+            {{ form.address.post_code }}
+          </div>
         </v-flex>
       </v-layout>
     </div>
@@ -93,12 +95,12 @@
           <v-divider></v-divider>
 
           <v-layout row wrap v-for="item in orderItems" :key="item.id">
-            <v-flex xs6 class="th s12">{{item.name}}</v-flex>
+            <v-flex xs6 class="th s12">{{ item.name }}</v-flex>
             <v-flex
               xs6
               class="th s12"
               style="text-align: right;"
-            >฿{{formatNum(item.price * item.quantity)}}</v-flex>
+            >฿{{ formatNum(item.price * item.quantity) }}</v-flex>
           </v-layout>
 
           <v-divider></v-divider>
@@ -113,18 +115,18 @@
           </v-layout>
           <v-layout row wrap>
             <v-flex xs6 class="th s12">TOTAL</v-flex>
-            <v-flex xs6 class="th s12" style="text-align: right;">฿{{formatNum(total)}}</v-flex>
+            <v-flex xs6 class="th s12" style="text-align: right;">฿{{ formatNum(total) }}</v-flex>
           </v-layout>
           <v-layout row wrap>
             <v-flex xs6 class="th s12">RESERVAT6.ION COST</v-flex>
-            <v-flex xs6 class="th s12" style="text-align: right;">฿{{formatNum(reservation)}}</v-flex>
+            <v-flex xs6 class="th s12" style="text-align: right;">฿{{ formatNum(reservation) }}</v-flex>
           </v-layout>
 
           <v-divider></v-divider>
 
           <v-layout row wrap>
             <v-flex xs6 class="th">TOTAL</v-flex>
-            <v-flex xs6 class="th" style="text-align: right;">฿{{formatNum(reservation)}}</v-flex>
+            <v-flex xs6 class="th" style="text-align: right;">฿{{ formatNum(reservation) }}</v-flex>
           </v-layout>
         </div>
       </div>
@@ -133,8 +135,10 @@
       <button
         class="button color-brown"
         style="border-radius: 4px; padding: 0px 25px;"
-        @click="clickConfirm()"
+        @click="clickSlip()"
       >ส่งหลักฐานการโอนเงิน</button>
+      <div class="th s12">ธนาคารกสิกรไทย เลขที่บัญชี 034-848151-7</div>
+      <div class="th s12">ชื่อบัญชี บจก.ดีไซน์ซิงค์</div>
       <!-- Confirm Order -->
     </div>
 
@@ -170,6 +174,70 @@
         style="min-width: 300px;"
       ></modal-select-date>
     </b-modal>
+
+    <v-dialog v-model="isSendSlip" width="320" height="300" style="margin: 0px; padding: 0px;">
+      <div style="border: 1px solid #B2ADA7;">
+        <v-card style="text-align: right;">
+          <v-card-title
+            class="headline grey lighten-2 justify-center c-brown-black"
+            primary-title
+          >อัพโหลดหลักฐานการโอนเงิน</v-card-title>
+          <v-card-actions>
+            <v-layout row wrap>
+              <v-flex xs12>
+                <div style="text-align: center;">
+                  <b-field class="file">
+                    <input type="file" ref="file" @change="fileChange($event)" />
+                  </b-field>
+                </div>
+              </v-flex>
+              <v-flex xs12>
+                <button
+                  class="button btn3 color-brown"
+                  style="margin: 10px 0px 10px 10px;"
+                  text
+                  @click="isSendSlip=false"
+                >ยกเลิก</button>
+                <button
+                  class="button btn3 color-brown"
+                  style="margin: 10px;"
+                  text
+                  @click="clickSendSlip()"
+                >อัพโหลด</button>
+              </v-flex>
+            </v-layout>
+          </v-card-actions>
+        </v-card>
+      </div>
+    </v-dialog>
+
+    <v-dialog v-model="isThank" width="320" height="300" style="margin: 0px; padding: 0px;">
+      <div style="border: 1px solid #B2ADA7;">
+        <v-card style="text-align: right;">
+          <v-card-title
+            class="headline grey lighten-2 justify-center c-brown-black"
+            primary-title
+          >อัพโหลดหลักฐานการโอนเงิน</v-card-title>
+          <v-card-actions>
+            <v-layout row wrap>
+              <v-flex xs12>
+                <div
+                  class="th"
+                >ขอบคุณที่ใช้บริการ เราจะดำเนินการตรวจสอบ เมื่อสำเร็จจะติดต่อกลับไปทางอีเมล์ที่สมัคร</div>
+              </v-flex>
+              <v-flex xs12>
+                <button
+                  class="button btn3 color-brown"
+                  style="margin: 10px 0px 10px 10px;"
+                  text
+                  @click="isThank=false"
+                >OK</button>
+              </v-flex>
+            </v-layout>
+          </v-card-actions>
+        </v-card>
+      </div>
+    </v-dialog>
   </div>
 </template>
 
@@ -192,6 +260,10 @@ export default {
   },
   data() {
     return {
+      file: null,
+      isSendSlip: false,
+      isThank: false,
+
       isComponentLogin: false,
       isComponentRegister: false,
       isComponentPayment: false,
@@ -249,20 +321,20 @@ export default {
   },
 
   async created() {
-    console.log("created", this.$route.params.id);
+    // console.log("created", this.$route.params.id);
 
-    console.log("created reservation >> ", this.amountString(this.reservation));
+    // console.log("created reservation >> ", this.amountString(this.reservation));
 
     if (window.sessionStorage.getItem("user")) {
       this.form.orderID = this.$route.params.id;
-      console.log("created >> orderID", this.form.orderID);
+      // console.log("created >> orderID", this.form.orderID);
 
       if (window.sessionStorage.getItem("user")) {
-        console.log("created query >> ", this.$route.query);
-        console.log("created params >> ", this.$route.params);
+        // console.log("created query >> ", this.$route.query);
+        // console.log("created params >> ", this.$route.params);
 
         await this.getData();
-        console.log("getData form >> ", this.form);
+        // console.log("getData form >> ", this.form);
       }
     } else {
       this.isComponentLogin = true;
@@ -270,8 +342,52 @@ export default {
   },
 
   methods: {
+    clickSlip() {
+      this.file = null;
+      this.isSendSlip = true;
+    },
+
+    fileChange(event) {
+      this.file = event.target.files[0];
+    },
+
+    async clickSendSlip() {
+      if (this.file === null) {
+        return;
+      }
+      let datetime = new Date();
+      let now = moment(datetime).format("YYYYMMDDTHH:MM:SS");
+
+      let formData = new FormData();
+      formData.append(
+        "file",
+        this.file,
+        this.form.orderID + "_" + now + ".jpg"
+      );
+      formData.append("orderID", this.form.orderID);
+
+      await this.$http
+        .post("https://dezignserves.com/paymentupload/", formData, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+          }
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.isSendSlip = false;
+            this.isThank = true;
+          } else {
+            console.error("clickSendSlip >> ", res.statusText);
+          }
+        })
+        .catch(error => {
+          console.error("clickSendSlip error >> ", error);
+        });
+    },
+
     onLoginClick(data) {
-      console.log("onLoginClick", data);
+      // console.log("onLoginClick", data);
       if (data === "register") {
         this.isComponentLogin = false;
         this.isComponentRegister = true;
@@ -285,7 +401,7 @@ export default {
     },
 
     onRegisterClick(data) {
-      console.log("onRegisterClick", data);
+      // console.log("onRegisterClick", data);
       if (data) {
         this.isComponentRegister = false;
         this.userObj = JSON.parse(window.sessionStorage.getItem("user")) || {};
@@ -293,11 +409,11 @@ export default {
     },
 
     onPaymentClick() {
-      console.log("onPaymentClick");
+      // console.log("onPaymentClick");
     },
 
     onChangeAddressClick(data) {
-      console.log("onChangeAddressClick");
+      // console.log("onChangeAddressClick");
 
       this.form.address = data;
       this.isComponentChangeAddress = false;
@@ -309,17 +425,17 @@ export default {
     },
 
     onAddressClick() {
-      console.log("onAddressClick");
+      // console.log("onAddressClick");
       this.isComponentAddAddress = false;
     },
 
     onSelectDateClick() {
-      console.log("onSelectDateClick");
+      // console.log("onSelectDateClick");
       this.isComponentSelectDate = false;
     },
 
     async clickConfirm() {
-      console.log("2p2c");
+      // console.log("2p2c");
 
       window.open("https://www.messenger.com/t/dexcoro.official", "_blank");
 
@@ -332,7 +448,7 @@ export default {
       //       amountString: this.amountString(this.reservation),
       //       payment_description: "paymentOrder" + this.form.orderID,
       //       result_url: ""
-      //       // result_url: "http://localhost:3000/#/order/detail/" + this.form.orderID
+      //       // result_url: "http://localhost:3000/#/orderDetail/" + this.form.orderID
       //     },
       //     {
       //       headers: {
@@ -366,18 +482,18 @@ export default {
     },
 
     async getData() {
-      console.log("getData");
+      // console.log("getData");
       this.form.name = "test test";
       this.form.phone = "089-999-9999";
 
       await this.getAddress();
       await this.getOrder();
 
-      console.log("getData address >> ", this.form.address);
+      // console.log("getData address >> ", this.form.address);
     },
 
     async getAddress() {
-      console.log("getAddress");
+      // console.log("getAddress");
 
       await this.$http
         .get(
@@ -395,7 +511,7 @@ export default {
             this.address = res.data.addAll.filter(
               item => item.working === true
             );
-            console.log("address >> ", this.address);
+            // console.log("address >> ", this.address);
             this.form.address = this.address[0];
 
             window.sessionStorage.setItem("address", this.preAdd.id);
@@ -409,7 +525,7 @@ export default {
     },
 
     async getOrder() {
-      console.log("getOrder");
+      // console.log("getOrder");
 
       await this.$http
         .get("https://dezignserves.com/api/orderitems/", {
@@ -432,7 +548,7 @@ export default {
             // Done
             // Cancel
 
-            console.log("getOrder order >> ", this.orderItems);
+            // console.log("getOrder order >> ", this.orderItems);
           } else {
             console.error("res.statusText >> ", res.statusText);
           }
@@ -487,7 +603,7 @@ export default {
 
   computed: {
     total() {
-      console.log("orderItems >> ", this.orderItems);
+      // console.log("orderItems >> ", this.orderItems);
       return this.orderItems.reduce(
         (accumulator, currentValue) =>
           accumulator + currentValue.price * currentValue.quantity,

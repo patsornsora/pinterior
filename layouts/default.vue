@@ -5,7 +5,7 @@
         <a class="navbar-item">
           <img
             style="max-height: 145px; max-width: 145px;"
-            src="logo-dexcoro-COFFEE.png"
+            src="/logo-dexcoro-COFFEE.png"
             @click="$router.push('/')"
           />
         </a>
@@ -48,7 +48,7 @@
             <div class="navbar-item">
               <b-dropdown class="is-right" aria-role="list">
                 <p slot="trigger" v-show="!isLogin">
-                  {{userObj.user}}
+                  {{ userObj.user }}
                   <i
                     class="far fa-user"
                     style="margin-left: 12px; margin-right: 12px;"
@@ -131,7 +131,7 @@
               style="margin: 6px 0px 6px 0px; width: 90%;"
               text
               @click="clickOrderDetail(item.id)"
-            >Order #{{item.id}}</button>
+            >Order #{{ item.id }}</button>
           </div>
         </div>
 
@@ -191,6 +191,11 @@ export default {
     };
   },
   created() {
+    if (location.protocol != "https:") {
+      location.protocol =
+        "https:" +
+        window.location.href.substring(window.location.protocol.length);
+    }
     if (window.sessionStorage.getItem("user")) {
       this.isRegister = false;
       this.isLogin = false;
@@ -199,13 +204,13 @@ export default {
     if (this.userObj.supplierID) {
       this.isCustomer = false;
     }
-    console.log("statusLike", this.statusLike);
+    // console.log("statusLike", this.statusLike);
     // console.log('mapGetters isMobile >> ', mapGetters(['isMobile']))
   },
 
   methods: {
     async clickFavorite() {
-      console.log("clickFavorite");
+      // console.log("clickFavorite");
 
       window.sessionStorage.setItem("statusLike", !this.statusLike);
       this.statusLike = !this.statusLike;
@@ -225,7 +230,7 @@ export default {
     },
 
     onRegisterClick(data) {
-      console.log("onRegisterClick", data);
+      // console.log("onRegisterClick", data);
       if (data) {
         this.isComponentRegister = false;
         this.isRegister = false;
@@ -235,7 +240,7 @@ export default {
       }
     },
     onLoginClick(data) {
-      console.log("onLoginClick", data);
+      // console.log("onLoginClick", data);
       if (data === "register") {
         this.isComponentLogin = false;
         this.isComponentRegister = true;
@@ -251,14 +256,14 @@ export default {
       }
     },
     onLogoutClick(data) {
-      console.log("onLogoutClick", data);
+      // console.log("onLogoutClick", data);
       this.$dialog.confirm({
         message: "Are you sure you want to logout?",
         cancelText: "CANCEL",
         type: "is-danger",
         hasIcon: true,
         onConfirm: () => {
-          console.log("Logout");
+          // console.log("Logout");
           window.sessionStorage.removeItem("user");
           window.sessionStorage.removeItem("address");
           this.isRegister = true;
@@ -289,7 +294,7 @@ export default {
                 this.dOrderList = true;
                 break;
               case 1:
-                this.$router.push("/order/detail/" + res.data[0].id);
+                this.$router.push("/orderDetail/" + res.data[0].id);
                 break;
               default:
                 this.orderList = res.data;
@@ -306,7 +311,7 @@ export default {
     },
     clickOrderDetail(orderId) {
       this.dOrderList = false;
-      this.$router.push("/order/detail/" + orderId);
+      this.$router.push("/orderDetail/" + orderId);
     },
     clickToolbar() {
       this.active = this.active === "" ? "is-active" : "";
@@ -323,12 +328,11 @@ export default {
   },
   watch: {
     statusLike() {
-      console.log("formProps");
+      // console.log("formProps");
     }
   }
 };
 </script>
-
 
 <style>
 /* .modal-close {
@@ -338,5 +342,3 @@ export default {
   height: 10px;
 } */
 </style>
-
-

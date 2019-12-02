@@ -86,7 +86,7 @@
                     <v-card-actions style="height: 0%; margin-top: 20px;" v-show="link.length > 0">
                       <v-spacer></v-spacer>
                       <v-btn icon style="margin-top: 4px;" @click="clickView360">
-                        <v-img src="icon/icon_360_UnHover.png" :aspect-ratio="1" target="_blank"></v-img>
+                        <v-img src="/icon/icon_360_UnHover.png" :aspect-ratio="1" target="_blank"></v-img>
                       </v-btn>
                     </v-card-actions>
                     <v-card-actions style="height: 75%;" v-if="link.length > 0">
@@ -325,7 +325,7 @@
     <v-layout row wrap style="margin-top: 28px;">
       <v-flex xs5>
         <div class="column" style="text-align: right; margin-right: 20px;">
-          <img style="max-height: 145px; max-width: 145px;" src="LogoDezigntool.png" />
+          <img style="max-height: 145px; max-width: 145px;" src="/LogoDezigntool.png" />
         </div>
       </v-flex>
       <v-flex xs7>
@@ -385,8 +385,7 @@
       <v-icon @click="isIframe = false">cancel</v-icon>
       <section class="modal-card-body" style="padding: 10px;">
         <iframe
-          :width="windowWidth-200"
-          :height="windowHeight-200"
+          :style="{'width': windowWidth-200 + 'px', 'height': windowHeight-200 + 'px'}"
           :src="link"
           frameborder="0"
           webkitallowfullscreen
@@ -407,8 +406,7 @@
       <v-icon @click="isIframe = false">cancel</v-icon>
       <section class="modal-card-body" style="padding: 10px;">
         <iframe
-          :width="windowWidth-80"
-          :height="windowHeight-100"
+          :style="{'width': windowWidth-80 + 'px', 'height': windowHeight-100 + 'px'}"
           :src="link"
           frameborder="0"
           webkitallowfullscreen
@@ -490,10 +488,10 @@ export default {
   },
 
   async created() {
-    console.log("created", this.$route.params.id);
+    // console.log("created", this.$route.params.id);
 
     this.isLogin = sessionStorage.getItem("user") !== null;
-    console.log("isLogin >> ", this.isLogin);
+    // console.log("isLogin >> ", this.isLogin);
 
     await this.getLists();
 
@@ -501,7 +499,7 @@ export default {
     this.windowHeight = window.innerHeight;
     this.isMobile = this.windowWidth < 450 || this.windowHeight < 450;
 
-    console.log("isMobile >> ", this.isMobile);
+    // console.log("isMobile >> ", this.isMobile);
 
     //ex set data
     this.data.roomType = "Studio";
@@ -509,7 +507,7 @@ export default {
 
   methods: {
     async getLists() {
-      console.log("getLists");
+      // console.log("getLists");
       await this.$http
         .get(
           "https://dezignserves.com/api/themes/" + this.$route.params.id + "/",
@@ -520,9 +518,9 @@ export default {
           }
         )
         .then(res => {
-          console.log("success >> ", res);
+          // console.log("success >> ", res);
           if (res.status === 200) {
-            console.log("data >> ", res.data);
+            // console.log("data >> ", res.data);
 
             this.furnituresItem = res.data.themeFurniture.map((item, index) => {
               let furniture = {};
@@ -664,7 +662,7 @@ export default {
     },
 
     onRegisterClick(data) {
-      console.log("onRegisterClick", data);
+      // console.log("onRegisterClick", data);
       if (data) {
         this.isComponentRegister = false;
         this.isRegister = false;
@@ -675,7 +673,7 @@ export default {
     },
 
     onAddressClick() {
-      console.log("onAddressClick");
+      // console.log("onAddressClick");
       this.isComponentAddAddress = false;
     },
 
@@ -704,12 +702,12 @@ export default {
     },
 
     clickBuy() {
-      console.log("clickBuy >> ", this.checkedRows);
+      // console.log("clickBuy >> ", this.checkedRows);
 
       if (sessionStorage.getItem("user")) {
-        console.log("user >> ", sessionStorage.getItem("user"));
+        // console.log("user >> ", sessionStorage.getItem("user"));
       } else {
-        console.log("user >> not data");
+        // console.log("user >> not data");
       }
     },
 
@@ -730,7 +728,7 @@ export default {
     },
 
     async clickBuyNow() {
-      console.log("clickBuyNow user >> ", this.userObj.customerID);
+      // console.log("clickBuyNow user >> ", this.userObj.customerID);
       this.customerID = this.userObj.customerID;
 
       await this.getAddress();
@@ -740,9 +738,9 @@ export default {
         return;
       }
 
-      console.log("neworders address >> ", this.address[0].id);
-      console.log("neworders furnituresItem >> ", this.furnituresItem);
-      console.log("neworders customerID >> ", this.customerID);
+      // console.log("neworders address >> ", this.address[0].id);
+      // console.log("neworders furnituresItem >> ", this.furnituresItem);
+      // console.log("neworders customerID >> ", this.customerID);
 
       await this.$http
         .post(
@@ -761,11 +759,11 @@ export default {
           }
         )
         .then(res => {
-          console.log("res >> ", res);
+          // console.log("res >> ", res);
           if (res.status === 200) {
-            console.log("res.data >> ", res.data);
+            // console.log("res.data >> ", res.data);
             this.OrderID = res.data.OrderID;
-            console.log("OrderID>> ", this.OrderID);
+            // console.log("OrderID>> ", this.OrderID);
             this.isConfirm = true;
             this.$router.push("/order/" + this.OrderID);
           } else {
@@ -778,7 +776,7 @@ export default {
     },
 
     async getAddress() {
-      console.log("getAddress user >> ", this.userObj.customerID);
+      // console.log("getAddress user >> ", this.userObj.customerID);
       await this.$http
         .get("https://dezignserves.com/api/addresses/", {
           params: {
@@ -791,7 +789,7 @@ export default {
         })
         .then(res => {
           if (res.status === 200) {
-            console.log("res >> ", res);
+            // console.log("res >> ", res);
             this.address = res.data;
           } else {
             console.error("res.statusText >> ", res.statusText);
@@ -803,7 +801,7 @@ export default {
     },
 
     newOrder() {
-      console.log("newOrder");
+      // console.log("newOrder");
     },
 
     clickView360() {
@@ -811,7 +809,7 @@ export default {
     },
 
     onChildClick(data) {
-      console.log("onChildClick", data);
+      // console.log("onChildClick", data);
       // this.isComponentContact = false;
     }
   },

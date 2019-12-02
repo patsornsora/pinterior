@@ -140,7 +140,7 @@
           <div style="display: inline;">
             <v-img
               class="button is-rounded"
-              src="icon/addColor.png"
+              src="/icon/addColor.png"
               style="width: 30px; height: 30px; padding: 14px;"
               :aspect-ratio="1"
               target="_blank"

@@ -466,8 +466,7 @@
       <v-icon @click="isIframe = false">cancel</v-icon>
       <section class="modal-card-body" style="padding: 10px;">
         <iframe
-          :width="windowWidth-200"
-          :height="windowHeight-200"
+          :style="{'width': windowWidth-200 + 'px', 'height': windowHeight-200 + 'px'}"
           :src="iframeSrc"
           frameborder="0"
           webkitallowfullscreen
@@ -487,8 +486,7 @@
       <v-icon @click="isIframe = false">cancel</v-icon>
       <section class="modal-card-body" style="padding: 10px;">
         <iframe
-          :width="windowWidth-80"
-          :height="windowHeight-100"
+          :style="{'width': windowWidth-80 + 'px', 'height': windowHeight-100 + 'px'}"
           :src="iframeSrc"
           frameborder="0"
           webkitallowfullscreen

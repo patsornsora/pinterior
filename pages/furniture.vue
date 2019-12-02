@@ -4,23 +4,12 @@
       <v-layout row wrap style="margin-top: 28px;">
         <v-flex xs3>
           Supplier
-          <b-select v-model="suppliers">
-            <option value="All">All</option>
-            <option value="NameSup">NameSup</option>
-            <option value="test">test</option>
-            <option value="GimmickCurtain">GimmickCurtain</option>
-            <option value="Poom">Poom</option>
-            <option value="IKEA">IKEA</option>
-            <option value="Many Go Round">Many Go Round</option>
-            <option value="HariOra">HariOra</option>
-            <option value="TOA">TOA</option>
-            <option value="TakeHomeDesign">TakeHomeDesign</option>
-            <option value="SoSignatureOnce">SoSignatureOnce</option>
-            <option value="Mahasamut">Mahasamut</option>
-            <option value="innolife">innolife</option>
-            <option value="Furloft">Furloft</option>
-            <option value="eggwhite">eggwhite</option>
-            <option value="Woken Wood">Woken Wood</option>
+          <b-select v-model="supplier">
+            <option
+              v-for="(item, i) in suppliers"
+              :key="i"
+              :value="item.contact_name"
+            >{{ item.contact_name }}</option>
           </b-select>
         </v-flex>
         <v-flex xs3>
@@ -50,13 +39,17 @@
         </v-flex>
         <v-flex xs3>
           Total
-          <div>{{furnitures.length}}</div>
+          <div>{{ furnitures.length }}</div>
         </v-flex>
       </v-layout>
     </div>
     <b-table :data="furnitures" :columns="columns">
       <template slot-scope="props">
-        <b-table-column field="id" label="ID" width="40" sortable numeric>{{ props.row.id }}</b-table-column>
+        <b-table-column field="id" label="ID" width="40" sortable numeric>
+          {{
+          props.row.id
+          }}
+        </b-table-column>
         <b-table-column field="model" label="Model" width="250" centered>
           <img :src="props.row.model" style="height: 200px;" />
         </b-table-column>
@@ -66,7 +59,11 @@
           width="100"
           sortable
         >{{ props.row.supplier }}</b-table-column>
-        <b-table-column field="title" label="Title" width="100" sortable>{{ props.row.title }}</b-table-column>
+        <b-table-column field="title" label="Title" width="100" sortable>
+          {{
+          props.row.title
+          }}
+        </b-table-column>
         <b-table-column field="cost" label="Cost" width="100" sortable centered>{{ props.row.cost }}</b-table-column>
         <b-table-column
           field="price"
@@ -87,28 +84,30 @@ export default {
       columns: [],
       furnitures: [],
       lists: [],
-      suppliers: "All",
+      suppliers: [],
+      supplier: "All",
       groups: "All"
     };
   },
   created() {
     this.getFurniture();
+    this.getSupplier();
   },
   watch: {
-    suppliers() {
-      if (this.suppliers !== "All" && this.groups === "All") {
+    supplier() {
+      if (this.supplier !== "All" && this.groups === "All") {
         this.furnitures = this.lists.filter(item => {
-          return item.supplier === this.suppliers;
+          return item.supplier === this.supplier;
         });
-      } else if (this.suppliers !== "All" && this.groups !== "All") {
+      } else if (this.supplier !== "All" && this.groups !== "All") {
         this.furnitures = this.lists
           .filter(item => {
-            return item.supplier === this.suppliers;
+            return item.supplier === this.supplier;
           })
           .filter(item => {
             return item.group === this.groups;
           });
-      } else if (this.suppliers == "All" && this.groups !== "All") {
+      } else if (this.supplier == "All" && this.groups !== "All") {
         this.furnitures = this.lists.filter(item => {
           return item.group === this.groups;
         });
@@ -117,22 +116,22 @@ export default {
       }
     },
     groups() {
-      console.log("groups >> ", this.groups);
-      if (this.groups !== "All" && this.suppliers === "All") {
+      // console.log("groups >> ", this.groups);
+      if (this.groups !== "All" && this.supplier === "All") {
         this.furnitures = this.lists.filter(item => {
           return item.group === this.groups;
         });
-      } else if (this.groups !== "All" && this.suppliers !== "All") {
+      } else if (this.groups !== "All" && this.supplier !== "All") {
         this.furnitures = this.lists
           .filter(item => {
-            return item.supplier === this.suppliers;
+            return item.supplier === this.supplier;
           })
           .filter(item => {
             return item.group === this.groups;
           });
-      } else if (this.groups === "All" && this.suppliers !== "All") {
+      } else if (this.groups === "All" && this.supplier !== "All") {
         this.furnitures = this.lists.filter(item => {
-          return item.supplier === this.suppliers;
+          return item.supplier === this.supplier;
         });
       } else {
         this.furnitures = this.lists;
@@ -141,7 +140,7 @@ export default {
   },
   methods: {
     async getFurniture() {
-      console.log("getFurniture");
+      // console.log("getFurniture");
       await this.$http
         .get("https://dezignserves.com/api/furnitures/", {
           headers: {
@@ -149,9 +148,9 @@ export default {
           }
         })
         .then(res => {
-          console.log("success >> ", res);
+          // console.log("success >> ", res);
           if (res.status === 200) {
-            console.log("data >> ", res.data);
+            // console.log("data >> ", res.data);
             this.lists = res.data.map(item => {
               let rItem = {};
               rItem.id = item.id;
@@ -165,6 +164,24 @@ export default {
             });
             this.furnitures = this.lists;
           }
+        })
+        .catch(error => {
+          console.error("error >> ", error);
+          this.isInvalid = true;
+        });
+    },
+    async getSupplier() {
+      await this.$http
+        .get("https://dezignserves.com/api/suppliers/", {
+          headers: {
+            Authorization: "Basic YWRtaW46cXdlcjEyMzQ="
+          }
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.suppliers = res.data;
+          }
+          this.suppliers.push({ contact_name: "All" });
         })
         .catch(error => {
           console.error("error >> ", error);

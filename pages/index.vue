@@ -2,7 +2,7 @@
   <div>
     <div id="editor" ref="editor" v-show="!statusLike">
       <figure class="image is-full">
-        <v-img :aspect-ratio="7/2" src="banner/b1.png" target="_blank"></v-img>
+        <v-img :aspect-ratio="7 / 2" src="/banner/b1.png" target="_blank"></v-img>
       </figure>
     </div>
 
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="columns is-gapless" :style="statusLike?'margin-top: 70px;':''">
+    <div class="columns is-gapless" :style="statusLike ? 'margin-top: 70px;' : ''">
       <div class="column is-mobile">
         <v-container grid-list-md fluid style="min-width: 300px; padding: 8px;">
           <v-layout wrap>
@@ -47,7 +47,7 @@
                               <v-spacer></v-spacer>
                               <v-btn icon @click="clickView360(item.link)" v-show="item.link">
                                 <v-img
-                                  src="icon/icon_360_UnHover.png"
+                                  src="/icon/icon_360_UnHover.png"
                                   :aspect-ratio="1"
                                   target="_blank"
                                 ></v-img>
@@ -97,22 +97,22 @@
                                 class="s18"
                                 v-show="showFilter"
                                 v-if="isLogin"
-                              >{{formatNum(item.price)}}</b>
+                              >{{ formatNum(item.price) }}</b>
                               <b
                                 class="s18"
                                 v-show="showFilter"
                                 v-if="!isLogin"
-                              >{{formatNum(convertPrice(item.price))}}</b>
+                              >{{ formatNum(convertPrice(item.price)) }}</b>
                               <b
                                 class="s14"
                                 v-show="!showFilter"
                                 v-if="isLogin"
-                              >{{formatNum(item.price)}}</b>
+                              >{{ formatNum(item.price) }}</b>
                               <b
                                 class="s14"
                                 v-show="!showFilter"
                                 v-if="!isLogin"
-                              >{{formatNum(convertPrice(item.price))}}</b>
+                              >{{ formatNum(convertPrice(item.price)) }}</b>
                               <div class="s8" style="text-align: right;">THB</div>
                             </div>
                           </div>
@@ -158,8 +158,8 @@
 
     <v-dialog
       v-model="isIframe"
-      :width="windowWidth-180"
-      :height="windowHeight-180"
+      :width="windowWidth - 180"
+      :height="windowHeight - 180"
       class="text-xs-right"
       v-if="!isMobile"
     >
@@ -171,22 +171,26 @@
           webkitallowfullscreen
           mozallowfullscreen
           allowfullscreen
-          :style="{'width': windowWidth-200 + 'px', 'height': windowHeight-200 + 'px', 'margin': '0px', 'padding': '0px'}"
+          :style="{
+            width: windowWidth - 200 + 'px',
+            height: windowHeight - 200 + 'px',
+            margin: '0px',
+            padding: '0px'
+          }"
         ></iframe>
       </section>
     </v-dialog>
     <v-dialog
       v-model="isIframe"
-      :width="windowWidth-60"
-      :height="windowHeight-80"
+      :width="windowWidth - 60"
+      :height="windowHeight - 80"
       class="text-xs-right"
       v-if="isMobile"
     >
       <v-icon @click="isIframe = false">cancel</v-icon>
       <section class="modal-card-body" style="padding: 10px;">
         <iframe
-          :width="windowWidth-80"
-          :height="windowHeight-100"
+          :style="{'width': windowWidth-80 + 'px', 'height': windowHeight-100 + 'px'}"
           :src="iframeSrc"
           frameborder="0"
           webkitallowfullscreen
@@ -317,18 +321,12 @@ export default {
       statusLike:
         JSON.parse(window.sessionStorage.getItem("statusLike")) || false,
       likes: [],
-
       userObj: JSON.parse(window.sessionStorage.getItem("user")) || {}
     };
   },
 
   async created() {
     if (sessionStorage.getItem("user")) {
-      console.log("user", sessionStorage.getItem("user"));
-      console.log(
-        "supplierID",
-        JSON.parse(window.sessionStorage.getItem("user")).supplierID
-      );
       if (JSON.parse(window.sessionStorage.getItem("user")).supplierID) {
         this.$router.push(
           "/supplier/" +
@@ -337,7 +335,7 @@ export default {
       }
     }
 
-    console.log("isLogin >> ", this.isLogin);
+    // console.log("isLogin >> ", this.isLogin);
     this.isLogin = sessionStorage.getItem("user") !== null;
     this.windowWidth = window.innerWidth;
     this.windowHeight = window.innerHeight;
@@ -358,7 +356,7 @@ export default {
     },
 
     color() {
-      console.log("color", this.color);
+      // console.log("color", this.color);
       // this.isComponentColor = false;
       this.colors.push({ color: this.color });
       this.isSelectColor = !this.isSelectColor;
@@ -373,7 +371,7 @@ export default {
     },
 
     valueImage() {
-      console.log("valueImage >> ", this.valueImage);
+      // console.log("valueImage >> ", this.valueImage);
     },
 
     likes() {}
@@ -389,7 +387,7 @@ export default {
     // }
     window.addEventListener("storage", e => {
       if (e.key === "mytoken" && e.newValue === null) {
-        console.log("e >> ", e);
+        // console.log("e >> ", e);
       }
     });
     this.$nextTick(() => {
@@ -411,7 +409,7 @@ export default {
 
   methods: {
     clickBackFavorite() {
-      console.log("clickBackFavorite");
+      // console.log("clickBackFavorite");
       window.sessionStorage.setItem("statusLike", !this.statusLike);
       window.location.reload();
     },
@@ -426,7 +424,7 @@ export default {
     },
 
     async getLike() {
-      console.log("getLike");
+      // console.log("getLike");
       await this.$http
         .get("https://dezignserves.com/api/likes/", {
           params: {
@@ -439,7 +437,7 @@ export default {
         })
         .then(res => {
           if (res.status === 200) {
-            console.log("getLike", res.data);
+            // console.log("getLike", res.data);
             res.data.forEach(item =>
               this.likes.push({ themeID: item.theme, likeID: item.id })
             );
@@ -466,7 +464,7 @@ export default {
             });
 
             this.AllList = JSON.stringify(this.lists);
-            console.log("AllList", this.lists);
+            // console.log("AllList", this.lists);
           } else {
             console.error("getLike status is not 200 >> ", res.statusText);
           }
@@ -513,7 +511,7 @@ export default {
     },
 
     async getTheme() {
-      console.log("getTheme");
+      // console.log("getTheme");
       await this.$http
         .get("https://dezignserves.com/api/themes/", {
           headers: {
@@ -521,9 +519,9 @@ export default {
           }
         })
         .then(res => {
-          console.log("success >> ", res);
+          // console.log("success >> ", res);
           if (res.status === 200) {
-            console.log("data >> ", res.data);
+            // console.log("data >> ", res.data);
             this.lists = res.data.map(item => {
               let rItem = {};
               rItem.id = item.id;
@@ -547,7 +545,7 @@ export default {
               }
               return rItem;
             });
-            console.log("lists >> ", this.lists);
+            // console.log("lists >> ", this.lists);
           } else {
             console.error("getTheme status is not 200 >> ", res.statusText);
           }
@@ -588,10 +586,10 @@ export default {
 
     priceWithCommas(price) {
       let l = parseInt(price.toString().length / 3);
-      console.log("length >> ", l);
+      // console.log("length >> ", l);
       let xx = ["1xxx"];
       xx = xx.splice(1, 0, ",");
-      console.log("price >> ", xx);
+      // console.log("price >> ", xx);
       // return price.toString().length;
     },
 
@@ -706,7 +704,7 @@ export default {
     },
 
     clickPicture() {
-      console.log("clickPicture");
+      // console.log("clickPicture");
     },
 
     clickDetail(id) {
@@ -828,12 +826,12 @@ export default {
       this.isIframe = true;
       this.iframeSrc = link;
 
-      console.log("clickView360");
+      // console.log("clickView360");
     },
 
     clickAddColor() {
       this.isComponentAddColor = true;
-      console.log("clickAddColor");
+      // console.log("clickAddColor");
     },
 
     clickClearColor() {
@@ -1072,4 +1070,3 @@ export default {
   box-shadow: none;
 }
 </style>
-
